@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
 		flexWrap: "wrap",
+		marginTop: "70px",
 	},
 	textField: {
 		marginLeft: theme.spacing(1),
@@ -346,475 +347,500 @@ const Blog = (props) => {
 
 	const classes = useStyles();
 	return (
-		<div style={frameStyles}>
-			<div>
-				{!activeEdit ? (
+		<div style={{marginTop: "80px"}}>
+			<Container component="main">
+				<CssBaseline/>
+				<div style={frameStyles}>
 					<div>
-						{/* theme={cardTheme} */}
-						<ThemeProvider>
-							<form>
-								<div className={classes.cardRoot}>
-									<div>
-										<Grid container spacing={3}>
-											<Grid items xs={6}>
-												<Card className={classes.userCard}>
+						{!activeEdit ? (
+							<div>
+								{/* theme={cardTheme} */}
+								<ThemeProvider>
+									<form>
+										<div className={classes.cardRoot}>
+											<div>
+												<Grid container spacing={3}>
+													<Grid items xs={6}>
+														<Card className={classes.userCard}>
+															<Typography className={classes.title}>
+																โดย:
+																<Typography
+																	style={{
+																		color: "#007FFF",
+																		fontWeight: "normal",
+																		display: "inline",
+																	}}
+																>
+																	{props.userDisplayname}
+																</Typography>
+															</Typography>
+														</Card>
+													</Grid>
+												</Grid>
+											</div>
+										</div>
+										<div>
+											<Card style={{ marginTop: "10px" }}>
+												<CardContent>
 													<Typography className={classes.title}>
-														โดย:
+														ชื่อภาษาไทย: &nbsp;
 														<Typography
 															style={{
-																color: "#007FFF",
 																fontWeight: "normal",
 																display: "inline",
 															}}
 														>
-															{props.userDisplayname}
+															{thaiNameEdit}
 														</Typography>
 													</Typography>
-												</Card>
-											</Grid>
-										</Grid>
-									</div>
-								</div>
-								<div>
-									<Card style={{ marginTop: "10px" }}>
-										<CardContent>
-											<Typography className={classes.title}>
-												ชื่อภาษาไทย: &nbsp;
-												<Typography
-													style={{ fontWeight: "normal", display: "inline" }}
-												>
-													{thaiNameEdit}
-												</Typography>
+													<Typography className={classes.title}>
+														ชื่อภาษาอังกฤษ: &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{engNameEdit}
+														</Typography>
+													</Typography>
+													<Typography className={classes.title}>
+														ชื่อทางวิทยาศาสตร์: &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{sciNameEdit}
+														</Typography>
+													</Typography>
+													<Typography className={classes.title}>
+														ชื่อวงศ์ : &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{familyNameEdit}
+														</Typography>
+													</Typography>
+												</CardContent>
+											</Card>
+										</div>
+										<div>
+											<Card style={{ marginTop: "10px" }}>
+												<CardContent>
+													<Typography className={classes.title}>
+														ข้อมูลสมุนไพร:
+														<br />
+														<Typography style={{ fontWeight: "normal" }}>
+															{infoEdit}
+														</Typography>
+													</Typography>
+													<br />
+													<Typography className={classes.title}>
+														สรรพคุณของสมุนไพร:
+														<br />
+														<Typography style={{ fontWeight: "normal" }}>
+															{attributeEdit}
+														</Typography>
+													</Typography>
+												</CardContent>
+											</Card>
+										</div>
+										<div>
+											<Card style={{ marginTop: "10px" }}>
+												<CardContent>
+													<Typography className={classes.title}>
+														รูปสมุนไพร
+													</Typography>
+													<Grid item xs={12} sm={6} md={3}>
+														<img
+															width="auto"
+															height="auto"
+															src={ImgUrl || "http://via.placeholder.com/200"}
+															alt="firebase-image"
+														/>
+													</Grid>
+												</CardContent>
+											</Card>
+											<Card style={{ marginTop: "10px" }}>
+												<CardContent>
+													<Typography className={classes.title}>
+														รูปพันธะเคมี
+													</Typography>
+													<Grid item xs={12} sm={6} md={3}>
+														<img
+															width="auto"
+															height="auto"
+															src={
+																chemBondUrl || "http://via.placeholder.com/200"
+															}
+															alt="firebase-image"
+														/>
+													</Grid>
+												</CardContent>
+											</Card>
+											<Card style={{ marginTop: "10px", marginBottom: "10px" }}>
+												<CardContent>
+													<Typography className={classes.title}>
+														ตาราง NMR
+													</Typography>
+													<Grid item xs={12} sm={6} md={3}>
+														<img
+															width="auto"
+															height="auto"
+															src={NMRUrl || "http://via.placeholder.com/200"}
+															alt="firebase-image"
+														/>
+													</Grid>
+												</CardContent>
+											</Card>
+										</div>
+										<div style={{ overflow: "hidden", paddingLeft: "10px" }}>
+											<Typography style={{ fontWeight: "bold", float: "left" }}>
+												เมื่อ:&nbsp;
 											</Typography>
-											<Typography className={classes.title}>
-												ชื่อภาษาอังกฤษ: &nbsp;
-												<Typography
-													style={{ fontWeight: "normal", display: "inline" }}
-												>
-													{engNameEdit}
-												</Typography>
+											<Typography
+												style={{ color: "#007FFF", fontWeight: "normal" }}
+											>
+												{date}
 											</Typography>
-											<Typography className={classes.title}>
-												ชื่อทางวิทยาศาสตร์: &nbsp;
-												<Typography
-													style={{ fontWeight: "normal", display: "inline" }}
-												>
-													{sciNameEdit}
-												</Typography>
-											</Typography>
-											<Typography className={classes.title}>
-												ชื่อวงศ์ : &nbsp;
-												<Typography
-													style={{ fontWeight: "normal", display: "inline" }}
-												>
-													{familyNameEdit}
-												</Typography>
-											</Typography>
-										</CardContent>
-									</Card>
-								</div>
-								<div>
-									<Card style={{ marginTop: "10px" }}>
-										<CardContent>
-											<Typography className={classes.title}>
-												ข้อมูลสมุนไพร:
-												<br />
-												<Typography style={{ fontWeight: "normal" }}>
-													{infoEdit}
-												</Typography>
-											</Typography>
-											<br />
-											<Typography className={classes.title}>
-												สรรพคุณของสมุนไพร:
-												<br />
-												<Typography style={{ fontWeight: "normal" }}>
-													{attributeEdit}
-												</Typography>
-											</Typography>
-										</CardContent>
-									</Card>
-								</div>
-								<div>
-									<Card style={{ marginTop: "10px" }}>
-										<CardContent>
-											<Typography className={classes.title}>
-												รูปสมุนไพร
-											</Typography>
-											<Grid item xs={12} sm={6} md={3}>
-												<img
-													width="auto"
-													height="auto"
-													src={ImgUrl || "http://via.placeholder.com/200"}
-													alt="firebase-image"
-												/>
-											</Grid>
-										</CardContent>
-									</Card>
-									<Card style={{ marginTop: "10px" }}>
-										<CardContent>
-											<Typography className={classes.title}>
-												รูปพันธะเคมี
-											</Typography>
-											<Grid item xs={12} sm={6} md={3}>
-												<img
-													width="auto"
-													height="auto"
-													src={chemBondUrl || "http://via.placeholder.com/200"}
-													alt="firebase-image"
-												/>
-											</Grid>
-										</CardContent>
-									</Card>
-									<Card style={{ marginTop: "10px", marginBottom: "10px" }}>
-										<CardContent>
-											<Typography className={classes.title}>
-												ตาราง NMR
-											</Typography>
-											<Grid item xs={12} sm={6} md={3}>
-												<img
-													width="auto"
-													height="auto"
-													src={NMRUrl || "http://via.placeholder.com/200"}
-													alt="firebase-image"
-												/>
-											</Grid>
-										</CardContent>
-									</Card>
-								</div>
-								<div style={{ overflow: "hidden", paddingLeft: "10px" }}>
-									<Typography style={{ fontWeight: "bold", float: "left" }}>
-										เมื่อ:&nbsp;
-									</Typography>
-									<Typography
-										style={{ color: "#007FFF", fontWeight: "normal" }}
-									>
-										{date}
-									</Typography>
-								</div>
-							</form>
-						</ThemeProvider>
-						<div
-							style={{
-								display: "flex",
-								flexWrap: "wrap",
-								justifyContent: "center",
-							}}
-						>
-							<Grid
-								container
-								spacing={1}
-								style={{ display: "flex", justifyContent: "center" }}
-							>
-								{loggedIn && (
+										</div>
+									</form>
+								</ThemeProvider>
+								<div
+									style={{
+										display: "flex",
+										flexWrap: "wrap",
+										justifyContent: "center",
+									}}
+								>
 									<Grid
-										item
-										xs={3}
 										container
 										spacing={1}
 										style={{ display: "flex", justifyContent: "center" }}
 									>
-										<Button
-											className={classes.backButton}
-											onClick={toggleEdit}
-											variant="contained"
-											color="primary"
+										{loggedIn && (
+											<Grid
+												item
+												xs={3}
+												container
+												spacing={1}
+												style={{ display: "flex", justifyContent: "center" }}
+											>
+												<Button
+													className={classes.backButton}
+													onClick={toggleEdit}
+													variant="contained"
+													color="primary"
+												>
+													<Typography>แก้ไข</Typography>
+												</Button>
+											</Grid>
+										)}
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{ display: "flex", justifyContent: "center" }}
 										>
-											<Typography>แก้ไข</Typography>
-										</Button>
+											<Button
+												className={classes.backButton}
+												onClick={() => router.back()}
+												type="secondary"
+												variant="outlined"
+											>
+												<Typography>กลับ</Typography>
+											</Button>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{ display: "flex", justifyContent: "center" }}
+										>
+											<Button
+												className={classes.historyButton}
+												variant="contained"
+												color="primary"
+											>
+												<Link href="/historyLogs">
+													<Typography>ประวัติการแก้ไข</Typography>
+												</Link>
+											</Button>
+										</Grid>
 									</Grid>
-								)}
-								<Grid
-									item
-									xs={3}
-									container
-									spacing={1}
-									style={{ display: "flex", justifyContent: "center" }}
-								>
-									<Button
-										className={classes.backButton}
-										onClick={() => router.back()}
-										type="secondary"
-										variant="outlined"
-									>
-										<Typography>กลับ</Typography>
-									</Button>
-								</Grid>
-								<Grid
-									item
-									xs={3}
-									container
-									spacing={1}
-									style={{ display: "flex", justifyContent: "center" }}
-								>
-									<Button
-										className={classes.historyButton}
-										variant="contained"
-										color="primary"
-									>
-										<Link href="/historyLogs">
-											<Typography>ประวัติการแก้ไข</Typography>
-										</Link>
-									</Button>
-								</Grid>
-							</Grid>
-						</div>
-					</div>
-				) : (
-					<div>
-						<form>
-							<div>
-								<Typography className={classes.title}>ชื่อภาษาไทย:</Typography>
-								<TextField
-									fullWidth
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									value={thaiNameEdit}
-									onChange={(e) => setThaiNameEdit(e.target.value)}
-									placeholder="ชื่อสมุนไพรภาษาไทย ?"
-								/>
+								</div>
 							</div>
-							<br />
+						) : (
 							<div>
-								<Typography className={classes.title}>
-									ชื่อภาษาอังกฤษ:
-								</Typography>
-								<TextField
-									fullWidth
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									value={engNameEdit}
-									onChange={(e) => setEngNameEdit(e.target.value)}
-									placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
-								/>
-							</div>
-							<br />
-							<div>
-								<Typography className={classes.title}>
-									ชื่อทางวิทยาศาสตร์:
-								</Typography>
-								<TextField
-									fullWidth
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									value={sciNameEdit}
-									onChange={(e) => setSciNameEdit(e.target.value)}
-									placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
-								/>
-							</div>
-							<br />
-							<div>
-								<Typography className={classes.title}>ชื่อวงศ์:</Typography>
-								<TextField
-									fullWidth
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									value={familyNameEdit}
-									onChange={(e) => setFamilyNameEdit(e.target.value)}
-									placeholder="ชื่อวงศ์ของสมุนไพร ?"
-								/>
-							</div>
-							<br />
-							<div>
-								<Typography className={classes.title}>
-									ข้อมูลสมุนไพร:
-								</Typography>
-								<TextField
-									fullWidth
-									multiline
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									rowsMin={10}
-									value={infoEdit}
-									onChange={(e) => setInfoEdit(e.target.value)}
-									placeholder="ข้อมูลสมุนไพร ?"
-								/>
-							</div>
-							<br />
-							<div>
-								<Typography className={classes.title}>
-									สรรพคุณของสมุนไพร:
-								</Typography>
-								<TextField
-									fullWidth
-									multiline
-									id="filled-multiline-static"
-									variant="filled"
-									fontFamily="sans-serif"
-									rowsMin={10}
-									value={attributeEdit}
-									onChange={(e) => setAttributeEdit(e.target.value)}
-									placeholder="สรรพคุณของสมุนไพร ?"
-								/>
-							</div>
-							<br />
-							<br />
-							<div>
-								{uploadNoti !== null && <div>{uploadNoti}</div>}
-								<Typography className={classes.title}>รูปสมุนไพร</Typography>
-								<div>
-									<input
-										type="file"
-										onChange={(e) => setImage(e.target.files[0])}
-									/>
+								<form>
+									<div>
+										<Typography className={classes.title}>
+											ชื่อภาษาไทย:
+										</Typography>
+										<TextField
+											fullWidth
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											value={thaiNameEdit}
+											onChange={(e) => setThaiNameEdit(e.target.value)}
+											placeholder="ชื่อสมุนไพรภาษาไทย ?"
+										/>
+									</div>
 									<br />
-									<div
-										style={{
-											position: "relative",
-											top: "5px",
-										}}
-									>
-										<Button
-											type="submit"
-											position="relative"
-											type="secondary"
-											variant="outlined"
-											color="default"
-											className={classes.button}
-											startIcon={<CloudUploadIcon />}
-											onClick={uploadImg}
-										>
-											Upload
-										</Button>
+									<div>
+										<Typography className={classes.title}>
+											ชื่อภาษาอังกฤษ:
+										</Typography>
+										<TextField
+											fullWidth
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											value={engNameEdit}
+											onChange={(e) => setEngNameEdit(e.target.value)}
+											placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
+										/>
 									</div>
-								</div>
-								<br />
-								<Typography className={classes.title}>รูปพันธะเคมี</Typography>
-								<div>
-									<input
-										type="file"
-										onChange={(e) => setChemBond(e.target.files[0])}
-									/>
 									<br />
-									<div
-										style={{
-											position: "relative",
-											top: "5px",
-										}}
-									>
-										<Button
-											type="submit"
-											color="secondary"
-											variant="outlined"
-											color="default"
-											className={classes.button}
-											startIcon={<CloudUploadIcon />}
-											onClick={uploadChemBond}
-										>
-											Upload
-										</Button>
+									<div>
+										<Typography className={classes.title}>
+											ชื่อทางวิทยาศาสตร์:
+										</Typography>
+										<TextField
+											fullWidth
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											value={sciNameEdit}
+											onChange={(e) => setSciNameEdit(e.target.value)}
+											placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
+										/>
 									</div>
-								</div>
+									<br />
+									<div>
+										<Typography className={classes.title}>ชื่อวงศ์:</Typography>
+										<TextField
+											fullWidth
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											value={familyNameEdit}
+											onChange={(e) => setFamilyNameEdit(e.target.value)}
+											placeholder="ชื่อวงศ์ของสมุนไพร ?"
+										/>
+									</div>
+									<br />
+									<div>
+										<Typography className={classes.title}>
+											ข้อมูลสมุนไพร:
+										</Typography>
+										<TextField
+											fullWidth
+											multiline
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											rowsMin={10}
+											value={infoEdit}
+											onChange={(e) => setInfoEdit(e.target.value)}
+											placeholder="ข้อมูลสมุนไพร ?"
+										/>
+									</div>
+									<br />
+									<div>
+										<Typography className={classes.title}>
+											สรรพคุณของสมุนไพร:
+										</Typography>
+										<TextField
+											fullWidth
+											multiline
+											id="filled-multiline-static"
+											variant="filled"
+											fontFamily="sans-serif"
+											rowsMin={10}
+											value={attributeEdit}
+											onChange={(e) => setAttributeEdit(e.target.value)}
+											placeholder="สรรพคุณของสมุนไพร ?"
+										/>
+									</div>
+									<br />
+									<br />
+									<div>
+										{uploadNoti !== null && <div>{uploadNoti}</div>}
+										<Typography className={classes.title}>
+											รูปสมุนไพร
+										</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setImage(e.target.files[0])}
+											/>
+											<br />
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													position="relative"
+													type="secondary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadImg}
+												>
+													Upload
+												</Button>
+											</div>
+										</div>
+										<br />
+										<Typography className={classes.title}>
+											รูปพันธะเคมี
+										</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setChemBond(e.target.files[0])}
+											/>
+											<br />
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													color="secondary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadChemBond}
+												>
+													Upload
+												</Button>
+											</div>
+										</div>
+										<br />
+										<Typography className={classes.title}>ตาราง NMR</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setNMR(e.target.files[0])}
+											/>
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													position="relative"
+													type="primary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadNMR}
+												>
+													Upload
+												</Button>
+											</div>
+										</div>
+									</div>
+								</form>
 								<br />
-								<Typography className={classes.title}>ตาราง NMR</Typography>
-								<div>
-									<input
-										type="file"
-										onChange={(e) => setNMR(e.target.files[0])}
-									/>
-									<div
-										style={{
-											position: "relative",
-											top: "5px",
-										}}
-									>
-										<Button
-											type="submit"
-											position="relative"
-											type="primary"
-											variant="outlined"
-											color="default"
-											className={classes.button}
-											startIcon={<CloudUploadIcon />}
-											onClick={uploadNMR}
-										>
-											Upload
-										</Button>
-									</div>
-								</div>
-							</div>
-						</form>
-						<br />
-						<br />
-						<br />
-						<div
-							style={{
-								display: "flex",
-								flexWrap: "wrap",
-								justifyContent: "center",
-							}}
-						>
-							<Grid
-								container
-								spacing={1}
-								style={{
-									display: "flex",
-									flexWrap: "wrap",
-									justifyContent: "center",
-								}}
-							>
-								<Grid
-									item
-									xs={3}
-									container
-									spacing={1}
+								<br />
+								<br />
+								<div
 									style={{
 										display: "flex",
+										flexWrap: "wrap",
 										justifyContent: "center",
-										position: "relative",
 									}}
 								>
-									<Button
-										onClick={handleUpdate}
-										type="submit"
-										variant="contained"
-										color="primary"
+									<Grid
+										container
+										spacing={1}
+										style={{
+											display: "flex",
+											flexWrap: "wrap",
+											justifyContent: "center",
+										}}
 									>
-										บันทึก
-									</Button>
-								</Grid>
-								<Grid
-									item
-									xs={3}
-									container
-									spacing={1}
-									style={{ display: "flex", justifyContent: "center" }}
-								>
-									<Button
-										onClick={handleDelete}
-										type="submit"
-										variant="contained"
-										color="#EB4034"
-									>
-										ลบ
-									</Button>
-								</Grid>
-								<Grid
-									item
-									xs={3}
-									container
-									spacing={1}
-									style={{ display: "flex", justifyContent: "center" }}
-								>
-									<Button
-										onClick={handleCancel}
-										type="submit"
-										position="relative"
-										type="secondary"
-										variant="outlined"
-									>
-										ยกเลิก
-									</Button>
-								</Grid>
-							</Grid>
-						</div>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												position: "relative",
+											}}
+										>
+											<Button
+												onClick={handleUpdate}
+												type="submit"
+												variant="contained"
+												color="primary"
+											>
+												บันทึก
+											</Button>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{ display: "flex", justifyContent: "center" }}
+										>
+											<Button
+												onClick={handleDelete}
+												type="submit"
+												variant="contained"
+												color="#EB4034"
+											>
+												ลบ
+											</Button>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{ display: "flex", justifyContent: "center" }}
+										>
+											<Button
+												onClick={handleCancel}
+												type="submit"
+												position="relative"
+												type="secondary"
+												variant="outlined"
+											>
+												ยกเลิก
+											</Button>
+										</Grid>
+									</Grid>
+								</div>
+							</div>
+						)}
 					</div>
-				)}
-			</div>
+				</div>
+			</Container>
 		</div>
 	);
 };

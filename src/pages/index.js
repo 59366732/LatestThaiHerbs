@@ -121,7 +121,7 @@ function Home() {
 		<div className={classes.root} style={{ position: "relative" }}>
 			<div style={{ textAlign: "center" }}>
 				{loggedIn && (
-					<div>
+					<div style={{marginBottom: "5px"}}>
 						<ThemeProvider theme={theme}>
 							<Button
 								style={{ width: "200px" }}
