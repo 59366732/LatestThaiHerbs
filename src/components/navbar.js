@@ -7,10 +7,20 @@ import Typography from "@material-ui/core/Typography";
 import Link from "next/link";
 import { auth, firestore, generateUserDocument } from "../database/firebase";
 import { UserContext } from "../providers/UserProvider";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
 
 export default function Navbar() {
-	const user = useContext(UserContext);
+	const {user, setUser} = useContext(UserContext);
+
+	const [loggedIn, setLoggedIn] = useState(false);
+
+	auth.onAuthStateChanged((user) => {
+		if (user) {
+		  setLoggedIn(true);
+		} else {
+		  setLoggedIn(false);
+		}
+	  });
 	// console.log(user);
 	return (
 		<AppBar>
@@ -41,7 +51,7 @@ export default function Navbar() {
 					</Link>
 				</Button>
 				<Button color="inherit">
-					{user ? (
+					{loggedIn ? (
 						<Link href="/profilepage">
 							<Typography
 								style={{
@@ -65,7 +75,7 @@ export default function Navbar() {
 					)}
 				</Button>
 				<Button color="inherit">
-					{user ? (
+					{loggedIn ? (
 						<div
 							onClick={() => {
 								auth.signOut();

@@ -39,13 +39,15 @@ export default function MyApp({ Component, pageProps }) {
 				<Header />
 				<CssBaseline />
 				<MuiThemeProvider theme={Theme}>
-					<div className="App">
+					{/* <div className="App"> */}
+					<div>
 						<Navbar />
-						<Container>
-							<div className="container">
+						{/* <Container> */}
+							{/* <div className="container"> */}
+							<div>
 								<Component {...pageProps} />
 							</div>
-						</Container>
+						{/* </Container> */}
 					</div>
 				</MuiThemeProvider>
 			</UserProvider>

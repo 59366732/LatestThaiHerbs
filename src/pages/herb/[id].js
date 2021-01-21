@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
 import { auth, storage } from "../../database/firebase";
+import { UserContext } from "../../providers/UserProvider";
+import firebase from "firebase";
 
 // import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -114,26 +116,36 @@ export const getServerSideProps = async ({ query }) => {
 	await db
 		.collection("herbs")
 		.doc(query.id)
+		.collection("historys")
+		.where("herb_id", "==", query.id)
+		.orderBy("timestamp", "desc")
+		.limit(1)
 		.get()
-		.then((result) => {
-			content["id"] = result.id;
-			content["userDisplayname"] = result.data().userDisplayName;
-			content["thaiName"] = result.data().thaiName;
-			content["engName"] = result.data().engName;
-			content["sciName"] = result.data().sciName;
-			content["familyName"] = result.data().familyName;
-			content["info"] = result.data().info;
-			content["attribute"] = result.data().attribute;
-			content["timestamp"] = new Date(
-				result.data().timestamp.seconds * 1000
-			).toDateString();
-			content["imgUrl"] = result.data().imgUrl;
-			content["chemBondUrl"] = result.data().chemBondUrl;
-			content["NMRUrl"] = result.data().NMRUrl;
+		.then(function (querySnapshot) {
+			querySnapshot.forEach(function (result) {
+				content["id"] = result.id;
+				content["userDisplayName"] = result.data().userDisplayName;
+				content["thaiName"] = result.data().thaiName;
+				content["engName"] = result.data().engName;
+				content["sciName"] = result.data().sciName;
+				content["familyName"] = result.data().familyName;
+				content["info"] = result.data().info;
+				content["attribute"] = result.data().attribute;
+				content["timestamp"] = new Date(
+					result.data().timestamp.seconds * 1000
+				).toDateString();
+				content["imgUrl"] = result.data().imgUrl;
+				content["chemBondUrl"] = result.data().chemBondUrl;
+				content["NMRUrl"] = result.data().NMRUrl;
+			});
+		})
+		.catch(function (error) {
+			console.log("Error getting documents: ", error);
 		});
 
 	return {
 		props: {
+			main_id: content.main_id,
 			id: content.id,
 			userDisplayname: content.userDisplayname,
 			thaiName: content.thaiName,
@@ -154,6 +166,8 @@ const Blog = (props) => {
 	dayjs.extend(relativeTime);
 	const date = props.timestamp;
 	const router = useRouter();
+
+	const { user, setUser } = useContext(UserContext);
 
 	const [activeEdit, setActiveEdit] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -200,17 +214,21 @@ const Blog = (props) => {
 		e.preventDefault();
 
 		db.collection("herbs")
-			.doc(props.id)
-			.update({
+			.doc(props.main.id)
+			.collection("historys")
+			.add({
+				herb_id: props.main_id,
+				userDisplayName: user.displayName,
 				thaiName: thaiNameEdit,
 				engName: engNameEdit,
 				sciName: sciNameEdit,
 				familyName: familyNameEdit,
 				info: infoEdit,
 				attribute: attributeEdit,
+				timestamp: firebase.firestore.FieldValue.serverTimestamp(),
 				imgUrl: newImgUrl,
-				chemBondUrl: newChemBondUrl,
 				NMRUrl: newNMRUrl,
+				chemBondUrl: newChemBondUrl,
 			})
 			// @ts-ignore
 			.then(setActiveEdit(false));
@@ -220,6 +238,8 @@ const Blog = (props) => {
 		e.preventDefault();
 
 		db.collection("herbs")
+			.doc(props.main_id)
+			.collection("historys")
 			.doc(props.id)
 			.get()
 			.then((result) => {
@@ -240,7 +260,7 @@ const Blog = (props) => {
 		e.preventDefault();
 
 		db.collection("herbs")
-			.doc(props.id)
+			.doc(props.main.id)
 			.delete()
 			// @ts-ignore
 			.then(setActiveEdit(false), router.push("/"));
@@ -347,9 +367,9 @@ const Blog = (props) => {
 
 	const classes = useStyles();
 	return (
-		<div style={{marginTop: "80px"}}>
+		<div style={{ marginTop: "80px" }}>
 			<Container component="main">
-				<CssBaseline/>
+				<CssBaseline />
 				<div style={frameStyles}>
 					<div>
 						{!activeEdit ? (
@@ -569,8 +589,13 @@ const Blog = (props) => {
 												variant="contained"
 												color="primary"
 											>
-												<Link href="/historyLogs">
-													<Typography>ประวัติการแก้ไข</Typography>
+												<Link
+													href="../herb/[id]/history/history_list"
+													as={
+														"../herb/" + props.main_id + "/history/history_list"
+													}
+												>
+													<Typography itemProp="hello">ประวัติการแก้ไข</Typography>
 												</Link>
 											</Button>
 										</Grid>

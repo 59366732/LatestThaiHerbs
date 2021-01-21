@@ -2,10 +2,9 @@
 import React, { useContext, useEffect } from "react";
 // import { navigate } from "@reach/router";
 import { UserContext } from "../providers/UserProvider";
-import Link from "next/link";
-import { useRouter } from "next/router";
-/* cSpell:disable */
 import db, { auth, generateUserDocument } from "../database/firebase.js";
+import Link from "next/link";
+// import { useRouter } from "next/router";
 
 import { Refresh } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
