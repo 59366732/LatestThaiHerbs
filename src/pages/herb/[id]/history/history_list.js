@@ -33,7 +33,7 @@ const history = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <div style={{ textAlign: "center" }}>
         <h1>history</h1>
         {historys.map((history) => (

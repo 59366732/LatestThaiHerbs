@@ -1,10 +1,9 @@
-// @ts-nocheck
-import React, { useContext, useEffect } from "react";
-// import { navigate } from "@reach/router";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../providers/UserProvider";
 import db, { auth, generateUserDocument } from "../database/firebase.js";
-import Link from "next/link";
+// import Link from "next/link";
 // import { useRouter } from "next/router";
+// import { navigate } from "@reach/router";
 
 import { Refresh } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -73,7 +72,7 @@ const ProfilePage = () => {
 	// const user = useContext(UserContext);
 	// const router = useRouter();
 	const borderProps = {
-		backgroundColor: "background.paper",
+		backgroundcolor: "background.paper",
 		borderColor: "text.primary",
 		m: 1,
 		border: 1,
@@ -86,6 +85,7 @@ const ProfilePage = () => {
 				display: "flex-start",
 				justifyContent: "center",
 				flexDirection: "row",
+				marginTop: "90px",
 			}}
 		>
 			{/* user ? */}
@@ -105,16 +105,15 @@ const ProfilePage = () => {
 							style={{
 								display: "flex",
 								background: `url(${
-									user.photoURL ||
-									"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+									user.photoURL 
+									// ||
+									// "https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
 								})  `,
 								backgroundSize: "cover",
 								height: "200px",
 								maxHeight: "200px",
 								minHeight: "200px",
 								width: "200px",
-								maxWidth: "200px",
-								minHeight: "200px",
 							}}
 						></Box>
 					</Box>
@@ -246,10 +245,8 @@ const ProfilePage = () => {
 								paddingBottom: "10px",
 							}}
 						>
-							<Button variant="contained" color="primary">
-								<Link href="/editprofilepage">
+							<Button variant="contained" color="primary" onClick={toggleEdit}>
 									<Typography>Edit</Typography>
-								</Link>
 							</Button>
 							<Button
 								variant="outlined"
@@ -262,7 +259,7 @@ const ProfilePage = () => {
 				</div>
 			) : (
 				//New
-				<div>
+				<div style={{marginTop: "90px"}}>
 					<div
 						style={{
 							display: "flex-start",

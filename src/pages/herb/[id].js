@@ -1,8 +1,5 @@
-// @ts-nocheck
-// @ts-ignore
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import db from "../../database/firebase";
-// @ts-ignore
 import Link from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -113,6 +110,7 @@ const Theme = createMuiTheme(ThemeFile);
 
 export const getServerSideProps = async ({ query }) => {
 	const content = {};
+	content["main_id"] = query.id;
 	await db
 		.collection("herbs")
 		.doc(query.id)
@@ -147,7 +145,7 @@ export const getServerSideProps = async ({ query }) => {
 		props: {
 			main_id: content.main_id,
 			id: content.id,
-			userDisplayname: content.userDisplayname,
+			userDisplayName: content.userDisplayName,
 			thaiName: content.thaiName,
 			engName: content.engName,
 			sciName: content.sciName,
@@ -161,7 +159,7 @@ export const getServerSideProps = async ({ query }) => {
 		},
 	};
 };
-
+// console.log(userDisplayName)
 const Blog = (props) => {
 	dayjs.extend(relativeTime);
 	const date = props.timestamp;
@@ -214,7 +212,7 @@ const Blog = (props) => {
 		e.preventDefault();
 
 		db.collection("herbs")
-			.doc(props.main.id)
+			.doc(props.main_id)
 			.collection("historys")
 			.add({
 				herb_id: props.main_id,
@@ -260,7 +258,7 @@ const Blog = (props) => {
 		e.preventDefault();
 
 		db.collection("herbs")
-			.doc(props.main.id)
+			.doc(props.main_id)
 			.delete()
 			// @ts-ignore
 			.then(setActiveEdit(false), router.push("/"));
@@ -391,7 +389,7 @@ const Blog = (props) => {
 																		display: "inline",
 																	}}
 																>
-																	{props.userDisplayname}
+																	{props.userDisplayName}
 																</Typography>
 															</Typography>
 														</Card>
@@ -585,6 +583,7 @@ const Blog = (props) => {
 											style={{ display: "flex", justifyContent: "center" }}
 										>
 											<Button
+												key={props.main_id}
 												className={classes.historyButton}
 												variant="contained"
 												color="primary"

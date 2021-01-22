@@ -27,7 +27,7 @@ export default function Navbar() {
 			<Toolbar className="navbar-container">
 				<Typography
 					variant="h4"
-					style={{ color: "white", marginRight: "200px", marginLeft: "100px" }}
+					style={{ color: "white", marginRight: "200px"}} ///, marginLeft: "100px" 
 				>
 				เว็บชุมชนสมุนไพรไทย
 				</Typography>

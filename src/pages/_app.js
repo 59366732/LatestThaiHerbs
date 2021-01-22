@@ -23,7 +23,6 @@ import Container from "@material-ui/core/Container";
 import ThemeFile from "../utils/theme";
 const Theme = createMuiTheme(ThemeFile);
 
-
 export default function MyApp({ Component, pageProps }) {
 	React.useEffect(() => {
 		// Remove the server-side injected CSS.
@@ -35,22 +34,22 @@ export default function MyApp({ Component, pageProps }) {
 
 	return (
 		<React.Fragment>
-			<UserProvider>
-				<Header />
-				<CssBaseline />
-				<MuiThemeProvider theme={Theme}>
+			<Header />
+			<CssBaseline />
+			<MuiThemeProvider theme={Theme}>
+				<UserProvider>
 					{/* <div className="App"> */}
 					<div>
 						<Navbar />
 						{/* <Container> */}
-							{/* <div className="container"> */}
-							<div>
-								<Component {...pageProps} />
-							</div>
+						{/* <div className="container"> */}
+						<div>
+							<Component {...pageProps} />
+						</div>
 						{/* </Container> */}
 					</div>
-				</MuiThemeProvider>
-			</UserProvider>
+				</UserProvider>
+			</MuiThemeProvider>
 		</React.Fragment>
 	);
 }
