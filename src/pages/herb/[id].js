@@ -8,12 +8,10 @@ import { auth, storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import firebase from "firebase";
 
-// import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { NewReleasesOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
-import ThemeFile from "../../utils/theme.js";
+
 
 import {
 	Icon,
@@ -40,7 +38,7 @@ const frameStyles = {
 	flexDirection: "column",
 	display: "flex",
 	justifyContent: "center",
-	border: "solid 1px palevioletred",
+	border: "solid 1px #00b906",
 	paddingTop: "20px",
 	paddingRight: "20px",
 	paddingBottom: "20px",
@@ -55,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
 		flexWrap: "wrap",
-		marginTop: "70px",
+		// marginTop: "90px",
 	},
 	textField: {
 		marginLeft: theme.spacing(1),
@@ -84,6 +82,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		fontWeight: "bold",
+		variant: "h3",
+	},
+	content: {
+		display: "inline",
+		fontWeight: "normal",
 	},
 	paper: {
 		padding: theme.spacing(2),
@@ -94,8 +97,15 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(2),
 	},
-	card: {
+	imageCard: {
 		minWidth: 500,
+		margintop: "10px",
+		backgroundColor: "#a8ff78"
+	},
+	attributeCard: {
+		minWidth: 500,
+		margintop: "10px",
+		backgroundColor: "#99ff99",
 	},
 	userCard: {
 		paddingLeft: "10px",
@@ -105,8 +115,6 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: "auto",
 	},
 }));
-
-const Theme = createMuiTheme(ThemeFile);
 
 export const getServerSideProps = async ({ query }) => {
 	const content = {};
@@ -365,7 +373,7 @@ const Blog = (props) => {
 
 	const classes = useStyles();
 	return (
-		<div style={{ marginTop: "80px" }}>
+		<div style={{ marginTop: "90px" }}>
 			<Container component="main">
 				<CssBaseline />
 				<div style={frameStyles}>
@@ -373,7 +381,7 @@ const Blog = (props) => {
 						{!activeEdit ? (
 							<div>
 								{/* theme={cardTheme} */}
-								<ThemeProvider>
+								{/* <ThemeProvider> */}
 									<form>
 										<div className={classes.cardRoot}>
 											<div>
@@ -398,16 +406,11 @@ const Blog = (props) => {
 											</div>
 										</div>
 										<div>
-											<Card style={{ marginTop: "10px" }}>
+											<Card className={classes.attributeCard}>
 												<CardContent>
 													<Typography className={classes.title}>
 														ชื่อภาษาไทย: &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
+														<Typography className={classes.content}>
 															{thaiNameEdit}
 														</Typography>
 													</Typography>
@@ -448,7 +451,7 @@ const Blog = (props) => {
 											</Card>
 										</div>
 										<div>
-											<Card style={{ marginTop: "10px" }}>
+											<Card className={classes.attributeCard}>
 												<CardContent>
 													<Typography className={classes.title}>
 														ข้อมูลสมุนไพร:
@@ -457,7 +460,12 @@ const Blog = (props) => {
 															{infoEdit}
 														</Typography>
 													</Typography>
-													<br />
+												</CardContent>
+											</Card>
+										</div>
+										<div>
+											<Card className={classes.attributeCard}>
+												<CardContent>
 													<Typography className={classes.title}>
 														สรรพคุณของสมุนไพร:
 														<br />
@@ -469,7 +477,7 @@ const Blog = (props) => {
 											</Card>
 										</div>
 										<div>
-											<Card style={{ marginTop: "10px" }}>
+											<Card className={classes.imageCard}>
 												<CardContent>
 													<Typography className={classes.title}>
 														รูปสมุนไพร
@@ -484,7 +492,7 @@ const Blog = (props) => {
 													</Grid>
 												</CardContent>
 											</Card>
-											<Card style={{ marginTop: "10px" }}>
+											<Card className={classes.imageCard}>
 												<CardContent>
 													<Typography className={classes.title}>
 														รูปพันธะเคมี
@@ -501,7 +509,7 @@ const Blog = (props) => {
 													</Grid>
 												</CardContent>
 											</Card>
-											<Card style={{ marginTop: "10px", marginBottom: "10px" }}>
+											<Card className={classes.imageCard} style={{ marginBottom: "10px" }}>
 												<CardContent>
 													<Typography className={classes.title}>
 														ตาราง NMR
@@ -528,7 +536,7 @@ const Blog = (props) => {
 											</Typography>
 										</div>
 									</form>
-								</ThemeProvider>
+								{/* </ThemeProvider> */}
 								<div
 									style={{
 										display: "flex",
@@ -594,7 +602,9 @@ const Blog = (props) => {
 														"../herb/" + props.main_id + "/history/history_list"
 													}
 												>
-													<Typography itemProp="hello">ประวัติการแก้ไข</Typography>
+													<Typography itemProp="hello">
+														ประวัติการแก้ไข
+													</Typography>
 												</Link>
 											</Button>
 										</Grid>
@@ -609,7 +619,7 @@ const Blog = (props) => {
 											ชื่อภาษาไทย:
 										</Typography>
 										<TextField
-											fullWidth
+											fullwidth="true"
 											id="filled-multiline-static"
 											variant="filled"
 											fontFamily="sans-serif"
@@ -624,8 +634,7 @@ const Blog = (props) => {
 											ชื่อภาษาอังกฤษ:
 										</Typography>
 										<TextField
-											fullWidth
-											id="filled-multiline-static"
+											fullwidth="true"											id="filled-multiline-static"
 											variant="filled"
 											fontFamily="sans-serif"
 											value={engNameEdit}
@@ -639,8 +648,7 @@ const Blog = (props) => {
 											ชื่อทางวิทยาศาสตร์:
 										</Typography>
 										<TextField
-											fullWidth
-											id="filled-multiline-static"
+											fullwidth="true"											id="filled-multiline-static"
 											variant="filled"
 											fontFamily="sans-serif"
 											value={sciNameEdit}
@@ -652,7 +660,7 @@ const Blog = (props) => {
 									<div>
 										<Typography className={classes.title}>ชื่อวงศ์:</Typography>
 										<TextField
-											fullWidth
+											fullwidth="true"
 											id="filled-multiline-static"
 											variant="filled"
 											fontFamily="sans-serif"
@@ -667,7 +675,7 @@ const Blog = (props) => {
 											ข้อมูลสมุนไพร:
 										</Typography>
 										<TextField
-											fullWidth
+											fullwidth="true"
 											multiline
 											id="filled-multiline-static"
 											variant="filled"
@@ -684,7 +692,7 @@ const Blog = (props) => {
 											สรรพคุณของสมุนไพร:
 										</Typography>
 										<TextField
-											fullWidth
+											fullwidth={value.toString()}
 											multiline
 											id="filled-multiline-static"
 											variant="filled"
@@ -869,4 +877,4 @@ const Blog = (props) => {
 	);
 };
 export default Blog;
-/// ปุ่มดู history --> แก้ไขโดยใคร เมื่อไหร่ เป็นลิสต์ ---> กด 1 อันก็จะแสดงรายละเอียด
+

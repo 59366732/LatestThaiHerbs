@@ -16,7 +16,11 @@ const frameStyles = {
 	flexDirection: "column",
 	display: "flex",
 	justifyContent: "center",
-	border: "solid 1px palevioletred",
+	border: "solid 1px #b9e937",
+	border: "5px solid transparent",
+	padding: "5px",
+	// borderImageSource: url(border.png),
+	borderImageSlice: 35,
 	width: "750px",
 	maxWidth: "750px",
 	minWidth: "750px",
@@ -99,13 +103,14 @@ const ProfilePage = () => {
 						}}
 					>
 						<Box
-							borderRadius="50%"
+							// borderRadius="50%"
+							className="img-circle"
 							justifyContent="center"
 							{...borderProps}
 							style={{
 								display: "flex",
 								background: `url(${
-									user.photoURL 
+									user.photoURL
 									// ||
 									// "https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
 								})  `,
@@ -246,7 +251,7 @@ const ProfilePage = () => {
 							}}
 						>
 							<Button variant="contained" color="primary" onClick={toggleEdit}>
-									<Typography>Edit</Typography>
+								<Typography>Edit</Typography>
 							</Button>
 							<Button
 								variant="outlined"
@@ -259,7 +264,7 @@ const ProfilePage = () => {
 				</div>
 			) : (
 				//New
-				<div style={{marginTop: "90px"}}>
+				<div style={{ marginTop: "90px" }}>
 					<div
 						style={{
 							display: "flex-start",

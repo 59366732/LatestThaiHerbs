@@ -28,15 +28,6 @@ import {
 } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 
-const StyledButton = withStyles((theme) => ({
-	root: {
-		color: theme.palette.getContrastText(green[500]),
-		backgroundColor: green[500],
-		"&:hover": {
-			backgroundColor: green[700],
-		},
-	},
-}))(Button);
 const useStyles = makeStyles((theme) => ({
 	root: {
 		...theme.typography.button,
@@ -123,9 +114,9 @@ function Home() {
 					<div style={{marginBottom: "5px"}}>
 						<ThemeProvider theme={theme}>
 							<Button
-								style={{ width: "200px" }}
-								variant="contained"
-								color="primary"
+								width= "200px"
+								variant= "contained"				
+								color= "primary"
 								className={classes.addHerbButton}
 							>
 								<Link href="/addherb">
@@ -135,13 +126,11 @@ function Home() {
 						</ThemeProvider>
 					</div>
 				)}
-				<div>
+				<div style={{paddingTop: "5px"}}>
 					<Grid
 						container
 						spacing={2}
 						direction="row"
-						// justify="flex-start"
-						// alignItems="flex-start"
 					>
 						{herbs.map((herb) => (
 							<Grid item xs={12} sm={6} md={3} key={herbs.indexOf(herb)}>

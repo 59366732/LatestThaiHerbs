@@ -1,5 +1,5 @@
 .container {
-  /* margin-top: "20px"; */
+  margin-top: "20px";
   min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;
@@ -113,6 +113,10 @@
 
 .logo {
   height: 1em;
+}
+
+.img-circle{
+  border-radius: 20;
 }
 
 @media (max-width: 600px) {
