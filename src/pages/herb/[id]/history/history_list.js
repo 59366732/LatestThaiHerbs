@@ -12,7 +12,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -23,7 +22,6 @@ const frameStyles = {
 	fontFamily: "sans-serif",
 	flexDirection: "column",
 	display: "flex",
-	// justifyContent: "center",
 	border: "solid 1px #b9e937",
 	padding: "5px",
 	width: "750px",
@@ -41,10 +39,7 @@ const frameStyles = {
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		marginTop: "100px",
-		marginBottom: "20px",
-		marginRight: "auto",
-		marginLeft: "auto",
+		flexGrow: 1,
 	},
 	title: {
 		display: "block",
@@ -76,9 +71,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.background.paper,
 	},
 	bullet: {
-		display: 'inline-block',
-		margin: '0 2px',
-		transform: 'scale(0.8)',
+		display: "inline-block",
+		margin: "0",
+		transform: "scale(0.8)",
 	},
 	backButton: {
 		textAlign: "center",
@@ -115,11 +110,14 @@ const history = (props) => {
 			});
 	}, []);
 	const classes = useStyles();
-	const bullet = <span className={classes.bullet}>•</span>;
+	const bullet = (
+		<span className={classes.bullet}>
+			<Typography>•</Typography>
+		</span>
+	);
 	return (
 		<div className={classes.root}>
 			<div style={frameStyles}>
-				{/* <div style={{ textAlign: "center" }}> */}
 				<div>
 					<Grid
 						fullwidth
@@ -151,8 +149,19 @@ const history = (props) => {
 										}
 									>
 										<Typography className={classes.content}>
-											<Typography style={{color: "#007FFF", display: "inline"}}>{history.thaiName}</Typography>&nbsp;เมื่อ&nbsp;
-											<Typography style={{color: "#007FFF", display: "inline"}}>{new Date(history.timestamp.seconds * 1000).toDateString()}</Typography>
+											<Typography
+												style={{ color: "#007FFF", display: "inline" }}
+											>
+												{history.thaiName}
+											</Typography>
+											&nbsp;ถูกแก้ไขเมื่อ&nbsp;
+											<Typography
+												style={{ color: "#007FFF", display: "inline" }}
+											>
+												{new Date(
+													history.timestamp.seconds * 1000
+												).toDateString()}
+											</Typography>
 										</Typography>
 									</Link>
 								</li>
@@ -169,11 +178,12 @@ const history = (props) => {
 						marginTop="20px"
 					>
 						<Button
+							color="default"
 							variant="outlined"
 							className={classes.backButton}
 							onClick={() => router.back()}
 						>
-							<Typography>Back</Typography>
+							<Typography style={{ color: "black" }}>กลับ</Typography>
 						</Button>
 					</Grid>
 				</div>

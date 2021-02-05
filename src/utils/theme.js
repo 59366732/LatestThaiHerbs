@@ -4,13 +4,13 @@ export default {
 			light: "#33c9dc",
 			main: "#32CD32",
 			dark: "#00C000",
-			contrastText: "#fff",
+			// contrastText: "#fff",
 		},
 		secondary: {
-			light: "#ff6333",
-			main: "#c0d6e4",
-			dark: "#b22a00",
-			contrastText: "#fff",
+			light: "#0000",
+			main: "#ff0000",
+			dark: "#940000",
+			// contrastText: "#fff",
 		},
 	},
 	typography: {
@@ -54,24 +54,30 @@ export default {
 	overrides: {
 		MuiFilledInput: {
 			root: {
-				backgroundColor: "green",
+				backgroundColor: "none",
 			},
 		},
 		MuiInputLabel: {
 			root: {
-				backgroundColor: "yellow",
+				backgroundColor: "none",
 			},
 		},
-		MuiTextField: {
-			root: {},
-		},
+		// MuiTextField: {
+		// 	root: {
+		// 		backgroundColor: "none",
+		// 	},
+		// 	fullWidth: {
+		// 		width: "auto",
+		// 		maxWidth: "100%",
+		// 	},
+		// },
 		MuiButton: {
 			root: {
 				textTransform: "none",
-				padding: "3px 7px 3px 7px",
+				padding: "6px 10px 6px 10px",
 			},
 			fullWidth: {
-				maxWidth: "300px",
+				maxWidth: "auto",
 			},
 		},
 	},
@@ -85,6 +91,10 @@ export default {
 			disableRipple: true,
 		},
 		MuiTextField: {
+			fullWidth: {
+				width: "auto",
+				maxWidth: "100%",
+			},
 			variant: "filled",
 			InputLabelProps: {
 				shrink: true,
@@ -98,3 +108,9 @@ export default {
 		},
 	},
 };
+
+
+//ปรับขนาดตัวหนังสือ
+//ปรับช่่องห่างระหว่างบรรทัด
+//ปรับพื้นหลัง card ให้ฉูดฉาดน้อยลง
+//ปรับข้อมูล user ให้ชิดซ้าย

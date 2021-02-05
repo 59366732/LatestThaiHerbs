@@ -2,7 +2,7 @@ import { AppBar, Box, Container, CssBaseline, ThemeProvider, Toolbar, Typography
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import { theme } from '../../utils/theme/theme';
+import { theme } from '../../utils/typescript/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {

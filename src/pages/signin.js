@@ -97,7 +97,7 @@ const SignIn = () => {
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
-                    alignItems="center"
+                    alignitems="center"
                     label="Username or Email"
                     fullWidth
                     autoFocus
@@ -112,7 +112,7 @@ const SignIn = () => {
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
-                    alignItems="center"
+                    alignitems="center"
                     label="Password"
                     fullWidth
                     autoFocus
@@ -130,7 +130,7 @@ const SignIn = () => {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    align="center"
+                    alignitems="center"
                     onClick={(event) => {
                       signInWithEmailAndPasswordHandler(event, email, password);
                     }}

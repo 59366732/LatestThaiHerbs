@@ -12,7 +12,6 @@ import { NewReleasesOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 
-
 import {
 	Icon,
 	Paper,
@@ -53,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
 		flexWrap: "wrap",
-		// marginTop: "90px",
 	},
 	textField: {
 		marginLeft: theme.spacing(1),
@@ -97,15 +95,21 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(2),
 	},
+	DAC: {
+		marginTop: "30px",
+	},
+	DIC: {
+		marginTop: "30px",
+	},
 	imageCard: {
 		minWidth: 500,
-		margintop: "10px",
-		backgroundColor: "#a8ff78"
+		marginTop: "10px",
+		backgroundColor: "#ffffff",
 	},
 	attributeCard: {
 		minWidth: 500,
-		margintop: "10px",
-		backgroundColor: "#99ff99",
+		marginTop: "10px",
+		backgroundColor: "#f8f8ff",
 	},
 	userCard: {
 		paddingLeft: "10px",
@@ -289,7 +293,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((imgUrl) => {
 							setNewImgUrl(imgUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -297,7 +301,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพ!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -322,7 +326,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((NMRUrl) => {
 							setNewNMRUrl(NMRUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -330,7 +334,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพ!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -355,7 +359,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((chemBondUrl) => {
 							setnewChemBondUrl(chemBondUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -363,7 +367,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพก่อน!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -373,21 +377,20 @@ const Blog = (props) => {
 
 	const classes = useStyles();
 	return (
-		<div style={{ marginTop: "90px" }}>
+		<div>
 			<Container component="main">
 				<CssBaseline />
 				<div style={frameStyles}>
 					<div>
 						{!activeEdit ? (
 							<div>
-								{/* theme={cardTheme} */}
-								{/* <ThemeProvider> */}
-									<form>
-										<div className={classes.cardRoot}>
-											<div>
-												<Grid container spacing={3}>
-													<Grid items xs={6}>
-														<Card className={classes.userCard}>
+								<form>
+									<div className={classes.cardRoot}>
+										<div>
+											<Grid container spacing={3}>
+												<Grid item xs={6}>
+													<Card className={classes.userCard}>
+														<CardActionArea>
 															<Typography className={classes.title}>
 																โดย:
 																<Typography
@@ -400,143 +403,177 @@ const Blog = (props) => {
 																	{props.userDisplayName}
 																</Typography>
 															</Typography>
-														</Card>
-													</Grid>
+														</CardActionArea>
+													</Card>
 												</Grid>
-											</div>
+											</Grid>
 										</div>
-										<div>
-											<Card className={classes.attributeCard}>
-												<CardContent>
-													<Typography className={classes.title}>
-														ชื่อภาษาไทย: &nbsp;
-														<Typography className={classes.content}>
-															{thaiNameEdit}
-														</Typography>
+									</div>
+									<div className={classes.DAC}>
+										<Card className={classes.attributeCard}>
+											<CardContent>
+												<Typography className={classes.title}>
+													ชื่อภาษาไทย: &nbsp;
+													<Typography className={classes.content}>
+														{thaiNameEdit}
 													</Typography>
-													<Typography className={classes.title}>
-														ชื่อภาษาอังกฤษ: &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{engNameEdit}
-														</Typography>
+												</Typography>
+												<Typography className={classes.title}>
+													ชื่อภาษาอังกฤษ: &nbsp;
+													<Typography
+														style={{
+															fontWeight: "normal",
+															display: "inline",
+														}}
+													>
+														{engNameEdit}
 													</Typography>
-													<Typography className={classes.title}>
-														ชื่อทางวิทยาศาสตร์: &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{sciNameEdit}
-														</Typography>
+												</Typography>
+												<Typography className={classes.title}>
+													ชื่อทางวิทยาศาสตร์: &nbsp;
+													<Typography
+														style={{
+															fontWeight: "normal",
+															display: "inline",
+														}}
+													>
+														{sciNameEdit}
 													</Typography>
-													<Typography className={classes.title}>
-														ชื่อวงศ์ : &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{familyNameEdit}
-														</Typography>
+												</Typography>
+												<Typography className={classes.title}>
+													ชื่อวงศ์ : &nbsp;
+													<Typography
+														style={{
+															fontWeight: "normal",
+															display: "inline",
+														}}
+													>
+														{familyNameEdit}
 													</Typography>
-												</CardContent>
-											</Card>
+												</Typography>
+											</CardContent>
+										</Card>
+									</div>
+									<div className={classes.DAC}>
+										<Card
+											className={classes.attributeCard}
+											style={{ marginTop: "10px" }}
+										>
+											<CardContent>
+												<Typography className={classes.title}>
+													ข้อมูลสมุนไพร:
+													<br />
+													<Typography
+														style={{ fontWeight: "normal", textIndent: "20px" }}
+													>
+														{infoEdit}
+													</Typography>
+												</Typography>
+											</CardContent>
+										</Card>
+									</div>
+									<div className={classes.DAC}>
+										<Card
+											className={classes.attributeCard}
+											style={{ marginTop: "10px" }}
+										>
+											<CardContent>
+												<Typography className={classes.title}>
+													สรรพคุณของสมุนไพร:
+													<br />
+													<Typography
+														style={{ fontWeight: "normal", textIndent: "20px" }}
+													>
+														{attributeEdit}
+													</Typography>
+												</Typography>
+											</CardContent>
+										</Card>
+									</div>
+									<div className={classes.DIC}>
+										<Card
+											className={classes.imageCard}
+											style={{ marginTop: "10px" }}
+										>
+											<CardContent>
+												<Typography className={classes.title}>
+													รูปสมุนไพร
+												</Typography>
+												<Grid item xs={12} sm={6} md={3}>
+													<img
+														width="auto"
+														height="auto"
+														src={ImgUrl || "http://via.placeholder.com/200"}
+														alt="firebase-image"
+													/>
+												</Grid>
+											</CardContent>
+										</Card>
+									</div>
+									<div className={classes.DIC}>
+										<Card
+											className={classes.imageCard}
+											style={{ marginTop: "10px" }}
+										>
+											<CardContent>
+												<Typography className={classes.title}>
+													รูปพันธะเคมี
+												</Typography>
+												<Grid item xs={12} sm={6} md={3}>
+													<img
+														width="auto"
+														height="auto"
+														src={
+															chemBondUrl || "http://via.placeholder.com/200"
+														}
+														alt="firebase-image"
+													/>
+												</Grid>
+											</CardContent>
+										</Card>
+									</div>
+									<div className={classes.DIC}>
+										<Card
+											className={classes.imageCard}
+											style={{ marginTop: "10px", marginBottom: "10px" }}
+										>
+											<CardContent>
+												<Typography className={classes.title}>
+													ตาราง NMR
+												</Typography>
+												<Grid item xs={12} sm={6} md={3}>
+													<img
+														width="auto"
+														height="auto"
+														src={NMRUrl || "http://via.placeholder.com/200"}
+														alt="firebase-image"
+													/>
+												</Grid>
+											</CardContent>
+										</Card>
+									</div>
+									<div>
+										<div className={classes.cardRoot}>
+											<Grid container spacing={3}>
+												<Grid item xs={6}>
+													<Typography
+														style={{ fontWeight: "bold", float: "left" }}
+													>
+														เมื่อ:&nbsp;
+													</Typography>
+													<Typography
+														style={{
+															color: "#007FFF",
+															fontWeight: "normal",
+														}}
+													>
+														{date}
+													</Typography>
+												</Grid>
+											</Grid>
 										</div>
-										<div>
-											<Card className={classes.attributeCard}>
-												<CardContent>
-													<Typography className={classes.title}>
-														ข้อมูลสมุนไพร:
-														<br />
-														<Typography style={{ fontWeight: "normal" }}>
-															{infoEdit}
-														</Typography>
-													</Typography>
-												</CardContent>
-											</Card>
-										</div>
-										<div>
-											<Card className={classes.attributeCard}>
-												<CardContent>
-													<Typography className={classes.title}>
-														สรรพคุณของสมุนไพร:
-														<br />
-														<Typography style={{ fontWeight: "normal" }}>
-															{attributeEdit}
-														</Typography>
-													</Typography>
-												</CardContent>
-											</Card>
-										</div>
-										<div>
-											<Card className={classes.imageCard}>
-												<CardContent>
-													<Typography className={classes.title}>
-														รูปสมุนไพร
-													</Typography>
-													<Grid item xs={12} sm={6} md={3}>
-														<img
-															width="auto"
-															height="auto"
-															src={ImgUrl || "http://via.placeholder.com/200"}
-															alt="firebase-image"
-														/>
-													</Grid>
-												</CardContent>
-											</Card>
-											<Card className={classes.imageCard}>
-												<CardContent>
-													<Typography className={classes.title}>
-														รูปพันธะเคมี
-													</Typography>
-													<Grid item xs={12} sm={6} md={3}>
-														<img
-															width="auto"
-															height="auto"
-															src={
-																chemBondUrl || "http://via.placeholder.com/200"
-															}
-															alt="firebase-image"
-														/>
-													</Grid>
-												</CardContent>
-											</Card>
-											<Card className={classes.imageCard} style={{ marginBottom: "10px" }}>
-												<CardContent>
-													<Typography className={classes.title}>
-														ตาราง NMR
-													</Typography>
-													<Grid item xs={12} sm={6} md={3}>
-														<img
-															width="auto"
-															height="auto"
-															src={NMRUrl || "http://via.placeholder.com/200"}
-															alt="firebase-image"
-														/>
-													</Grid>
-												</CardContent>
-											</Card>
-										</div>
-										<div style={{ overflow: "hidden", paddingLeft: "10px" }}>
-											<Typography style={{ fontWeight: "bold", float: "left" }}>
-												เมื่อ:&nbsp;
-											</Typography>
-											<Typography
-												style={{ color: "#007FFF", fontWeight: "normal" }}
-											>
-												{date}
-											</Typography>
-										</div>
-									</form>
-								{/* </ThemeProvider> */}
+									</div>
+								</form>
 								<div
 									style={{
 										display: "flex",
@@ -577,10 +614,10 @@ const Blog = (props) => {
 											<Button
 												className={classes.backButton}
 												onClick={() => router.back()}
-												type="secondary"
+												color="default"
 												variant="outlined"
 											>
-												<Typography>กลับ</Typography>
+												<Typography style={{ color: "black" }}>กลับ</Typography>
 											</Button>
 										</Grid>
 										<Grid
@@ -615,13 +652,14 @@ const Blog = (props) => {
 							<div>
 								<form>
 									<div>
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											ชื่อภาษาไทย:
 										</Typography>
 										<TextField
-											fullwidth="true"
-											id="filled-multiline-static"
-											variant="filled"
+											fullwidth
+											id="outlined-multiline-flexible"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											value={thaiNameEdit}
 											onChange={(e) => setThaiNameEdit(e.target.value)}
@@ -630,12 +668,15 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											ชื่อภาษาอังกฤษ:
 										</Typography>
 										<TextField
-											fullwidth="true"											id="filled-multiline-static"
-											variant="filled"
+											fullwidth
+											id="outlined-multiline-flexible"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											value={engNameEdit}
 											onChange={(e) => setEngNameEdit(e.target.value)}
@@ -644,12 +685,15 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											ชื่อทางวิทยาศาสตร์:
 										</Typography>
 										<TextField
-											fullwidth="true"											id="filled-multiline-static"
-											variant="filled"
+											fullwidth
+											id="outlined-multiline-flexible"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											value={sciNameEdit}
 											onChange={(e) => setSciNameEdit(e.target.value)}
@@ -658,11 +702,14 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>ชื่อวงศ์:</Typography>
+										<Typography variant="h5" className={classes.title}>
+											ชื่อวงศ์:
+										</Typography>
 										<TextField
-											fullwidth="true"
-											id="filled-multiline-static"
-											variant="filled"
+											fullwidth
+											id="outlined-multiline-flexible"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											value={familyNameEdit}
 											onChange={(e) => setFamilyNameEdit(e.target.value)}
@@ -671,14 +718,15 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											ข้อมูลสมุนไพร:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullwidth
 											multiline
 											id="filled-multiline-static"
-											variant="filled"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											rowsMin={10}
 											value={infoEdit}
@@ -688,14 +736,15 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											สรรพคุณของสมุนไพร:
 										</Typography>
 										<TextField
-											fullwidth={value.toString()}
+											fullwidth
 											multiline
 											id="filled-multiline-static"
-											variant="filled"
+											variant="outlined"
+											color="primary"
 											fontFamily="sans-serif"
 											rowsMin={10}
 											value={attributeEdit}
@@ -707,7 +756,7 @@ const Blog = (props) => {
 									<br />
 									<div>
 										{uploadNoti !== null && <div>{uploadNoti}</div>}
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											รูปสมุนไพร
 										</Typography>
 										<div>
@@ -732,12 +781,12 @@ const Blog = (props) => {
 													startIcon={<CloudUploadIcon />}
 													onClick={uploadImg}
 												>
-													Upload
+													<Typography>อัพโหลด</Typography>
 												</Button>
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.title}>
+										<Typography variant="h5" className={classes.title}>
 											รูปพันธะเคมี
 										</Typography>
 										<div>
@@ -761,12 +810,14 @@ const Blog = (props) => {
 													startIcon={<CloudUploadIcon />}
 													onClick={uploadChemBond}
 												>
-													Upload
+													<Typography>อัพโหลด</Typography>
 												</Button>
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.title}>ตาราง NMR</Typography>
+										<Typography variant="h5" className={classes.title}>
+											ตาราง NMR
+										</Typography>
 										<div>
 											<input
 												type="file"
@@ -788,7 +839,7 @@ const Blog = (props) => {
 													startIcon={<CloudUploadIcon />}
 													onClick={uploadNMR}
 												>
-													Upload
+													<Typography>อัพโหลด</Typography>
 												</Button>
 											</div>
 										</div>
@@ -830,7 +881,7 @@ const Blog = (props) => {
 												variant="contained"
 												color="primary"
 											>
-												บันทึก
+												<Typography>บันทึกการเปลี่ยนแปลง</Typography>
 											</Button>
 										</Grid>
 										<Grid
@@ -838,15 +889,19 @@ const Blog = (props) => {
 											xs={3}
 											container
 											spacing={1}
-											style={{ display: "flex", justifyContent: "center" }}
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												position: "relative",
+											}}
 										>
 											<Button
 												onClick={handleDelete}
 												type="submit"
 												variant="contained"
-												color="#EB4034"
+												color="secondary"
 											>
-												ลบ
+												<Typography>ลบ</Typography>
 											</Button>
 										</Grid>
 										<Grid
@@ -860,10 +915,10 @@ const Blog = (props) => {
 												onClick={handleCancel}
 												type="submit"
 												position="relative"
-												type="secondary"
+												color="default"
 												variant="outlined"
 											>
-												ยกเลิก
+												<Typography>ยกเลิก</Typography>
 											</Button>
 										</Grid>
 									</Grid>
@@ -877,4 +932,3 @@ const Blog = (props) => {
 	);
 };
 export default Blog;
-

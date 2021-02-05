@@ -1,25 +1,44 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../providers/UserProvider";
 import db, { auth, generateUserDocument } from "../database/firebase.js";
-// import Link from "next/link";
-// import { useRouter } from "next/router";
-// import { navigate } from "@reach/router";
 
+import Profile from "../components/custom/profile_demo";
+
+import { green } from "@material-ui/core/colors";
+import { loadCSS } from "fg-loadcss";
 import { Refresh } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
+import {
+	Avatar,
+	Badge,
+	Divider,
+	Box,
+	Icon,
+	Paper,
+	Button,
+	Grid,
+	Card,
+	CardActions,
+	CardActionArea,
+	CardMedia,
+	CardContent,
+	Typography,
+	CardHeader,
+	TextField,
+	Container,
+	CssBaseline,
+	ThemeProvider,
+} from "@material-ui/core/";
+
 const frameStyles = {
+	alignItems: "center",
 	fontFamily: "sans-serif",
 	flexDirection: "column",
 	display: "flex",
 	justifyContent: "center",
 	border: "solid 1px #b9e937",
-	border: "5px solid transparent",
 	padding: "5px",
-	// borderImageSource: url(border.png),
 	borderImageSlice: 35,
 	width: "750px",
 	maxWidth: "750px",
@@ -28,17 +47,53 @@ const frameStyles = {
 	paddingRight: "20px",
 	paddingBottom: "20px",
 	paddingLeft: "20px",
-	marginTop: "10px",
-	marginBottom: "10px",
-	marginRight: "auto",
-	marginLeft: "auto",
+	margintop: "10px",
+	marginbottom: "10px",
+	marginright: "auto",
+	marginleft: "auto",
 };
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		"& > *": {
-			margin: theme.spacing(1),
+		flexGrow: 1,
+	},
+	boxes: {
+		left: "50%",
+		marginRight: "-50%",
+		transform: "translate(-50%, -50%)",
+	},
+	paper: {
+		padding: theme.spacing(1),
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+	},
+	title: {
+		paddingRight: "5px",
+		fontWeight: "bold",
+		lineHeight: "12px",
+		variant: "h3",
+	},
+	content: {
+		paddingLeft: "5px",
+		display: "inline",
+		fontWeight: "normal",
+		lineHeight: "12px",
+	},
+	gridRoot: {
+		width: "fit-content",
+		border: `1px solid ${theme.palette.divider}`,
+		borderRadius: theme.shape.borderRadius,
+		backgroundColor: theme.palette.background.paper,
+		color: theme.palette.text.black,
+		"& svg": {
+			margin: theme.spacing(1.5),
 		},
+		"& hr": {
+			margin: theme.spacing(0, 0.5),
+		},
+	},
+	card: {
+		backgroundColor: "#fafad2",
 	},
 }));
 
@@ -72,9 +127,6 @@ const ProfilePage = () => {
 		setActiveEdit(false);
 	};
 
-	//Old
-	// const user = useContext(UserContext);
-	// const router = useRouter();
 	const borderProps = {
 		backgroundcolor: "background.paper",
 		borderColor: "text.primary",
@@ -83,239 +135,415 @@ const ProfilePage = () => {
 		style: { width: "5rem", height: "5rem" },
 	};
 	const classes = useStyles();
+	React.useEffect(() => {
+		const node = loadCSS(
+			"https://use.fontawesome.com/releases/v5.12.0/css/all.css",
+			document.querySelector("#font-awesome-css")
+		);
+
+		return () => {
+			node.parentNode.removeChild(node);
+		};
+	}, []);
 	return (
-		<div
-			style={{
-				display: "flex-start",
-				justifyContent: "center",
-				flexDirection: "row",
-				marginTop: "90px",
-			}}
-		>
-			{/* user ? */}
-			{!activateEdit ? (
-				<div style={frameStyles}>
-					<Box
-						style={{
-							display: "flex",
-							justifyContent: "center",
-							flexDirection: "row",
-						}}
-					>
-						<Box
-							// borderRadius="50%"
-							className="img-circle"
-							justifyContent="center"
-							{...borderProps}
-							style={{
-								display: "flex",
-								background: `url(${
-									user.photoURL
-									// ||
-									// "https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-								})  `,
-								backgroundSize: "cover",
-								height: "200px",
-								maxHeight: "200px",
-								minHeight: "200px",
-								width: "200px",
-							}}
-						></Box>
-					</Box>
-					<form
-						style={{
-							paddingTop: "10px",
-							paddingRight: "200px",
-							paddingBottom: "10px",
-							paddingLeft: "200px",
-						}}
-					>
-						<div>
-							<div
-								style={{
-									display: "flex-start",
-									flexDirection: "row",
-									justifyContent: "space-around",
-								}}
-							>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{
-											fontWeight: "bold",
-											float: "left",
-											display: "inline",
-										}}
-										htmlFor="displayName"
-									>
-										Display Name:
-									</Typography>
-								</div>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{ fontWeight: "normal", paddingLeft: "20px" }}
-									>
-										{user.displayName}
-									</Typography>
+		<div style={{ marginTop: "90px" }}>
+			<Container
+				component="main"
+				style={{
+					alignItems: "center",
+					textAlign: "center",
+					lineHeight: "12px",
+				}}
+			>
+				<CssBaseline />
+				<Box display="flex" flexDirection="row" justifyContent="center">
+					<Card className={classes.card}>
+						<CardActionArea>
+							<div style={frameStyles}>
+								<div>
+									{!activateEdit ? (
+										<div>
+											<Grid container spacing={3}>
+												<Grid item xs={12}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="center"
+														style={{ alignItems: "center" }}
+													>
+														<Box
+															borderRadius="50%"
+															{...borderProps}
+															style={{
+																display: "flex",
+																// flexDirection="column"
+																justifyContent: "center",
+																background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+														)`,
+																// background: `url(${
+																// 	user.photoURL ||
+																// 	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																// })  `,
+																backgroundSize: "cover",
+																height: "200px",
+																width: "200px",
+															}}
+														></Box>
+													</Box>
+												</Grid>
+												<Grid
+													item
+													xs={12}
+													container
+													alignItems="center"
+													className={classes.gridRoot}
+												>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-end"
+														>
+															<Typography
+																variant="h5"
+																className={classes.title}
+																htmlFor="displayName"
+															>
+																ชื่อ:
+															</Typography>
+														</Box>
+													</Grid>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-start"
+														>
+															<Typography className={classes.content}>
+																{user.displayName}
+															</Typography>
+														</Box>
+													</Grid>
+												</Grid>
+												<Grid
+													item
+													xs={12}
+													container
+													alignItems="center"
+													className={classes.gridRoot}
+												>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-end"
+														>
+															<Typography
+																variant="h5"
+																className={classes.title}
+																htmlFor="userEmail"
+															>
+																อีเมล:
+															</Typography>
+														</Box>
+													</Grid>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-start"
+														>
+															<Typography className={classes.content}>
+																{user.email}
+															</Typography>
+														</Box>
+													</Grid>
+												</Grid>
+												<Grid
+													item
+													xs={12}
+													container
+													alignItems="center"
+													className={classes.gridRoot}
+												>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-end"
+														>
+															<Typography
+																variant="h5"
+																className={classes.title}
+																htmlFor="score"
+															>
+																คะแนน:
+															</Typography>
+														</Box>
+													</Grid>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-start"
+														>
+															<Typography className={classes.content}>
+																{user.score}
+															</Typography>
+														</Box>
+													</Grid>
+												</Grid>
+												<Grid
+													item
+													xs={12}
+													container
+													alignItems="center"
+													className={classes.gridRoot}
+												>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-end"
+														>
+															<Typography
+																variant="h5"
+																className={classes.title}
+																htmlFor="level"
+															>
+																ระดับ:
+															</Typography>
+														</Box>
+													</Grid>
+													<Grid item xs={12} sm={6}>
+														<Box
+															display="flex"
+															flexDirection="row"
+															justifyContent="flex-start"
+														>
+															<Typography className={classes.content}>
+																{user.level}
+															</Typography>
+														</Box>
+													</Grid>
+												</Grid>
+												<Grid item xs={12}>
+													<Button
+														color="primary"
+														variant="contained"
+														style={{ marginTop: "10px" }}
+														onClick={toggleEdit}
+													>
+														<Typography>แก้ไข</Typography>
+													</Button>
+												</Grid>
+											</Grid>
+										</div>
+									) : (
+										<div>
+											<Grid container spacing={3}>
+												<Grid item xs={12}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="center"
+													>
+														<Box
+															borderRadius="50%"
+															{...borderProps}
+															style={{
+																display: "flex",
+																justifyContent: "center",
+																background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+														)`,
+																// background: `url(${
+																// 	user.photoURL ||
+																// 	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																// })  `,
+																backgroundSize: "cover",
+																height: "200px",
+																width: "200px",
+															}}
+														></Box>
+														{/* <input
+													type="file"
+												></input> */}
+													</Box>
+												</Grid>
+												<Grid alignItems="center" item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														alignItems="center"
+														justifyContent="flex-end"
+													>
+														<Typography
+															variant="h5"
+															className={classes.title}
+															htmlFor="displayName"
+														>
+															ชื่อ:
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-start"
+													>
+														<TextField
+															label="Editable"
+															variant="outlined"
+															defaultValue={displayName}
+															onChange={(e) => setDisplayName(e.target.value)}
+															placeholder={displayName}
+														/>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-end"
+													>
+														<Typography
+															variant="h5"
+															className={classes.title}
+															htmlFor="userEmail"
+														>
+															อีเมล:
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-start"
+													>
+														<TextField
+															id="outlined-read-only-input"
+															label="Read Only"
+															defaultValue="Hello World"
+															InputProps={{
+																readOnly: true,
+															}}
+															variant="outlined"
+															value={user.email}
+														/>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-end"
+													>
+														<Typography
+															variant="h5"
+															className={classes.title}
+															htmlFor="userEmail"
+														>
+															คะแนน:
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-start"
+													>
+														<TextField
+															id="outlined-read-only-input"
+															label="Read Only"
+															defaultValue="Hello World"
+															InputProps={{
+																readOnly: true,
+															}}
+															variant="outlined"
+															value={user.score}
+														/>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-end"
+													>
+														<Typography
+															variant="h5"
+															className={classes.title}
+															htmlFor="userEmail"
+														>
+															ระดับ:
+														</Typography>
+													</Box>
+												</Grid>
+												<Grid container alignItems="center" item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-start"
+													>
+														<TextField
+															className={classes.content}
+															id="outlined-read-only-input"
+															label="Read Only"
+															defaultValue="Hello World"
+															InputProps={{
+																readOnly: true,
+															}}
+															variant="outlined"
+															value={user.level}
+														/>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-end"
+													>
+														<Button
+															onClick={handleUpdate}
+															type="submit"
+															color="primary"
+															variant="contained"
+														>
+															<Typography>บันทึกการเปลี่ยนแปลง</Typography>
+														</Button>
+													</Box>
+												</Grid>
+												<Grid item xs={12} sm={6}>
+													<Box
+														display="flex"
+														flexDirection="row"
+														justifyContent="flex-start"
+													>
+														<Button
+															onClick={handleCancel}
+															type="submit"
+															variant="outlined"
+															color="default"
+														>
+															<Typography style={{ color: "black" }}>
+																ยกเลิก
+															</Typography>
+														</Button>
+													</Box>
+												</Grid>
+											</Grid>
+										</div>
+									)}
 								</div>
 							</div>
-							<div
-								style={{
-									display: "flex-start",
-									flexDirection: "row",
-									justifyContent: "space-around",
-								}}
-							>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{
-											fontWeight: "bold",
-											float: "left",
-											display: "inline",
-										}}
-										htmlFor="userEmail"
-									>
-										Email:
-									</Typography>
-								</div>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{ fontWeight: "normal", paddingRight: "20px" }}
-									>
-										{user.email}
-									</Typography>
-								</div>
-							</div>
-							<div
-								style={{
-									display: "flex-start",
-									flexDirection: "row",
-									justifyContent: "space-around",
-								}}
-							>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{
-											fontWeight: "bold",
-											float: "left",
-											display: "inline",
-										}}
-										htmlFor="userEmail"
-									>
-										Score:
-									</Typography>
-								</div>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{ fontWeight: "normal", paddingRight: "20px" }}
-									>
-										{user.score}
-									</Typography>
-								</div>
-							</div>
-							<div
-								style={{
-									display: "flex-start",
-									flexDirection: "row",
-									justifyContent: "space-around",
-								}}
-							>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{
-											fontWeight: "bold",
-											float: "left",
-											display: "inline",
-										}}
-										htmlFor="userEmail"
-									>
-										Level:
-									</Typography>
-								</div>
-								<div style={{ display: "flex-start" }}>
-									<Typography
-										style={{ fontWeight: "normal", paddingRight: "20px" }}
-									>
-										{user.level}
-									</Typography>
-								</div>
-							</div>
-						</div>
-						<Box
-							style={{
-								display: "flex",
-								flexDirection: "row",
-								flexWrap: "warp",
-								justifyContent: "space-around",
-								paddingTop: "10px",
-								paddingBottom: "10px",
-							}}
-						>
-							<Button variant="contained" color="primary" onClick={toggleEdit}>
-								<Typography>Edit</Typography>
-							</Button>
-							<Button
-								variant="outlined"
-								onClick={() => window.location.reload(false)}
-							>
-								Reload!
-							</Button>
-						</Box>
-					</form>
-				</div>
-			) : (
-				//New
-				<div style={{ marginTop: "90px" }}>
-					<div
-						style={{
-							display: "flex-start",
-							marginLeft: "40%",
-							background: `url(${
-								user.photoURL ||
-								"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-							})  `,
-							backgroundSize: "cover",
-							height: "200px",
-							width: "200px",
-						}}
-					></div>
-					<form>
-						<br />
-						<br />
-						<label htmlFor="displayName">Display Name:</label>&nbsp;
-						<input
-							value={displayName}
-							onChange={(e) => setDisplayName(e.target.value)}
-							placeholder="diaplayname ?"
-						/>
-						<br />
-						<br />
-						<label htmlFor="userEmail">Email:</label>&nbsp;
-						<a>{user.email}</a>
-						<br />
-						<br />
-						<label htmlFor="score">Score:</label>&nbsp;
-						<a>{user.score}</a>
-						<br />
-						<br />
-						<label htmlFor="level">Level:</label>&nbsp;
-						<a>{user.level}</a>
-						<br />
-						<br />
-						<button onClick={handleUpdate} type="submit">
-							<a>Save change</a>
-						</button>
-						<div>
-							<button onClick={handleCancel} type="submit">
-								Cancel
-							</button>
-						</div>
-					</form>
-				</div>
-				//Old
-				// useEffect(() => {
-				// 	router.push("/", undefined, { shallow: true });
-				// }, [])
-			)}
+						</CardActionArea>
+					</Card>
+				</Box>
+			</Container>
 		</div>
 	);
 };

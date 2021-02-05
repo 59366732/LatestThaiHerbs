@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { UserContext } from "../../../../../providers/UserProvider";
 import firebase from "firebase";
 import ReactLoading from "react-loading";
-
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/core/styles";
 import {
 	Icon,
@@ -89,12 +89,12 @@ const useStyles = makeStyles((theme) => ({
 	imageCard: {
 		minWidth: 500,
 		marginTop: "10px",
-		backgroundColor: "#d8f0c0"
+		backgroundColor: "#f7e98e",
 	},
 	attributeCard: {
 		minWidth: 500,
 		marginTop: "10px",
-		backgroundColor: "#ccff99",
+		backgroundColor: "#ffdb58",
 	},
 	userCard: {
 		width: "fit-content",
@@ -102,6 +102,12 @@ const useStyles = makeStyles((theme) => ({
 		paddingRight: "10px",
 		minWidth: "auto",
 		maxWidth: "auto",
+	},
+	DAC: {
+		marginTop: "30px",
+	},
+	DIC: {
+		marginTop: "30px",
 	},
 }));
 
@@ -271,7 +277,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((imgUrl) => {
 							setNewImgUrl(imgUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -279,7 +285,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพ!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -304,7 +310,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((NMRUrl) => {
 							setNewNMRUrl(NMRUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -312,7 +318,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพ!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -337,7 +343,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((chemBondUrl) => {
 							setnewChemBondUrl(chemBondUrl);
-							setUploadNoti("Upload Complete!!");
+							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -345,7 +351,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("Please select image!!");
+			setUploadNoti("กรุณาเลือกรูปภาพก่อน!!");
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -354,7 +360,7 @@ const detail = (props) => {
 	};
 	const classes = useStyles();
 	return (
-		<div style={{ marginTop: "90px" }}>
+		<div>
 			<Container component="main">
 				<CssBaseline />
 				<div style={frameStyles}>
@@ -411,43 +417,57 @@ const detail = (props) => {
 											</Grid>
 										</Grid>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
 												<Typography className={classes.title}>
-													ชื่อภาษาไทย:<Typography className={classes.content}>{props.thaiName}</Typography>
+													ชื่อภาษาไทย:
+													<Typography className={classes.content}>
+														{props.thaiName}
+													</Typography>
 												</Typography>
 												<Typography className={classes.title}>
-													ชื่อภาษาอังกฤษ:<Typography className={classes.content}>{props.engName}</Typography>
+													ชื่อภาษาอังกฤษ:
+													<Typography className={classes.content}>
+														{props.engName}
+													</Typography>
 												</Typography>
 												<Typography className={classes.title}>
-													ชื่อทางวิทยาศาสตร์:<Typography className={classes.content}>{props.sciName}</Typography>
+													ชื่อทางวิทยาศาสตร์:
+													<Typography className={classes.content}>
+														{props.sciName}
+													</Typography>
 												</Typography>
 												<Typography className={classes.title}>
-													ชื่อวงศ์:<Typography className={classes.content}>{props.familyName}</Typography>
+													ชื่อวงศ์:
+													<Typography className={classes.content}>
+														{props.familyName}
+													</Typography>
 												</Typography>
 											</CardContent>
 										</Card>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
-												<Typography className={classes.title}>ข้อมูลสมุนไพร:
+												<Typography className={classes.title}>
+													ข้อมูลสมุนไพร:
 													<Typography>{props.info}</Typography>
 												</Typography>
 											</CardContent>
 										</Card>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
-												<Typography className={classes.title}>สรรพคุณของสมุนไพร:
+												<Typography className={classes.title}>
+													สรรพคุณของสมุนไพร:
 													<Typography>{props.attribute}</Typography>
 												</Typography>
 											</CardContent>
 										</Card>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.imageCard}>
 											<CardContent>
 												<Typography className={classes.title}>
@@ -455,14 +475,16 @@ const detail = (props) => {
 												</Typography>
 												<Grid item xs={12} sm={6} md={3}>
 													<img
-														src={props.imgUrl || "http://via.placeholder.com/200"}
+														src={
+															props.imgUrl || "http://via.placeholder.com/200"
+														}
 														alt="firebase-image"
 													/>
 												</Grid>
 											</CardContent>
 										</Card>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.imageCard}>
 											<CardContent>
 												<Typography className={classes.title}>
@@ -470,14 +492,17 @@ const detail = (props) => {
 												</Typography>
 												<Grid item xs={12} sm={6} md={3}>
 													<img
-														src={props.chemBondUrl || "http://via.placeholder.com/200"}
+														src={
+															props.chemBondUrl ||
+															"http://via.placeholder.com/200"
+														}
 														alt="firebase-image"
 													/>
 												</Grid>
 											</CardContent>
 										</Card>
 									</div>
-									<div>
+									<div className={classes.DAC}>
 										<Card className={classes.imageCard}>
 											<CardContent>
 												<Typography className={classes.title}>
@@ -485,7 +510,9 @@ const detail = (props) => {
 												</Typography>
 												<Grid item xs={12} sm={6} md={3}>
 													<img
-														src={props.NMRUrl || "http://via.placeholder.com/200"}
+														src={
+															props.NMRUrl || "http://via.placeholder.com/200"
+														}
 														alt="firebase-image"
 													/>
 												</Grid>
@@ -534,10 +561,10 @@ const detail = (props) => {
 											<Button
 												className={classes.backButton}
 												onClick={() => router.back()}
-												type="secondary"
+												color="default"
 												variant="outlined"
 											>
-												<Typography>กลับ</Typography>
+												<Typography style={{ color: "black" }}>กลับ</Typography>
 											</Button>
 										</Grid>
 									</Grid>
@@ -547,97 +574,280 @@ const detail = (props) => {
 							<div>
 								<form>
 									<div>
-										<h1>ประวัติการแก้ไข&nbsp;เมื่อ&nbsp;{date}</h1>
-										ชื่อภาษาไทย:&nbsp;
-										<input
+										<Typography
+											variant="h4"
+											style={{
+												fontWeight: "bold",
+												paddingLeft: "10px",
+												paddingRight: "10px",
+												paddingTop: "10px",
+											}}
+										>
+											ประวัติการแก้ไข:
+											<Typography
+												variant="h5"
+												style={{
+													fontWeight: "normal",
+													color: "#007FFF",
+													display: "inline",
+												}}
+											>
+												{date}
+											</Typography>
+										</Typography>
+									</div>
+									<div>
+										<Typography className={classes.title}>
+											ชื่อภาษาไทย:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
 											value={thaiNameEdit}
 											onChange={(e) => setThaiNameEdit(e.target.value)}
 											placeholder="ชื่อสมุนไพรภาษาไทย ?"
 										/>
-										<br />
 									</div>
 									<div>
-										ชื่อภาษาอังกฤษ:&nbsp;
-										<input
+										<Typography className={classes.title}>
+											ชื่อภาษาอังกฤษ:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
 											value={engNameEdit}
 											onChange={(e) => setEngNameEdit(e.target.value)}
 											placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
 										/>
-										<br />
 									</div>
 									<div>
-										ชื่อทางวิทยาศาสตร์:&nbsp;
-										<input
+										<Typography className={classes.title}>
+											ชื่อทางวิทยาศาสตร์:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
 											value={sciNameEdit}
 											onChange={(e) => setSciNameEdit(e.target.value)}
 											placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
 										/>
-										<br />
 									</div>
 									<div>
-										ชื่อวงศ์:&nbsp;
-										<input
+										<Typography className={classes.title}>
+											ชื่อวงศ์:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
 											value={familyNameEdit}
 											onChange={(e) => setFamilyNameEdit(e.target.value)}
 											placeholder="ชื่อวงศ์ของสมุนไพร ?"
 										/>
-										<br />
 									</div>
 									<div>
-										ข้อมูลสมุนไพร:&nbsp;
-										<textarea
+										<Typography className={classes.title}>
+											ข้อมูลสมุนไพร:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
+											multiline
+											rowsMin={10}
 											value={infoEdit}
 											onChange={(e) => setInfoEdit(e.target.value)}
 											placeholder="ข้อมูลสมุนไพร ?"
 										/>
-										<br />
 									</div>
 									<div>
-										สรรพคุณของสมุนไพร:&nbsp;
-										<textarea
+										<Typography className={classes.title}>
+											สรรพคุณของสมุนไพร:
+										</Typography>
+										<TextField
+											fullwidth="true"
+											id="filled-multiline-static"
+											variant="outlined"
+											color="primary"
+											fontFamily="sans-serif"
+											multiline
+											rowsMin={10}
 											value={attributeEdit}
 											onChange={(e) => setAttributeEdit(e.target.value)}
 											placeholder="สรรพคุณของสมุนไพร ?"
 										/>
+									</div>
+									<br />
+									<br />
+									<div>
+										{uploadNoti !== null && <div>{uploadNoti}</div>}
+										<Typography className={classes.title}>
+											รูปสมุนไพร
+										</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setImage(e.target.files[0])}
+											/>
+											<br />
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													position="relative"
+													type="secondary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadImg}
+												>
+													<Typography>อัพโหลด</Typography>
+												</Button>
+											</div>
+										</div>
 										<br />
-									</div>
-									{uploadNoti !== null && <div>{uploadNoti}</div>}
-									<br />
-									<div>
-										<input
-											type="file"
-											onChange={(e) => setImage(e.target.files[0])}
-										/>
-										<button onClick={uploadImg}>Upload</button>
-									</div>
-									<br />
-									<div>
-										<input
-											type="file"
-											onChange={(e) => setChemBond(e.target.files[0])}
-										/>
-										<button onClick={uploadChemBond}>Upload</button>
-									</div>
-									<br />
-									<div>
-										<input
-											type="file"
-											onChange={(e) => setNMR(e.target.files[0])}
-										/>
-										<button onClick={uploadNMR}>Upload</button>
-									</div>
-									<div>
-										<button onClick={handleUpdate} type="submit">
-											Save Change
-										</button>
+										<Typography className={classes.title}>
+											รูปพันธะเคมี
+										</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setChemBond(e.target.files[0])}
+											/>
+											<br />
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													color="secondary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadChemBond}
+												>
+													<Typography>อัพโหลด</Typography>
+												</Button>
+											</div>
+										</div>
 										<br />
-									</div>
-									<div>
-										<button onClick={handleCancel} type="submit">
-											Cancel
-										</button>
+										<Typography className={classes.title}>
+											ตาราง NMR
+										</Typography>
+										<div>
+											<input
+												type="file"
+												onChange={(e) => setNMR(e.target.files[0])}
+											/>
+											<br />
+											<div
+												style={{
+													position: "relative",
+													top: "5px",
+												}}
+											>
+												<Button
+													type="submit"
+													position="relative"
+													type="primary"
+													variant="outlined"
+													color="default"
+													className={classes.button}
+													startIcon={<CloudUploadIcon />}
+													onClick={uploadNMR}
+												>
+													<Typography>อัพโหลด</Typography>
+												</Button>
+											</div>
+										</div>
 									</div>
 								</form>
+								<br />
+								<br />
+								<br />
+								<div
+									style={{
+										display: "flex",
+										flexWrap: "wrap",
+										justifyContent: "center",
+									}}
+								>
+									<Grid
+										container
+										spacing={1}
+										style={{
+											display: "flex",
+											flexWrap: "wrap",
+											justifyContent: "center",
+										}}
+									>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												position: "relative",
+											}}
+										>
+											<Button
+												onClick={handleUpdate}
+												type="submit"
+												color="primary"
+												variant="contained"
+											>
+												<Typography>บันทึกการเปลี่ยนแปลง</Typography>
+											</Button>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											container
+											spacing={1}
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												position: "relative",
+											}}
+										>
+											<Button
+												onClick={handleCancel}
+												type="submit"
+												position="relative"
+												color="default"
+												variant="outlined"
+											>
+												<Typography style={{ color: "black" }}>
+													ยกเลิก
+												</Typography>
+											</Button>
+										</Grid>
+									</Grid>
+								</div>
 							</div>
 						)}
 					</div>

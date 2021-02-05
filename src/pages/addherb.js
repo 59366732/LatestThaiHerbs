@@ -1,16 +1,29 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import db, { auth } from "../database/firebase.js";
+import React, { useState, useContext } from "react";
+import db, { auth, storage } from "../database/firebase.js";
 import firebase from "firebase";
 import { useRouter } from "next/router";
+import { UserContext } from "../providers/UserProvider";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { styled } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import {
+	Icon,
+	Paper,
+	Button,
+	Grid,
+	Card,
+	CardActions,
+	CardActionArea,
+	CardMedia,
+	CardContent,
+	Typography,
+	CardHeader,
+	TextField,
+	Container,
+	CssBaseline,
+	ThemeProvider,
+} from "@material-ui/core/";
 
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
@@ -43,11 +56,11 @@ const useStyles = makeStyles((theme) => ({
 	button: {
 		margin: theme.spacing(1, "auto"),
 	},
-	// grid: {
-	// 	padding: theme.spacing(2),
-	// 	textAlign: "center",
-	// 	color: theme.palette.text.secondary,
-	// },
+	grid: {
+		padding: theme.spacing(2),
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+	},
 	title: {
 		fontWeight: "bold",
 	},
@@ -221,212 +234,227 @@ function Addherb() {
 
 	const classes = useStyles();
 	return (
-		<div style={frameStyles}>
-			<div>
-				<h2 style={{ marginLeft: "30px", position: "relative" }}>
-					เพื่มข้อมูลสมุนไพรไทย
-				</h2>
-				{error !== null && <div>{error}</div>}
-				<form>
+		<div>
+			<Container className="main">
+				<CssBaseline />
+				<div style={frameStyles}>
 					<div>
-						<Typography className={classes.title}>ชื่อภาษาไทย:</Typography>
-						<TextField
-							fullWidth
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							value={thaiName}
-							onChange={(e) => setThaiName(e.target.value)}
-							placeholder="ชื่อสมุนไพรภาษาไทย ?"
-						/>
-					</div>
-					<br />
-					<br />
-					<div>
-						<Typography className={classes.title}>ชื่อภาษาอังกฤษ:</Typography>
-						<TextField
-							fullWidth
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							value={engName}
-							onChange={(e) => setEngName(e.target.value)}
-							placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
-						/>
-					</div>
-					<br />
-					<br />
-					<div>
-						<Typography className={classes.title}>
-							ชื่อทางวิทยาศาสตร์:
-						</Typography>
-						<TextField
-							fullWidth
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							value={sciName}
-							onChange={(e) => setSciName(e.target.value)}
-							placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
-						/>
-					</div>
-					<br />
-					<br />
-					<div>
-						<Typography className={classes.title}>ชื่อวงศ์:</Typography>
-						<TextField
-							fullWidth
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							value={familyName}
-							onChange={(e) => setFamilyName(e.target.value)}
-							placeholder="ชื่อวงศ์ของสมุนไพร ?"
-						/>
-					</div>
-					<br />
-					<br />
-					<div>
-						<Typography className={classes.title}>ข้อมูลสมุนไพร:</Typography>
-						<TextField
-							fullWidth
-							multiline
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							rows={7}
-							value={info}
-							onChange={(e) => setInfo(e.target.value)}
-							placeholder="ข้อมูลสมุนไพร ?"
-						/>
-					</div>
-					<br />
-					<br />
-					<div>
-						<Typography className={classes.title}>
-							สรรพคุณของสมุนไพร:
-						</Typography>
-						<TextField
-							fullWidth
-							multiline
-							id="filled-multiline-static"
-							variant="filled"
-							fontFamily="sans-serif"
-							rows={7}
-							value={attribute}
-							onChange={(e) => setAttribute(e.target.value)}
-							placeholder="สรรพคุณของสมุนไพร ?"
-						/>
+						<h2 style={{ marginLeft: "30px", position: "relative" }}>
+							เพื่มข้อมูลสมุนไพรไทย
+						</h2>
+						{error !== null && <div>{error}</div>}
+						<form>
+							<div>
+								<Typography className={classes.title}>ชื่อภาษาไทย:</Typography>
+								<TextField
+									fullWidth
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									value={thaiName}
+									onChange={(e) => setThaiName(e.target.value)}
+									placeholder="ชื่อสมุนไพรภาษาไทย ?"
+								/>
+							</div>
+							<br />
+							<br />
+							<div>
+								<Typography className={classes.title}>
+									ชื่อภาษาอังกฤษ:
+								</Typography>
+								<TextField
+									fullWidth
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									value={engName}
+									onChange={(e) => setEngName(e.target.value)}
+									placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
+								/>
+							</div>
+							<br />
+							<br />
+							<div>
+								<Typography className={classes.title}>
+									ชื่อทางวิทยาศาสตร์:
+								</Typography>
+								<TextField
+									fullWidth
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									value={sciName}
+									onChange={(e) => setSciName(e.target.value)}
+									placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
+								/>
+							</div>
+							<br />
+							<br />
+							<div>
+								<Typography className={classes.title}>ชื่อวงศ์:</Typography>
+								<TextField
+									fullWidth
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									value={familyName}
+									onChange={(e) => setFamilyName(e.target.value)}
+									placeholder="ชื่อวงศ์ของสมุนไพร ?"
+								/>
+							</div>
+							<br />
+							<br />
+							<div>
+								<Typography className={classes.title}>
+									ข้อมูลสมุนไพร:
+								</Typography>
+								<TextField
+									fullWidth
+									multiline
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									rows={7}
+									value={info}
+									onChange={(e) => setInfo(e.target.value)}
+									placeholder="ข้อมูลสมุนไพร ?"
+								/>
+							</div>
+							<br />
+							<br />
+							<div>
+								<Typography className={classes.title}>
+									สรรพคุณของสมุนไพร:
+								</Typography>
+								<TextField
+									fullWidth
+									multiline
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									rows={7}
+									value={attribute}
+									onChange={(e) => setAttribute(e.target.value)}
+									placeholder="สรรพคุณของสมุนไพร ?"
+								/>
+								<br />
+								<br />
+							</div>
+							<br />
+							{uploadNoti !== null && <div>{uploadNoti}</div>}
+							<Typography className={classes.title}>รูปสมุนไพร</Typography>
+							<div>
+								<input
+									type="file"
+									onChange={(e) => setImage(e.target.files[0])}
+								/>
+								<br />
+								<Button
+									type="submit"
+									position="relative"
+									type="secondary"
+									variant="outlined"
+									color="default"
+									className={classes.button}
+									startIcon={<CloudUploadIcon />}
+									onClick={uploadImg}
+								>
+									Upload
+								</Button>
+							</div>
+							<br />
+							<Typography className={classes.title}>รูปพันธะเคมี</Typography>
+							<div>
+								<input
+									type="file"
+									onChange={(e) => setChemBond(e.target.files[0])}
+								/>
+								<br />
+								<Button
+									type="submit"
+									position="relative"
+									type="secondary"
+									variant="outlined"
+									color="default"
+									className={classes.button}
+									startIcon={<CloudUploadIcon />}
+									onClick={uploadChemBond}
+								>
+									Upload
+								</Button>
+							</div>
+							<br />
+							<Typography className={classes.title}>ตาราง NMR</Typography>
+							<div>
+								<input
+									type="file"
+									onChange={(e) => setNMR(e.target.files[0])}
+								/>
+								<br />
+								<Button
+									type="submit"
+									position="relative"
+									type="secondary"
+									variant="outlined"
+									color="default"
+									className={classes.button}
+									startIcon={<CloudUploadIcon />}
+									onClick={uploadNMR}
+								>
+									Upload
+								</Button>
+							</div>
+						</form>
 						<br />
-						<br />
-					</div>
-					<br />
-					{uploadNoti !== null && <div>{uploadNoti}</div>}
-					<Typography className={classes.title}>รูปสมุนไพร</Typography>
-					<div>
-						<input type="file" onChange={(e) => setImage(e.target.files[0])} />
-						<br />
-						<Button
-							type="submit"
-							position="relative"
-							type="secondary"
-							variant="outlined"
-							color="default"
-							className={classes.button}
-							startIcon={<CloudUploadIcon />}
-							onClick={uploadImg}
+						<div
+							style={{
+								display: "flex",
+								flexWrap: "wrap",
+								justifyContent: "center",
+							}}
 						>
-							Upload
-						</Button>
-					</div>
-					<br />
-					<Typography className={classes.title}>รูปพันธะเคมี</Typography>
-					<div>
-						<input
-							type="file"
-							onChange={(e) => setChemBond(e.target.files[0])}
-						/>
-						<br />
-						<Button
-							type="submit"
-							position="relative"
-							type="secondary"
-							variant="outlined"
-							color="default"
-							className={classes.button}
-							startIcon={<CloudUploadIcon />}
-							onClick={uploadChemBond}
-						>
-							Upload
-						</Button>
-					</div>
-					<br />
-					<Typography className={classes.title}>ตาราง NMR</Typography>
-					<div>
-						<input type="file" onChange={(e) => setNMR(e.target.files[0])} />
-						<br />
-						<Button
-							type="submit"
-							position="relative"
-							type="secondary"
-							variant="outlined"
-							color="default"
-							className={classes.button}
-							startIcon={<CloudUploadIcon />}
-							onClick={uploadNMR}
-						>
-							Upload
-						</Button>
-					</div>
-				</form>
-				<br />
-				<div
-					style={{
-						display: "flex",
-						flexWrap: "wrap",
-						justifyContent: "center",
-					}}
-				>
-					<Grid
-						container
-						spacing={1}
-						style={{ display: "flex", justifyContent: "center" }}
-					>
-						<Grid
-							item
-							xs={3}
-							container
-							spacing={1}
-							style={{ display: "flex", justifyContent: "center" }}
-						>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={handleSubmit}
-								type="submit"
+							<Grid
+								container
+								spacing={1}
+								style={{ display: "flex", justifyContent: "center" }}
 							>
-								<Typography>Submit</Typography>
-							</Button>
-						</Grid>
-						<Grid
-							item
-							xs={3}
-							container
-							spacing={1}
-							style={{ display: "flex", justifyContent: "center" }}
-						>
-							<Button
-								position="relative"
-								type="secondary"
-								variant="outlined"
-								onClick={() => router.back()}
-							>
-								<Typography>Back</Typography>
-							</Button>
-						</Grid>
-					</Grid>
+								<Grid
+									item
+									xs={3}
+									container
+									spacing={1}
+									style={{ display: "flex", justifyContent: "center" }}
+								>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={handleSubmit}
+										type="submit"
+									>
+										<Typography>Submit</Typography>
+									</Button>
+								</Grid>
+								<Grid
+									item
+									xs={3}
+									container
+									spacing={1}
+									style={{ display: "flex", justifyContent: "center" }}
+								>
+									<Button
+										position="relative"
+										type="secondary"
+										variant="outlined"
+										onClick={() => router.back()}
+									>
+										<Typography>Back</Typography>
+									</Button>
+								</Grid>
+							</Grid>
+						</div>
+					</div>
 				</div>
-			</div>
+			</Container>
 		</div>
 	);
 }

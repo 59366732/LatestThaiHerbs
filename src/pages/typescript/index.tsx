@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CheckBox from '../../components/checkbox';
-import Card from '../../components/card';
+import CheckBox from '../../components/custom/profile_demo';
+import Card from '../../components/typing/card';
 import NavBar from '../../components/navbar';
 export default function Home() {
   return (

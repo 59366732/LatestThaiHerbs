@@ -4,10 +4,10 @@ import Addherb from "./addherb";
 import Link from "next/link";
 import { auth } from "../database/firebase";
 
-// import dayjs from "dayjs";
-// import relativeTime from "dayjs/plugin/relativeTime";
-// import { useRouter } from "next/router";
-// import { storage } from "../database/firebase";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { useRouter } from "next/router";
+import { storage } from "../database/firebase";
 
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -26,16 +26,13 @@ import {
 	makeStyles,
 	ThemeProvider,
 } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		...theme.typography.button,
-		backgroundColor: theme.palette.background.paper,
 		flexGrow: 1,
-        padding: theme.spacing(2),
-        marginTop: "70px",
-		color: "",
+		padding: theme.spacing(2),
+		backgroundColor: "none",
 	},
 	paper: {
 		padding: theme.spacing(2),
@@ -111,12 +108,12 @@ function Home() {
 		<div className={classes.root} style={{ position: "relative" }}>
 			<div style={{ textAlign: "center" }}>
 				{loggedIn && (
-					<div style={{marginBottom: "5px"}}>
+					<div style={{ marginBottom: "5px" }}>
 						<ThemeProvider theme={theme}>
 							<Button
-								width= "200px"
-								variant= "contained"				
-								color= "primary"
+								width="200px"
+								variant="contained"
+								color="primary"
 								className={classes.addHerbButton}
 							>
 								<Link href="/addherb">
@@ -126,12 +123,8 @@ function Home() {
 						</ThemeProvider>
 					</div>
 				)}
-				<div style={{paddingTop: "5px"}}>
-					<Grid
-						container
-						spacing={2}
-						direction="row"
-					>
+				<div style={{ paddingTop: "5px" }}>
+					<Grid container spacing={2} direction="row">
 						{herbs.map((herb) => (
 							<Grid item xs={12} sm={6} md={3} key={herbs.indexOf(herb)}>
 								<Card>
@@ -161,7 +154,10 @@ function Home() {
 										>
 											โดย:
 										</Typography>
-										<Typography variant="caption" style={{ color: "#007FFF" }}>
+										<Typography
+											variant="caption"
+											style={{ color: "#007FFF", textTransform: "capitalize" }}
+										>
 											{herb.userDisplayName}
 										</Typography>
 										<Typography
@@ -170,7 +166,10 @@ function Home() {
 										>
 											เมื่อ:
 										</Typography>
-										<Typography variant="caption" style={{ color: "#007FFF" }}>
+										<Typography
+											variant="caption"
+											style={{ color: "#007FFF", textTransform: "capitalize" }}
+										>
 											{new Date(herb.timestamp.seconds * 1000).toDateString()}
 										</Typography>
 									</CardActions>

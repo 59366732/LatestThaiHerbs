@@ -1,6 +1,6 @@
 import "../styles/globals.css";
-// import "../styles/Home.module.css";
-// import "../styles/Profile.scss";
+import "../styles/Home.module.css";
+import "../styles/Profile.css";
 import { useContext } from "react";
 import UserProvider from "../providers/UserProvider";
 import { UserContext } from "../providers/UserProvider";
@@ -8,8 +8,9 @@ import { UserContext } from "../providers/UserProvider";
 import styles from "../styles/Home.module.css";
 import "./index";
 
+import Appbar from "../components/appbar";
 import Navbar from "../components/navbar";
-import Header from "../components/header";
+import Header from "../components/custom/header";
 
 //Mui stuff
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,15 +34,15 @@ export default function MyApp({ Component, pageProps }) {
 			<CssBaseline />
 			<MuiThemeProvider theme={Theme}>
 				<UserProvider>
-					{/* <div className="App"> */}
-					<div>
-						<Navbar />
-						{/* <Container> */}
-						<div className="container">
-							{/* <div> */}
-							<Component {...pageProps} />
-						</div>
-						{/* </Container> */}
+					<div className="App">
+						{/* <div> */}
+						{/* <Navbar /> */}
+						<Appbar />
+						<Container maxWidth="auto">
+							<div className="container">
+								<Component {...pageProps} />
+							</div>
+						</Container>
 					</div>
 				</UserProvider>
 			</MuiThemeProvider>
