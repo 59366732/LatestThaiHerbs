@@ -38,7 +38,8 @@ export default function MyApp({ Component, pageProps }) {
 						{/* <div> */}
 						{/* <Navbar /> */}
 						<Appbar />
-						<Container maxWidth="auto">
+						{/* ["xs","sm","md","lg","xl",false] */}
+						<Container maxWidth="lg" minwidth="370px">  
 							<div className="container">
 								<Component {...pageProps} />
 							</div>

@@ -8,8 +8,11 @@ import firebase from "firebase";
 import ReactLoading from "react-loading";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+
 import {
 	Icon,
+	Box,
 	Paper,
 	Button,
 	Grid,
@@ -89,12 +92,12 @@ const useStyles = makeStyles((theme) => ({
 	imageCard: {
 		minWidth: 500,
 		marginTop: "10px",
-		backgroundColor: "#f7e98e",
+		backgroundColor: "#f5f5f5",
 	},
 	attributeCard: {
 		minWidth: 500,
 		marginTop: "10px",
-		backgroundColor: "#ffdb58",
+		backgroundColor: "#ffffff",
 	},
 	userCard: {
 		width: "fit-content",
@@ -194,6 +197,21 @@ const detail = (props) => {
 	const [NMRUrl, setNMRUrl] = useState(props.NMRUrl); //props.NMRUrl
 	const [newNMRUrl, setnewNMRUrl] = useState("");
 
+	const select_img_alert = (
+		<span>
+			<Alert severity="warning">
+				<Typography>กรุณาเลือกรูปภาพ!!!</Typography>
+			</Alert>
+		</span>
+	);
+	const upload_complete_alert = (
+		<span>
+			<Alert severity="success">
+				<Typography>อัพโหลดรูปภาพเรียบร้อย!!!</Typography>
+			</Alert>
+		</span>
+	);
+
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			setLoggedIn(true);
@@ -277,7 +295,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((imgUrl) => {
 							setNewImgUrl(imgUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -285,7 +303,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพ!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -310,7 +328,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((NMRUrl) => {
 							setNewNMRUrl(NMRUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -318,7 +336,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพ!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -343,7 +361,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((chemBondUrl) => {
 							setnewChemBondUrl(chemBondUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -351,7 +369,7 @@ const detail = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพก่อน!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -363,7 +381,7 @@ const detail = (props) => {
 		<div>
 			<Container component="main">
 				<CssBaseline />
-				<div style={frameStyles}>
+				<Box style={frameStyles}>
 					<div>
 						{!activeEdit ? (
 							<div>
@@ -642,9 +660,7 @@ const detail = (props) => {
 										/>
 									</div>
 									<div>
-										<Typography className={classes.title}>
-											ชื่อวงศ์:
-										</Typography>
+										<Typography className={classes.title}>ชื่อวงศ์:</Typography>
 										<TextField
 											fullwidth="true"
 											id="filled-multiline-static"
@@ -691,9 +707,9 @@ const detail = (props) => {
 										/>
 									</div>
 									<br />
+									<div>{uploadNoti !== null && <div>{uploadNoti}</div>}</div>
 									<br />
 									<div>
-										{uploadNoti !== null && <div>{uploadNoti}</div>}
 										<Typography className={classes.title}>
 											รูปสมุนไพร
 										</Typography>
@@ -753,9 +769,7 @@ const detail = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.title}>
-											ตาราง NMR
-										</Typography>
+										<Typography className={classes.title}>ตาราง NMR</Typography>
 										<div>
 											<input
 												type="file"
@@ -851,7 +865,7 @@ const detail = (props) => {
 							</div>
 						)}
 					</div>
-				</div>
+				</Box>
 			</Container>
 		</div>
 	);

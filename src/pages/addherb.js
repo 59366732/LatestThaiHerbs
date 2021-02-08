@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { styled } from "@material-ui/core/styles";
 import {
 	Icon,
+	Box,
 	Paper,
 	Button,
 	Grid,
@@ -32,15 +33,15 @@ const frameStyles = {
 	flexDirection: "column",
 	display: "flex",
 	justifyContent: "center",
-	border: "solid 1px palevioletred",
-	paddingTop: "10px",
+	border: "solid 1px #00b906",
+	paddingTop: "20px",
 	paddingRight: "20px",
 	paddingBottom: "20px",
 	paddingLeft: "20px",
-	marginTop: "10px",
-	marginBottom: "10px",
-	marginRight: "10px",
-	marginLeft: "10px",
+	marginTop: "20px",
+	marginBottom: "20px",
+	marginRight: "20px",
+	marginLeft: "20px",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -237,11 +238,11 @@ function Addherb() {
 		<div>
 			<Container className="main">
 				<CssBaseline />
-				<div style={frameStyles}>
+				<Box style={frameStyles}>
 					<div>
-						<h2 style={{ marginLeft: "30px", position: "relative" }}>
+						<Typography variant="h3" style={{ marginLeft: "30px", position: "relative" }}>
 							เพื่มข้อมูลสมุนไพรไทย
-						</h2>
+						</Typography>
 						{error !== null && <div>{error}</div>}
 						<form>
 							<div>
@@ -453,7 +454,7 @@ function Addherb() {
 							</Grid>
 						</div>
 					</div>
-				</div>
+				</Box>
 			</Container>
 		</div>
 	);

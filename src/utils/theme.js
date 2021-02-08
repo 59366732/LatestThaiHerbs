@@ -4,13 +4,13 @@ export default {
 			light: "#33c9dc",
 			main: "#32CD32",
 			dark: "#00C000",
-			// contrastText: "#fff",
+			contrastText: "none",
 		},
 		secondary: {
 			light: "#0000",
 			main: "#ff0000",
 			dark: "#940000",
-			// contrastText: "#fff",
+			contrastText: "none",
 		},
 	},
 	typography: {
@@ -62,15 +62,11 @@ export default {
 				backgroundColor: "none",
 			},
 		},
-		// MuiTextField: {
-		// 	root: {
-		// 		backgroundColor: "none",
-		// 	},
-		// 	fullWidth: {
-		// 		width: "auto",
-		// 		maxWidth: "100%",
-		// 	},
-		// },
+		MuiTextField: {
+			root: {
+				backgroundColor: "none",
+			},
+		},
 		MuiButton: {
 			root: {
 				textTransform: "none",
@@ -105,6 +101,7 @@ export default {
 		},
 		MuiCard: {
 			elevation: 12,
+			variant: "contained",
 		},
 	},
 };

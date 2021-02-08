@@ -109,18 +109,16 @@ function Home() {
 			<div style={{ textAlign: "center" }}>
 				{loggedIn && (
 					<div style={{ marginBottom: "5px" }}>
-						<ThemeProvider theme={theme}>
-							<Button
-								width="200px"
-								variant="contained"
-								color="primary"
-								className={classes.addHerbButton}
-							>
-								<Link href="/addherb">
-									<Typography>เพิ่มข้อมูลสมุนไพร</Typography>
-								</Link>
-							</Button>
-						</ThemeProvider>
+						<Button
+							width="200px"
+							variant="contained"
+							color="primary"
+							className={classes.addHerbButton}
+						>
+							<Link href="/addherb">
+								<Typography>เพิ่มข้อมูลสมุนไพร</Typography>
+							</Link>
+						</Button>
 					</div>
 				)}
 				<div style={{ paddingTop: "5px" }}>

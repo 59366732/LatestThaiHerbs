@@ -176,15 +176,15 @@ const ProfilePage = () => {
 															{...borderProps}
 															style={{
 																display: "flex",
-																// flexDirection="column"
 																justifyContent: "center",
-																background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-														)`,
-																// background: `url(${
-																// 	user.photoURL ||
-																// 	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-																// })  `,
-																backgroundSize: "cover",
+																// 		background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																// )`,
+																background: `url(${
+																	user.photoURL ||
+																	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																})  `,
+																backgroundSize: "contain",
+																backgroundPosition: "center",
 																height: "200px",
 																width: "200px",
 															}}
@@ -209,7 +209,7 @@ const ProfilePage = () => {
 																className={classes.title}
 																htmlFor="displayName"
 															>
-																ชื่อ:
+																ชื่อ&emsp;&emsp;:
 															</Typography>
 														</Box>
 													</Grid>
@@ -243,7 +243,7 @@ const ProfilePage = () => {
 																className={classes.title}
 																htmlFor="userEmail"
 															>
-																อีเมล:
+																อีเมล&ensp;&ensp;:
 															</Typography>
 														</Box>
 													</Grid>
@@ -277,7 +277,7 @@ const ProfilePage = () => {
 																className={classes.title}
 																htmlFor="score"
 															>
-																คะแนน:
+																คะแนน&nbsp;:
 															</Typography>
 														</Box>
 													</Grid>
@@ -311,7 +311,7 @@ const ProfilePage = () => {
 																className={classes.title}
 																htmlFor="level"
 															>
-																ระดับ:
+																ระดับ&ensp;&ensp;:
 															</Typography>
 														</Box>
 													</Grid>
@@ -382,7 +382,7 @@ const ProfilePage = () => {
 															className={classes.title}
 															htmlFor="displayName"
 														>
-															ชื่อ:
+															ชื่อ&emsp;&emsp;:
 														</Typography>
 													</Box>
 												</Grid>
@@ -412,7 +412,7 @@ const ProfilePage = () => {
 															className={classes.title}
 															htmlFor="userEmail"
 														>
-															อีเมล:
+															อีเมล&ensp;&ensp;:
 														</Typography>
 													</Box>
 												</Grid>
@@ -445,7 +445,7 @@ const ProfilePage = () => {
 															className={classes.title}
 															htmlFor="userEmail"
 														>
-															คะแนน:
+															คะแนน&nbsp;:
 														</Typography>
 													</Box>
 												</Grid>
@@ -478,7 +478,7 @@ const ProfilePage = () => {
 															className={classes.title}
 															htmlFor="userEmail"
 														>
-															ระดับ:
+															ระดับ&ensp;&ensp;:
 														</Typography>
 													</Box>
 												</Grid>

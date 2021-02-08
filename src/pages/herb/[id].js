@@ -11,8 +11,10 @@ import firebase from "firebase";
 import { NewReleasesOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
+import Alert from "@material-ui/lab/Alert";
 
 import {
+	Box,
 	Icon,
 	Paper,
 	Button,
@@ -96,19 +98,22 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 	},
 	DAC: {
-		marginTop: "30px",
+		marginTop: "10px",
 	},
 	DIC: {
 		marginTop: "30px",
 	},
 	imageCard: {
-		minWidth: 500,
+		minWidth: "auto",
+		maxWidth: "auto",
 		marginTop: "10px",
 		backgroundColor: "#ffffff",
 	},
 	attributeCard: {
-		minWidth: 500,
+		minWidth: "auto",
+		maxWidth: "auto",
 		marginTop: "10px",
+		marginBottom: "10px",
 		backgroundColor: "#f8f8ff",
 	},
 	userCard: {
@@ -206,6 +211,21 @@ const Blog = (props) => {
 	const [NMRUrl, setNMRUrl] = useState(props.NMRUrl); //props.NMRUrl
 	const [newNMRUrl, setnewNMRUrl] = useState("");
 
+	const select_img_alert = (
+		<span>
+			<Alert severity="warning">
+				<Typography>กรุณาเลือกรูปภาพ!!!</Typography>
+			</Alert>
+		</span>
+	);
+	const upload_complete_alert = (
+		<span>
+			<Alert severity="success">
+				<Typography>อัพโหลดรูปภาพเรียบร้อย!!!</Typography>
+			</Alert>
+		</span>
+	);
+
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			setLoggedIn(true);
@@ -301,7 +321,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพ!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -380,7 +400,7 @@ const Blog = (props) => {
 		<div>
 			<Container component="main">
 				<CssBaseline />
-				<div style={frameStyles}>
+				<Box style={frameStyles}>
 					<div>
 						{!activeEdit ? (
 							<div>
@@ -412,45 +432,59 @@ const Blog = (props) => {
 									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
-												<Typography className={classes.title}>
-													ชื่อภาษาไทย: &nbsp;
-													<Typography className={classes.content}>
-														{thaiNameEdit}
+												<div style={{margin: "0 0 5 0" }}>
+													<Typography className={classes.title}>
+														ชื่อภาษาไทย: &nbsp;
+														<Typography className={classes.content}>
+															{thaiNameEdit}
+														</Typography>
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อภาษาอังกฤษ: &nbsp;
-													<Typography
-														style={{
-															fontWeight: "normal",
-															display: "inline",
-														}}
-													>
-														{engNameEdit}
+												</div>
+												{/* <br/>
+												<br/> */}
+												<div style={{margin: "0 0 5 0" }}>
+													<Typography className={classes.title}>
+														ชื่อภาษาอังกฤษ: &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{engNameEdit}
+														</Typography>
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อทางวิทยาศาสตร์: &nbsp;
-													<Typography
-														style={{
-															fontWeight: "normal",
-															display: "inline",
-														}}
-													>
-														{sciNameEdit}
+												</div>
+												{/* <br/>
+												<br/> */}
+												<div style={{margin: "0 0 5 0" }}>
+													<Typography className={classes.title}>
+														ชื่อทางวิทยาศาสตร์: &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{sciNameEdit}
+														</Typography>
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อวงศ์ : &nbsp;
-													<Typography
-														style={{
-															fontWeight: "normal",
-															display: "inline",
-														}}
-													>
-														{familyNameEdit}
+												</div>
+												<br/>
+												<br/>
+												<div>
+													<Typography className={classes.title}>
+														ชื่อวงศ์ : &nbsp;
+														<Typography
+															style={{
+																fontWeight: "normal",
+																display: "inline",
+															}}
+														>
+															{familyNameEdit}
+														</Typography>
 													</Typography>
-												</Typography>
+												</div>
 											</CardContent>
 										</Card>
 									</div>
@@ -926,7 +960,7 @@ const Blog = (props) => {
 							</div>
 						)}
 					</div>
-				</div>
+				</Box>
 			</Container>
 		</div>
 	);

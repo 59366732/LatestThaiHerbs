@@ -8,10 +8,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const style = {
-	color: "primary",
+	backgroundColor: "primary",
 	position: `fixed`,
-	bottom: `37px`,
-	right: `120px`,
+	bottom: `10px`,
+	right: `10px`,
 	zIndex: `99`,
 };
 

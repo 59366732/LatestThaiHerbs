@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -62,6 +63,13 @@ function Search() {
 	const [searchName, setSearchName] = useState([]);
 	const [error, setError] = useState(null);
 
+	const please_type_before = (
+		<span>
+			<Alert severity="warning">
+				<Typography>กรุณาพิมพ์ข้อความก่อน!!!</Typography>
+			</Alert>
+		</span>
+	);
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (searchName) {
@@ -72,7 +80,7 @@ function Search() {
 					setHerbs(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
 				);
 		} else {
-			setError("กรอกข้อความก่อนทำการค้นหา!");
+			setError(please_type_before);
 			setTimeout(() => {
 				setError(null);
 			}, 2000);
@@ -89,7 +97,7 @@ function Search() {
 		>
 			<CssBaseline />
 			<Container maxWidth="sm">
-				{error !== null && <div>{error}</div>}
+				<div>{error !== null && <div>{error}</div>}</div>
 				<form>
 					<TextField
 						fullWidth

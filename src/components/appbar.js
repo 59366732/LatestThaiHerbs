@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: `none`,
 		textTransform: `uppercase`,
 		color: `white`,
+		textOverflow: "ellipsis",
 	},
 }));
 
@@ -84,7 +85,7 @@ const StyledBadge = withStyles((theme) => ({
 			width: "100%",
 			height: "100%",
 			borderRadius: "50%",
-			animation: "$ripple 1.2s infinite ease-in-out",
+			animation: "$ripple 1.0s infinite ease-in-out",
 			border: "1px solid currentColor",
 			content: '""',
 		},
@@ -127,11 +128,18 @@ const Appbar = () => {
 			<HideOnScroll>
 				<AppBar position="fixed">
 					<Toolbar component="nav">
-						<Container maxWidth="md" className={classes.navbarDisplayFlex}>
-							<IconButton edge="start" aria-label="home">
-								<Typography variant="h4" href="/" style={{ color: `white` }}>
-									เว็บชุมชนสมุนไพรไทย
-								</Typography>
+						<Container
+							maxWidth="lg"
+							minwidth="370px"
+							className={classes.navbarDisplayFlex}
+						>
+							<IconButton
+								edge="start"
+								aria-label="home"
+								href="/"
+								style={{ color: `white`, fontSize: "200%" }}
+							>
+								เว็บชุมชนสมุนไพรไทย
 							</IconButton>
 
 							<Hidden smDown>
@@ -141,74 +149,105 @@ const Appbar = () => {
 										aria-labelledby="main navigation"
 										className={classes.navListDisplayFlex}
 									>
-										<Button className={classes.linkText}>
-											<Button>
-												<Typography>หน้าแรก</Typography>
-											</Button>
-										</Button>
-										<Button className={classes.linkText}>
-											<ListItem button>
-												<Button>
-													<Typography>ค้นหา</Typography>
-												</Button>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<Link href="/">
+													<Button>
+														<Typography className={classes.linkText}>
+															หน้าแรก
+														</Typography>
+													</Button>
+												</Link>
 											</ListItem>
-										</Button>
-										<Typography className={classes.linkText}>
-											<ListItem button>
-												<Button>
-													<Typography>ถาม-ตอบ</Typography>
-												</Button>
+										</div>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<Link href="/search">
+													<Button>
+														<Typography className={classes.linkText}>
+															ค้นหา
+														</Typography>
+													</Button>
+												</Link>
 											</ListItem>
-										</Typography>
-										<Typography className={classes.linkText}>
-											<ListItem button>
-												<Button>
-													<StyledBadge
-														overlap="circle"
-														anchorOrigin={{
-															vertical: "bottom",
-															horizontal: "right",
-														}}
-														variant="dot"
-													>
-														<Avatar
-															className={classes.avatar}
-															alt="I"
-															// src={user.photoUrl}
-															style={{
-																background: `url(${
-																	user.photoURL ||
-																	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-																})  `,
+										</div>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<Link href="/qanda">
+													<Button>
+														<Typography className={classes.linkText}>
+															ถาม-ตอบ
+														</Typography>
+													</Button>
+												</Link>
+											</ListItem>
+										</div>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<Link href="/profilepage">
+													<Button>
+														<StyledBadge
+															overlap="circle"
+															anchorOrigin={{
+																vertical: "bottom",
+																horizontal: "right",
 															}}
-														/>
-													</StyledBadge>
-													<Typography
-														style={{
-															color: "white",
-															textTransform: "capitalize",
-															paddingLeft: "5px",
-														}}
-													>
-														{user.displayName}
-													</Typography>
-												</Button>
+															variant="dot"
+														>
+															<Avatar
+																className={classes.avatar}
+																alt="I"
+																style={{
+																	background: `url(${
+																		user.photoURL ||
+																		"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																	}) center center cover no-repeat fixed `,
+																	backgroundSize: "contain",
+																	backgroundPosition: "center",
+																}}
+															/>
+														</StyledBadge>
+														<Typography
+															style={{
+																color: "white",
+																textTransform: "capitalize",
+																paddingLeft: "5px",
+															}}
+														>
+															{user.displayName}
+														</Typography>
+													</Button>
+												</Link>
 											</ListItem>
-										</Typography>
-										<Typography className={classes.linkText}>
-											<ListItem
-												button
-												onClick={() => {
-													auth.signOut();
-												}}
-											>
-												<Button>
+										</div>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<Button
+													onClick={() => {
+														auth.signOut();
+													}}
+												>
 													<Typography style={{ color: "red" }}>
 														ออกจากระบบ
 													</Typography>
 												</Button>
 											</ListItem>
-										</Typography>
+										</div>
 									</List>
 								) : (
 									<List
@@ -217,17 +256,15 @@ const Appbar = () => {
 										className={classes.navListDisplayFlex}
 									>
 										{navLinks.map(({ title, path }) => (
-											<Button
-												href={path}
-												key={title}
-												className={classes.linkText}
-											>
-												<Button>
-													<Typography style={{ color: "white" }}>
-														{title}
-													</Typography>
-												</Button>
-											</Button>
+											<div href={path} key={title} className={classes.linkText}>
+												<ListItem>
+													<Button href={path} key={title}>
+														<Typography style={{ color: "white" }}>
+															{title}
+														</Typography>
+													</Button>
+												</ListItem>
+											</div>
 										))}
 									</List>
 								)}
