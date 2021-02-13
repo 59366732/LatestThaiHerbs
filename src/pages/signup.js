@@ -24,6 +24,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Alert } from "@material-ui/lab/";
 
 function Copyright() {
 	return (
@@ -69,6 +70,15 @@ const SignUp = () => {
 
 	const user = useContext(UserContext);
 	const router = useRouter();
+
+	const select_img_alert = (
+		// <span>
+			<Alert severity="error">
+				<AlertTitle>Error</AlertTitle>
+				This is an error alert — <strong>check it out!</strong>
+			</Alert>
+		// </span>
+	);
 
 	const createUserWithEmailAndPasswordHandler = async (e, email, password) => {
 		e.preventDefault();

@@ -111,7 +111,6 @@ function Home() {
 					<div style={{ marginBottom: "5px" }}>
 						<Button
 							width="200px"
-							variant="contained"
 							color="primary"
 							className={classes.addHerbButton}
 						>

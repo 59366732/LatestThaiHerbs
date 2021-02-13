@@ -21,6 +21,7 @@
     "next": "9.4.4",
     "node-fetch": "^2.6.1",
     "node-sass": "^5.0.0",
+    "notistack": "^1.0.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-fade-in": "^2.0.0",

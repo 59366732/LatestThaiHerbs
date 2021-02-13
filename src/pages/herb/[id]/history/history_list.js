@@ -2,21 +2,30 @@ import React, { useState, useEffect } from "react";
 import db from "../../../../database/firebase";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Chip from "@material-ui/core/Chip";
-import Card from "@material-ui/core/Card";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-
+import {
+	List,
+	ListItem,
+	ListItemText,
+	Divider,
+	Icon,
+	Box,
+	Paper,
+	Button,
+	Grid,
+	Card,
+	Chip,
+	CardActions,
+	CardActionArea,
+	CardMedia,
+	CardContent,
+	Typography,
+	CardHeader,
+	TextField,
+	Container,
+	CssBaseline,
+	ThemeProvider,
+	makeStyles,
+} from "@material-ui/core/";
 const frameStyles = {
 	position: "relative",
 	fontFamily: "sans-serif",
@@ -31,8 +40,8 @@ const frameStyles = {
 	paddingRight: "20px",
 	paddingBottom: "20px",
 	paddingLeft: "20px",
-	marginTop: "70px",
-	marginBottom: "10px",
+	marginTop: "20px",
+	marginBottom: "20px",
 	marginRight: "auto",
 	marginLeft: "auto",
 };
@@ -70,15 +79,21 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: 720,
 		backgroundColor: theme.palette.background.paper,
 	},
-	bullet: {
-		display: "inline-block",
-		margin: "0",
-		transform: "scale(0.8)",
-	},
 	backButton: {
 		textAlign: "center",
 		alignItems: "center",
 		margin: theme.spacing(1, "auto"),
+	},
+	buttonGrid: {
+		direction: "column",
+		justify: "center",
+		alignItems: "center",
+		marginTop: "20px",
+	},
+	hr: {
+		width: "70%",
+		marginLeft: "auto",
+		marginRight: "auto",
 	},
 }));
 export const getServerSideProps = async ({ query }) => {
@@ -110,84 +125,92 @@ const history = (props) => {
 			});
 	}, []);
 	const classes = useStyles();
-	const bullet = (
-		<span className={classes.bullet}>
-			<Typography>•</Typography>
+	const space = (
+		<span>
+			<Typography>
+				<Divider light />
+				<Divider light />
+				<Divider light />
+				<Divider light />
+			</Typography>
 		</span>
 	);
 	return (
-		<div className={classes.root}>
-			<div style={frameStyles}>
-				<div>
-					<Grid
-						fullwidth
-						spacing={3}
-						container
-						direction="column"
-						justify="center"
-						alignItems="center"
-					>
-						<div className={classes.title}>
-							<Typography variant="h4">ประวัติการแก้ไข</Typography>
-						</div>
-					</Grid>
-					<div
-						component="nav"
-						className={classes.paper}
-						aria-label="mailbox folders"
-					>
-						{historys.map((history) => (
-							<ListItem variant="outlined" button divider>
-								<li key={history.id}>
-									<Link
-										href="../../../herb/[id]/history/detail/[detail_id]"
-										as={
-											"../../../herb/" +
-											props.main_id +
-											"/history/detail/" +
-											history.id
-										}
-									>
-										<Typography className={classes.content}>
-											<Typography
-												style={{ color: "#007FFF", display: "inline" }}
-											>
-												{history.thaiName}
-											</Typography>
-											&nbsp;ถูกแก้ไขเมื่อ&nbsp;
-											<Typography
-												style={{ color: "#007FFF", display: "inline" }}
-											>
-												{new Date(
-													history.timestamp.seconds * 1000
-												).toDateString()}
-											</Typography>
-										</Typography>
-									</Link>
-								</li>
-							</ListItem>
-						))}
-					</div>
-					<Grid
-						fullwidth
-						spacing={3}
-						container
-						direction="column"
-						justify="center"
-						alignItems="center"
-						marginTop="20px"
-					>
-						<Button
-							color="default"
-							variant="outlined"
-							className={classes.backButton}
-							onClick={() => router.back()}
+		<div>
+			<Container component="main">
+				<CssBaseline />
+				<Box style={frameStyles}>
+					<div>
+						<Grid
+							fullwidth="true"
+							spacing={3}
+							container
+							direction="column"
+							justify="center"
+							alignItems="center"
 						>
-							<Typography style={{ color: "black" }}>กลับ</Typography>
-						</Button>
-					</Grid>
-				</div>
-			</div>
+							<div className={classes.title}>
+								<Typography variant="h4">ประวัติการแก้ไข</Typography>
+							</div>
+						</Grid>
+						<div
+							component="nav"
+							className={classes.paper}
+							aria-label="mailbox folders"
+						>
+							{historys.map((history) => (
+								<React.Fragment>
+									<ListItem variant="outlined" button divider>
+										<li key={history.id}>
+											<Link
+												href="../../../herb/[id]/history/detail/[detail_id]"
+												as={
+													"../../../herb/" +
+													props.main_id +
+													"/history/detail/" +
+													history.id
+												}
+											>
+												<Typography className={classes.content}>
+													<Typography
+														style={{ color: "#007FFF", display: "inline" }}
+													>
+														{history.thaiName}
+													</Typography>
+													&nbsp;ถูกแก้ไขเมื่อ&nbsp;
+													<Typography
+														style={{ color: "#007FFF", display: "inline" }}
+													>
+														{new Date(
+															history.timestamp.seconds * 1000
+														).toDateString()}
+													</Typography>
+												</Typography>
+											</Link>
+										</li>
+									</ListItem>
+									{space}
+								</React.Fragment>
+							))}
+						</div>
+						<Grid
+							fullwidth
+							spacing={3}
+							container
+							className={classes.buttonGrid}
+						>
+							<Button
+								color="default"
+								variant="outlined"
+								className={classes.backButton}
+								onClick={() => router.back()}
+							>
+								<Typography style={{ color: "black" }}>กลับ</Typography>
+							</Button>
+						</Grid>
+					</div>
+				</Box>
+			</Container>
 		</div>
 	);
 };

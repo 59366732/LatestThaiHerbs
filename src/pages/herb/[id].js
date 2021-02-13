@@ -8,12 +8,15 @@ import { auth, storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import firebase from "firebase";
 
-import { NewReleasesOutlined } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
-import Alert from "@material-ui/lab/Alert";
-
+import { NewReleasesOutlined } from "@material-ui/icons/";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import { MuiAlert, Alert } from "@material-ui/lab/";
+import FaceIcon from "@material-ui/icons/Face";
 import {
+	Avatar,
+	Chip,
+	makeStyles,
+	Snackbar,
 	Box,
 	Icon,
 	Paper,
@@ -75,18 +78,44 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		margin: theme.spacing(1, "auto"),
 	},
+	savechangeButton: {
+		textAlign: "center",
+		alignItems: "center",
+		margin: theme.spacing(1, "auto"),
+	},
+	deleteButton: {
+		textAlign: "center",
+		alignItems: "center",
+		margin: theme.spacing(1, "auto"),
+	},
+	cancelButton: {
+		textAlign: "center",
+		alignItems: "center",
+		margin: theme.spacing(1, "auto"),
+	},
 	grid: {
 		padding: theme.spacing(2),
 		textAlign: "center",
 		color: theme.palette.text.secondary,
 	},
 	title: {
+		display: "inline",
 		fontWeight: "bold",
 		variant: "h3",
+		textDecoration: "underline",
+	},
+	titleEdit: {
+		fontWeight: "bold",
+		variant: "h3",
+		textDecoration: "underline",
+	},
+	space: {
+		display: "inline",
 	},
 	content: {
 		display: "inline",
 		fontWeight: "normal",
+		textDecoration: "none",
 	},
 	paper: {
 		padding: theme.spacing(2),
@@ -98,15 +127,16 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 	},
 	DAC: {
-		marginTop: "10px",
+		marginBottom: "30px",
 	},
 	DIC: {
-		marginTop: "30px",
+		marginBottom: "30px",
 	},
 	imageCard: {
 		minWidth: "auto",
 		maxWidth: "auto",
 		marginTop: "10px",
+		marginBottom: "10px",
 		backgroundColor: "#ffffff",
 	},
 	attributeCard: {
@@ -122,6 +152,30 @@ const useStyles = makeStyles((theme) => ({
 		width: "fit-content",
 		minWidth: "auto",
 		maxWidth: "auto",
+	},
+	userName: {
+		display: "inline",
+		color: "#007FFF",
+	},
+	dateTitle: {
+		display: "inline",
+		fontWeight: "bold",
+		float: "left",
+	},
+	date: {
+		fontWeight: "normal",
+		color: "#007FFF",
+		display: "inline",
+	},
+	herbDetail: {
+		fontWeight: "normal",
+		textIndent: "20px",
+	},
+	snackbar: {
+		width: "100%",
+		"& > * + *": {
+			marginTop: theme.spacing(2),
+		},
 	},
 }));
 
@@ -313,7 +367,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((imgUrl) => {
 							setNewImgUrl(imgUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -346,7 +400,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((NMRUrl) => {
 							setNewNMRUrl(NMRUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -354,7 +408,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพ!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -379,7 +433,7 @@ const Blog = (props) => {
 						.getDownloadURL()
 						.then((chemBondUrl) => {
 							setnewChemBondUrl(chemBondUrl);
-							setUploadNoti("อัพโหลดเสร็จสมบูรณ์!!");
+							setUploadNoti(upload_complete_alert);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -387,7 +441,7 @@ const Blog = (props) => {
 				}
 			);
 		} else {
-			setUploadNoti("กรุณาเลือกรูปภาพก่อน!!");
+			setUploadNoti(select_img_alert);
 			setTimeout(() => {
 				setUploadNoti(null);
 			}, 3000);
@@ -412,17 +466,15 @@ const Blog = (props) => {
 													<Card className={classes.userCard}>
 														<CardActionArea>
 															<Typography className={classes.title}>
-																โดย:
-																<Typography
-																	style={{
-																		color: "#007FFF",
-																		fontWeight: "normal",
-																		display: "inline",
-																	}}
-																>
-																	{props.userDisplayName}
-																</Typography>
+																โดย
 															</Typography>
+															<Typography className={classes.space}>
+																:&nbsp;
+															</Typography>
+															<Typography className={classes.userName}>
+																{props.userDisplayName}
+															</Typography>
+															{/* <Chip variant="outlined" color="primary" icon={<FaceIcon />} /> */}
 														</CardActionArea>
 													</Card>
 												</Grid>
@@ -432,57 +484,51 @@ const Blog = (props) => {
 									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
-												<div style={{margin: "0 0 5 0" }}>
-													<Typography className={classes.title}>
-														ชื่อภาษาไทย: &nbsp;
-														<Typography className={classes.content}>
-															{thaiNameEdit}
-														</Typography>
-													</Typography>
-												</div>
-												{/* <br/>
-												<br/> */}
-												<div style={{margin: "0 0 5 0" }}>
-													<Typography className={classes.title}>
-														ชื่อภาษาอังกฤษ: &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{engNameEdit}
-														</Typography>
-													</Typography>
-												</div>
-												{/* <br/>
-												<br/> */}
-												<div style={{margin: "0 0 5 0" }}>
-													<Typography className={classes.title}>
-														ชื่อทางวิทยาศาสตร์: &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{sciNameEdit}
-														</Typography>
-													</Typography>
-												</div>
-												<br/>
-												<br/>
 												<div>
 													<Typography className={classes.title}>
-														ชื่อวงศ์ : &nbsp;
-														<Typography
-															style={{
-																fontWeight: "normal",
-																display: "inline",
-															}}
-														>
-															{familyNameEdit}
-														</Typography>
+														ชื่อภาษาไทย
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
+													<Typography className={classes.content}>
+														{thaiNameEdit}
+													</Typography>
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อภาษาอังกฤษ
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
+													<Typography className={classes.content}>
+														{engNameEdit}
+													</Typography>
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อทางวิทยาศาสตร์
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
+													<Typography className={classes.content}>
+														{sciNameEdit}
+													</Typography>
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อวงศ์
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
+													<Typography className={classes.content}>
+														{familyNameEdit}
 													</Typography>
 												</div>
 											</CardContent>
@@ -496,12 +542,9 @@ const Blog = (props) => {
 											<CardContent>
 												<Typography className={classes.title}>
 													ข้อมูลสมุนไพร:
-													<br />
-													<Typography
-														style={{ fontWeight: "normal", textIndent: "20px" }}
-													>
-														{infoEdit}
-													</Typography>
+												</Typography>
+												<Typography className={classes.herbDetail}>
+													{infoEdit}
 												</Typography>
 											</CardContent>
 										</Card>
@@ -514,12 +557,9 @@ const Blog = (props) => {
 											<CardContent>
 												<Typography className={classes.title}>
 													สรรพคุณของสมุนไพร:
-													<br />
-													<Typography
-														style={{ fontWeight: "normal", textIndent: "20px" }}
-													>
-														{attributeEdit}
-													</Typography>
+												</Typography>
+												<Typography className={classes.herbDetail}>
+													{attributeEdit}
 												</Typography>
 											</CardContent>
 										</Card>
@@ -590,19 +630,10 @@ const Blog = (props) => {
 										<div className={classes.cardRoot}>
 											<Grid container spacing={3}>
 												<Grid item xs={6}>
-													<Typography
-														style={{ fontWeight: "bold", float: "left" }}
-													>
+													<Typography className={classes.dateTitle}>
 														เมื่อ:&nbsp;
 													</Typography>
-													<Typography
-														style={{
-															color: "#007FFF",
-															fontWeight: "normal",
-														}}
-													>
-														{date}
-													</Typography>
+													<Typography>{date}</Typography>
 												</Grid>
 											</Grid>
 										</div>
@@ -621,64 +652,40 @@ const Blog = (props) => {
 										style={{ display: "flex", justifyContent: "center" }}
 									>
 										{loggedIn && (
-											<Grid
-												item
-												xs={3}
-												container
-												spacing={1}
-												style={{ display: "flex", justifyContent: "center" }}
-											>
-												<Button
-													className={classes.backButton}
-													onClick={toggleEdit}
-													variant="contained"
-													color="primary"
-												>
-													<Typography>แก้ไข</Typography>
-												</Button>
-											</Grid>
-										)}
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{ display: "flex", justifyContent: "center" }}
-										>
 											<Button
-												className={classes.backButton}
-												onClick={() => router.back()}
-												color="default"
-												variant="outlined"
-											>
-												<Typography style={{ color: "black" }}>กลับ</Typography>
-											</Button>
-										</Grid>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{ display: "flex", justifyContent: "center" }}
-										>
-											<Button
-												key={props.main_id}
-												className={classes.historyButton}
+												className={classes.editButton}
+												onClick={toggleEdit}
 												variant="contained"
 												color="primary"
 											>
-												<Link
-													href="../herb/[id]/history/history_list"
-													as={
-														"../herb/" + props.main_id + "/history/history_list"
-													}
-												>
-													<Typography itemProp="hello">
-														ประวัติการแก้ไข
-													</Typography>
-												</Link>
+												<Typography>แก้ไข</Typography>
 											</Button>
-										</Grid>
+										)}
+										<Button
+											className={classes.backButton}
+											onClick={() => router.back()}
+											color="default"
+											variant="outlined"
+										>
+											<Typography style={{ color: "black" }}>กลับ</Typography>
+										</Button>
+										<Button
+											key={props.main_id}
+											className={classes.historyButton}
+											variant="contained"
+											color="primary"
+										>
+											<Link
+												href="../herb/[id]/history/history_list"
+												as={
+													"../herb/" + props.main_id + "/history/history_list"
+												}
+											>
+												<Typography itemProp="hello">
+													ประวัติการแก้ไข
+												</Typography>
+											</Link>
+										</Button>
 									</Grid>
 								</div>
 							</div>
@@ -686,7 +693,7 @@ const Blog = (props) => {
 							<div>
 								<form>
 									<div>
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											ชื่อภาษาไทย:
 										</Typography>
 										<TextField
@@ -719,7 +726,7 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											ชื่อทางวิทยาศาสตร์:
 										</Typography>
 										<TextField
@@ -736,7 +743,7 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											ชื่อวงศ์:
 										</Typography>
 										<TextField
@@ -752,7 +759,7 @@ const Blog = (props) => {
 									</div>
 									<br />
 									<div>
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											ข้อมูลสมุนไพร:
 										</Typography>
 										<TextField
@@ -790,7 +797,7 @@ const Blog = (props) => {
 									<br />
 									<div>
 										{uploadNoti !== null && <div>{uploadNoti}</div>}
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											รูปสมุนไพร
 										</Typography>
 										<div>
@@ -820,7 +827,7 @@ const Blog = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											รูปพันธะเคมี
 										</Typography>
 										<div>
@@ -849,7 +856,7 @@ const Blog = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography variant="h5" className={classes.title}>
+										<Typography variant="h5" className={classes.titleEdit}>
 											ตาราง NMR
 										</Typography>
 										<div>
@@ -892,69 +899,38 @@ const Blog = (props) => {
 									<Grid
 										container
 										spacing={1}
-										style={{
-											display: "flex",
-											flexWrap: "wrap",
-											justifyContent: "center",
-										}}
+										style={{ display: "flex", justifyContent: "center" }}
 									>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												position: "relative",
-											}}
+										<Button
+											className={classes.savechangeButton}
+											onClick={handleUpdate}
+											type="submit"
+											variant="contained"
+											color="primary"
 										>
-											<Button
-												onClick={handleUpdate}
-												type="submit"
-												variant="contained"
-												color="primary"
-											>
-												<Typography>บันทึกการเปลี่ยนแปลง</Typography>
-											</Button>
-										</Grid>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												position: "relative",
-											}}
+											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
+										</Button>
+
+										<Button
+											className={classes.deleteButton}
+											onClick={handleDelete}
+											type="submit"
+											variant="contained"
+											color="secondary"
 										>
-											<Button
-												onClick={handleDelete}
-												type="submit"
-												variant="contained"
-												color="secondary"
-											>
-												<Typography>ลบ</Typography>
-											</Button>
-										</Grid>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{ display: "flex", justifyContent: "center" }}
+											<Typography>ลบ</Typography>
+										</Button>
+
+										<Button
+											className={classes.cancelButton}
+											onClick={handleCancel}
+											type="submit"
+											position="relative"
+											color="default"
+											variant="outlined"
 										>
-											<Button
-												onClick={handleCancel}
-												type="submit"
-												position="relative"
-												color="default"
-												variant="outlined"
-											>
-												<Typography>ยกเลิก</Typography>
-											</Button>
-										</Grid>
+											<Typography>ยกเลิก</Typography>
+										</Button>
 									</Grid>
 								</div>
 							</div>

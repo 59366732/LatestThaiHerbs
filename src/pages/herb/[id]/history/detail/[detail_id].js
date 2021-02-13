@@ -7,8 +7,10 @@ import { UserContext } from "../../../../../providers/UserProvider";
 import firebase from "firebase";
 import ReactLoading from "react-loading";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 import {
 	Icon,
@@ -27,6 +29,7 @@ import {
 	Container,
 	CssBaseline,
 	ThemeProvider,
+	makeStyles,
 } from "@material-ui/core/";
 
 const frameStyles = {
@@ -66,14 +69,34 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		margin: theme.spacing(1, "auto"),
 	},
+	savechangeButton: {
+		textAlign: "center",
+		alignItems: "center",
+		margin: theme.spacing(1, "auto"),
+	},
+	cancelButton: {
+		textAlign: "center",
+		alignItems: "center",
+		margin: theme.spacing(1, "auto"),
+	},
 	grid: {
 		padding: theme.spacing(2),
 		textAlign: "center",
 	},
 	title: {
+		display: "inline",
 		fontWeight: "bold",
 		variant: "h3",
 		paddingRight: "5px",
+		textDecoration: "underline",
+	},
+	titleEdit: {
+		fontWeight: "bold",
+		variant: "h3",
+		textDecoration: "underline",
+	},
+	space: {
+		display: "inline",
 	},
 	content: {
 		display: "inline",
@@ -89,15 +112,25 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(2),
 	},
+	DAC: {
+		marginTop: "30px",
+	},
+	DIC: {
+		marginTop: "30px",
+	},
 	imageCard: {
-		minWidth: 500,
+		minWidth: "auto",
+		maxWidth: "auto",
 		marginTop: "10px",
-		backgroundColor: "#f5f5f5",
+		marginBottom: "10px",
+		backgroundColor: "#ffffff",
 	},
 	attributeCard: {
-		minWidth: 500,
+		minWidth: "auto",
+		maxWidth: "auto",
 		marginTop: "10px",
-		backgroundColor: "#ffffff",
+		marginBottom: "10px",
+		backgroundColor: "#f8f8ff",
 	},
 	userCard: {
 		width: "fit-content",
@@ -106,11 +139,24 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: "auto",
 		maxWidth: "auto",
 	},
-	DAC: {
-		marginTop: "30px",
+	userName: {
+		display: "inline",
+		color: "#007FFF",
 	},
-	DIC: {
-		marginTop: "30px",
+	dateTitle: {
+		display: "inline",
+		fontWeight: "bold",
+		float: "left",
+	},
+	herbDetail: {
+		fontWeight: "normal",
+		textIndent: "20px",
+	},
+	snackbar: {
+		width: "100%",
+		"& > * + *": {
+			marginTop: theme.spacing(2),
+		},
 	},
 }));
 
@@ -212,6 +258,12 @@ const detail = (props) => {
 		</span>
 	);
 
+	// const { enqueueSnackbar } = useSnackbar();
+	// const handleClickVariant = (variant) => () => {
+	// 	// variant could be success, error, warning, info, or default
+	// 	enqueueSnackbar("This is a success message!", { variant });
+	// };
+
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			setLoggedIn(true);
@@ -295,7 +347,7 @@ const detail = (props) => {
 						.getDownloadURL()
 						.then((imgUrl) => {
 							setNewImgUrl(imgUrl);
-							setUploadNoti(upload_complete_alert);
+							setUploadNoti(handleClickVariant);
 							setTimeout(() => {
 								setUploadNoti(null);
 							}, 3000);
@@ -378,7 +430,7 @@ const detail = (props) => {
 	};
 	const classes = useStyles();
 	return (
-		<div>
+		<SnackbarProvider maxSnack={3}>
 			<Container component="main">
 				<CssBaseline />
 				<Box style={frameStyles}>
@@ -414,6 +466,8 @@ const detail = (props) => {
 													</Typography>
 													<Typography
 														style={{
+															display: "inline",
+															textDecoration: "underline",
 															fontWeight: "bold",
 															paddingLeft: "10px",
 															paddingRight: "10px",
@@ -438,30 +492,53 @@ const detail = (props) => {
 									<div className={classes.DAC}>
 										<Card className={classes.attributeCard}>
 											<CardContent>
-												<Typography className={classes.title}>
-													ชื่อภาษาไทย:
+												<div>
+													<Typography className={classes.title}>
+														ชื่อภาษาไทย
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
 													<Typography className={classes.content}>
 														{props.thaiName}
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อภาษาอังกฤษ:
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อภาษาอังกฤษ
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
 													<Typography className={classes.content}>
 														{props.engName}
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อทางวิทยาศาสตร์:
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อทางวิทยาศาสตร์
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
 													<Typography className={classes.content}>
 														{props.sciName}
 													</Typography>
-												</Typography>
-												<Typography className={classes.title}>
-													ชื่อวงศ์:
+												</div>
+												<br />
+												<div>
+													<Typography className={classes.title}>
+														ชื่อวงศ์
+													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
 													<Typography className={classes.content}>
 														{props.familyName}
 													</Typography>
-												</Typography>
+												</div>
 											</CardContent>
 										</Card>
 									</div>
@@ -470,7 +547,9 @@ const detail = (props) => {
 											<CardContent>
 												<Typography className={classes.title}>
 													ข้อมูลสมุนไพร:
-													<Typography>{props.info}</Typography>
+												</Typography>
+												<Typography className={classes.herbDetail}>
+													{props.info}
 												</Typography>
 											</CardContent>
 										</Card>
@@ -480,7 +559,9 @@ const detail = (props) => {
 											<CardContent>
 												<Typography className={classes.title}>
 													สรรพคุณของสมุนไพร:
-													<Typography>{props.attribute}</Typography>
+												</Typography>
+												<Typography className={classes.herbDetail}>
+													{props.attribute}
 												</Typography>
 											</CardContent>
 										</Card>
@@ -552,39 +633,24 @@ const detail = (props) => {
 										style={{ display: "flex", justifyContent: "center" }}
 									>
 										{loggedIn && (
-											<Grid
-												item
-												xs={3}
-												container
-												spacing={1}
-												style={{ display: "flex", justifyContent: "center" }}
-											>
-												<Button
-													className={classes.backButton}
-													onClick={toggleEdit}
-													variant="contained"
-													color="primary"
-												>
-													<Typography>แก้ไข</Typography>
-												</Button>
-											</Grid>
-										)}
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{ display: "flex", justifyContent: "center" }}
-										>
 											<Button
-												className={classes.backButton}
-												onClick={() => router.back()}
-												color="default"
-												variant="outlined"
+												className={classes.editButton}
+												onClick={toggleEdit}
+												variant="contained"
+												color="primary"
 											>
-												<Typography style={{ color: "black" }}>กลับ</Typography>
+												<Typography>แก้ไข</Typography>
 											</Button>
-										</Grid>
+										)}
+
+										<Button
+											className={classes.backButton}
+											onClick={() => router.back()}
+											color="default"
+											variant="outlined"
+										>
+											<Typography style={{ color: "black" }}>กลับ</Typography>
+										</Button>
 									</Grid>
 								</div>
 							</div>
@@ -614,8 +680,8 @@ const detail = (props) => {
 											</Typography>
 										</Typography>
 									</div>
-									<div>
-										<Typography className={classes.title}>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>
 											ชื่อภาษาไทย:
 										</Typography>
 										<TextField
@@ -629,8 +695,8 @@ const detail = (props) => {
 											placeholder="ชื่อสมุนไพรภาษาไทย ?"
 										/>
 									</div>
-									<div>
-										<Typography className={classes.title}>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>
 											ชื่อภาษาอังกฤษ:
 										</Typography>
 										<TextField
@@ -644,8 +710,8 @@ const detail = (props) => {
 											placeholder="ชื่อสมุนไพรภาษาอังกฤษ ?"
 										/>
 									</div>
-									<div>
-										<Typography className={classes.title}>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>
 											ชื่อทางวิทยาศาสตร์:
 										</Typography>
 										<TextField
@@ -659,10 +725,10 @@ const detail = (props) => {
 											placeholder="ชื่อทางวิทยาศาสตร์ของสมุนไพร ?"
 										/>
 									</div>
-									<div>
-										<Typography className={classes.title}>ชื่อวงศ์:</Typography>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>ชื่อวงศ์:</Typography>
 										<TextField
-											fullwidth="true"
+											fullWidth="true"
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -672,12 +738,12 @@ const detail = (props) => {
 											placeholder="ชื่อวงศ์ของสมุนไพร ?"
 										/>
 									</div>
-									<div>
-										<Typography className={classes.title}>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>
 											ข้อมูลสมุนไพร:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullWidth="true"
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -689,12 +755,12 @@ const detail = (props) => {
 											placeholder="ข้อมูลสมุนไพร ?"
 										/>
 									</div>
-									<div>
-										<Typography className={classes.title}>
+									<div style={{ padding: "10px 0 10px 0" }}>
+										<Typography className={classes.titleEdit}>
 											สรรพคุณของสมุนไพร:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullWidth="true"
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -710,7 +776,7 @@ const detail = (props) => {
 									<div>{uploadNoti !== null && <div>{uploadNoti}</div>}</div>
 									<br />
 									<div>
-										<Typography className={classes.title}>
+										<Typography className={classes.titleEdit}>
 											รูปสมุนไพร
 										</Typography>
 										<div>
@@ -740,7 +806,7 @@ const detail = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.title}>
+										<Typography className={classes.titleEdit}>
 											รูปพันธะเคมี
 										</Typography>
 										<div>
@@ -769,7 +835,7 @@ const detail = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.title}>ตาราง NMR</Typography>
+										<Typography className={classes.titleEdit}>ตาราง NMR</Typography>
 										<div>
 											<input
 												type="file"
@@ -817,49 +883,26 @@ const detail = (props) => {
 											justifyContent: "center",
 										}}
 									>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												position: "relative",
-											}}
+										<Button
+											className={classes.savechangeButton}
+											onClick={handleUpdate}
+											type="submit"
+											color="primary"
+											variant="contained"
 										>
-											<Button
-												onClick={handleUpdate}
-												type="submit"
-												color="primary"
-												variant="contained"
-											>
-												<Typography>บันทึกการเปลี่ยนแปลง</Typography>
-											</Button>
-										</Grid>
-										<Grid
-											item
-											xs={3}
-											container
-											spacing={1}
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												position: "relative",
-											}}
+											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
+										</Button>
+
+										<Button
+											className={classes.cancelButton}
+											onClick={handleCancel}
+											type="submit"
+											position="relative"
+											color="default"
+											variant="outlined"
 										>
-											<Button
-												onClick={handleCancel}
-												type="submit"
-												position="relative"
-												color="default"
-												variant="outlined"
-											>
-												<Typography style={{ color: "black" }}>
-													ยกเลิก
-												</Typography>
-											</Button>
-										</Grid>
+											<Typography style={{ color: "black" }}>ยกเลิก</Typography>
+										</Button>
 									</Grid>
 								</div>
 							</div>
@@ -867,7 +910,7 @@ const detail = (props) => {
 					</div>
 				</Box>
 			</Container>
-		</div>
+		</SnackbarProvider>
 	);
 };
 

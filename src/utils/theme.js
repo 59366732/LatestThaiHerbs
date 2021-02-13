@@ -54,17 +54,18 @@ export default {
 	overrides: {
 		MuiFilledInput: {
 			root: {
-				backgroundColor: "none",
+				// backgroundColor: "none",
 			},
 		},
 		MuiInputLabel: {
 			root: {
-				backgroundColor: "none",
+				// backgroundColor: "none",
 			},
 		},
 		MuiTextField: {
 			root: {
-				backgroundColor: "none",
+				// backgroundColor: "none",
+				fullWidth: true,
 			},
 		},
 		MuiButton: {
@@ -98,6 +99,7 @@ export default {
 		},
 		MuiPaper: {
 			elevation: 12,
+			variant: "contained",
 		},
 		MuiCard: {
 			elevation: 12,

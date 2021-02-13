@@ -8,7 +8,6 @@ import { UserContext } from "../providers/UserProvider";
 import styles from "../styles/Home.module.css";
 import "./index";
 
-import Appbar from "../components/appbar";
 import Navbar from "../components/navbar";
 import Header from "../components/custom/header";
 
@@ -35,10 +34,7 @@ export default function MyApp({ Component, pageProps }) {
 			<MuiThemeProvider theme={Theme}>
 				<UserProvider>
 					<div className="App">
-						{/* <div> */}
-						{/* <Navbar /> */}
-						<Appbar />
-						{/* ["xs","sm","md","lg","xl",false] */}
+						<Navbar />
 						<Container maxWidth="lg" minwidth="370px">  
 							<div className="container">
 								<Component {...pageProps} />
