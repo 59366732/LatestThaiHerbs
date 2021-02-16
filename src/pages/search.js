@@ -6,55 +6,45 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
 import { fade, makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import {
+	TextField,
+	CssBaseline,
+	Container,
+	CardHeader,
+	Card,
+	CardActionArea,
+	CardActions,
+	CardMedia,
+	Button,
+	Typography,
+	Paper,
+	Grid,
+	InputLabel,
+	MenuItem,
+	FormControl,
+	Select,
+	List,
+	ListItem,
+} from "@material-ui/core/";
 import Alert from "@material-ui/lab/Alert";
+
+import SearchOption from "../components/searchoption";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		margin: theme.spacing(1),
 	},
-	search: {
-		position: "relative",
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
-		"&:hover": {
-			backgroundColor: fade(theme.palette.common.white, 0.25),
-		},
-		marginLeft: 0,
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			marginLeft: theme.spacing(1),
-			width: "auto",
-		},
+	button: {
+		padding: theme.spacing(1),
 	},
-	searchIcon: {
-		padding: theme.spacing(0, 2),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
+	formControl: {
+		width: "100%",
+		minWidth: 120,
+	},
+	list: {
 		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	inputRoot: {
-		color: "inherit",
-	},
-	inputInput: {
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			width: "12ch",
-			"&:focus": {
-				width: "20ch",
-			},
-		},
+		justifyContent: `space-between`,
+		alignItem: "center",
 	},
 }));
 
@@ -66,7 +56,7 @@ function Search() {
 	const please_type_before = (
 		<span>
 			<Alert severity="warning">
-				<Typography>กรุณาพิมพ์ข้อความก่อน!!!</Typography>
+				<Typography>กรุณาพิมพ์ข้อความเพื่อทำการค้นหา!!!</Typography>
 			</Alert>
 		</span>
 	);
@@ -92,46 +82,46 @@ function Search() {
 	const classes = useStyles();
 	return (
 		<div
-			style={{ textAlign: "center", paddingTop: "90px" }}
+			style={{ textAlign: "center",}}
 			className={classes.root}
 		>
 			<CssBaseline />
 			<Container maxWidth="sm">
-				<div>{error !== null && <div>{error}</div>}</div>
 				<form>
-					<TextField
-						fullWidth
-						variant="outlined"
-						value={searchName}
-						onChange={(e) => setSearchName(e.target.value)}
-						placeholder="ค้นหา"
-					/>
-					&nbsp;&nbsp;
-					<Button
-						onClick={handleSubmit}
-						variant="contained"
-						color="primary"
-						type="submit"
-						style={{ marginTop: "5px", paddingBottom: "5px" }}
-					>
-						ค้นหา
-					</Button>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder="Search…"
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-							inputProps={{ "aria-label": "search" }}
-						/>
+					<div style={{ display: "inline" }}>
+						<List>
+							<ListItem>
+								<TextField
+									fullWidth
+									variant="outlined"
+									value={searchName}
+									onChange={(e) => setSearchName(e.target.value)}
+									placeholder="ค้นหา"
+								/>
+							</ListItem>
+							<ListItem>{error !== null && <div>{error}</div>}</ListItem>
+							<ListItem>
+								<div className={classes.formControl}>
+									<SearchOption />
+								</div>
+							</ListItem>
+							<ListItem>
+								<Button
+									className={classes.button}
+									fullWidth
+									// style={{ padding: "10px 5px 10px 5px", marginTop: "5px" }}
+									onClick={handleSubmit}
+									color="primary"
+									type="submit"
+								>
+									<SearchIcon/>
+									ค้นหา
+								</Button>
+							</ListItem>
+						</List>
 					</div>
 				</form>
 				<div>
-					{/*vvvv ตรงนี้ยังไม่ได้ vvvv  ในsubmitเพิ่มให้มันส่งค่าอะไรออะมาซักอย่างเพื่อเชค*/}
 					{herbs ? (
 						herbs.map((herb) => (
 							<li key={herb.id}>
@@ -143,6 +133,61 @@ function Search() {
 					) : (
 						<h1>No matching documents</h1>
 					)}
+				</div>
+				<div style={{ paddingTop: "5px" }}>
+					<Grid container spacing={2} direction="row">
+						{herbs.map((herb) => (
+							<Grid item xs={12} sm={6} md={3} key={herbs.indexOf(herb)}>
+								<Card>
+									<CardActionArea>
+										<CardMedia
+											className={classes.media}
+											image={herb.imgUrl}
+											title="Herb Image"
+										/>
+										<CardContent className={classes.title}>
+											<Link href="/herb/[id]" as={"/herb/" + herb.id}>
+												<Typography
+													gutterBottom
+													variant="h5"
+													component="h2"
+													itemProp="hello"
+												>
+													{herb.thaiName}
+												</Typography>
+											</Link>
+										</CardContent>
+									</CardActionArea>
+									<CardActions>
+										<Typography
+											variant="caption"
+											style={{ fontWeight: "bold", float: "left" }}
+										>
+											โดย:
+										</Typography>
+										<Typography
+											variant="caption"
+											style={{ color: "#007FFF", textTransform: "capitalize" }}
+										>
+											{herb.userDisplayName}
+										</Typography>
+										<Typography
+											variant="caption"
+											style={{ fontWeight: "bold", display: "inline" }}
+										>
+											เมื่อ:
+										</Typography>
+										<Typography
+											variant="caption"
+											style={{ color: "#007FFF", textTransform: "capitalize" }}
+										>
+											{new Date(herb.timestamp.seconds * 1000).toDateString()}
+										</Typography>
+									</CardActions>
+								</Card>
+							</Grid>
+						))}
+					</Grid>
 				</div>
 			</Container>
 		</div>

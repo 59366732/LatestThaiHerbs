@@ -77,6 +77,11 @@ export default {
 				maxWidth: "auto",
 			},
 		},
+		MuiSelect: {
+			root: {
+				backgroundColor: "none"
+			},
+		},
 	},
 	props: {
 		MuiButton: {
@@ -93,6 +98,16 @@ export default {
 				maxWidth: "100%",
 			},
 			variant: "filled",
+			InputLabelProps: {
+				shrink: true,
+			},
+		},
+		MuiSelect: {
+			fullWidth: {
+				width: "auto",
+				maxWidth: "100%",
+			},
+			variant: "outlined",
 			InputLabelProps: {
 				shrink: true,
 			},

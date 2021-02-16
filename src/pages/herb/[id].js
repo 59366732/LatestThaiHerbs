@@ -8,10 +8,9 @@ import { auth, storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import firebase from "firebase";
 
-import { NewReleasesOutlined } from "@material-ui/icons/";
+import { NewReleasesOutlined, FaceIcon, SaveIcon, DeleteForeverIcon, CancelIcon, } from "@material-ui/icons/";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { MuiAlert, Alert } from "@material-ui/lab/";
-import FaceIcon from "@material-ui/icons/Face";
 import {
 	Avatar,
 	Chip,

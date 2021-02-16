@@ -4,8 +4,8 @@ import db, {
 	auth,
 	firestore,
 	generateUserDocument,
-} from "../database/firebase";
-import { UserContext } from "../providers/UserProvider";
+} from "../../database/firebase";
+import { UserContext } from "../../providers/UserProvider";
 import { useContext, useState, useEffect } from "react";
 import {
 	Avatar,
