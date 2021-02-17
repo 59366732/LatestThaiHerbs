@@ -114,11 +114,11 @@ export default {
 		},
 		MuiPaper: {
 			elevation: 12,
-			variant: "contained",
+			// variant: "contained",
 		},
 		MuiCard: {
 			elevation: 12,
-			variant: "contained",
+			// variant: "contained",
 		},
 	},
 };

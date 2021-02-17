@@ -26,6 +26,7 @@ import {
 	ThemeProvider,
 	makeStyles,
 } from "@material-ui/core/";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 const frameStyles = {
 	position: "relative",
 	fontFamily: "sans-serif",
@@ -200,6 +201,7 @@ const history = (props) => {
 							className={classes.buttonGrid}
 						>
 							<Button
+								startIcon={<ArrowBackIcon />}
 								color="default"
 								variant="outlined"
 								className={classes.backButton}

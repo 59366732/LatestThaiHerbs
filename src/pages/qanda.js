@@ -1,7 +1,21 @@
 import React from "react";
+import Link from "next/link";
+import db, {
+	auth,
+	firestore,
+	generateUserDocument,
+} from "../database/firebase";
+import { UserContext } from "../providers/UserProvider";
+import { useContext, useState, useEffect } from "react";
+
 import { fade, makeStyles } from "@material-ui/core/styles";
-import SearchIcon from '@material-ui/icons/Search';
+import ThumbsUpDownIcon from "@material-ui/icons/ThumbsUpDown";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import Tooltip from "@material-ui/core/Tooltip";
 import {
+	InputBase,
+	TextField,
 	Button,
 	AppBar,
 	Toolbar,
@@ -11,25 +25,30 @@ import {
 	List,
 	ListItem,
 	Divider,
+	ListItemIcon,
 	ListItemText,
 	ListItemAvatar,
 	Avatar,
 	Typography,
 } from "@material-ui/core/";
 const useStyles = makeStyles((theme) => ({
+	mainDiv: {
+		marginTop: theme.spacing(2),
+	},
 	root: {
 		display: `flex`,
 		flexDirection: "column",
 		justifyContent: `space-between`,
 		alignItem: "center",
 		width: "100%",
-		maxWidth: "90ch",
 		backgroundColor: theme.palette.background.paper,
 	},
 	inline: {
 		display: "inline",
+		textIndent: "20px",
 	},
 	titleBarFlex: {
+		marginTop: theme.spacing(1),
 		display: `flex`,
 		justifyContent: `space-between`,
 	},
@@ -56,38 +75,110 @@ const useStyles = makeStyles((theme) => ({
 			width: "auto",
 		},
 	},
-	searchIcon: {
-		padding: theme.spacing(0, 2),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	inputRoot: {
-		color: "inherit",
-	},
-	inputInput: {
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			width: "12ch",
-			"&:focus": {
-				width: "20ch",
-			},
-		},
-	},
 }));
+
+const repeatStringNumTimes = (string, times) => {
+	return string.repeat(times);
+};
+function limitContent(string, limit) {
+	var dots = "...";
+	if (string.length > limit) {
+		string = string.substring(0, limit) + dots;
+	}
+
+	return string;
+}
+
+const QuestionTitle = "หัวข้อคำถาม";
+const QuestionDetail = limitContent(
+	repeatStringNumTimes("รายละเอียดคำถาม", 20),
+	250
+);
+const username_example = "ชื่อผู้ใช้";
+const time_example = "Day Month Year";
 
 const QandA = () => {
 	const classes = useStyles();
+	const { user, setUser } = useContext(UserContext);
+
+	const [loggedIn, setLoggedIn] = useState(false);
+
+	auth.onAuthStateChanged((user) => {
+		if (user) {
+			setLoggedIn(true);
+		} else {
+			setLoggedIn(false);
+		}
+	});
+
+	const QuestionComponent = () => {
+		return (
+			<span>
+				<ListItem alignItems="flex-start">
+					<ListItemIcon>
+						<div style={{ display: "block" }}>
+							<ThumbsUpDownIcon />
+							<Typography style={{ textAlign: "center" }}>2</Typography>
+						</div>
+					</ListItemIcon>
+					<ListItemIcon>
+						<div style={{ display: "block" }}>
+							<QuestionAnswerIcon />
+							<Typography style={{ textAlign: "center" }}>1</Typography>
+						</div>
+					</ListItemIcon>
+					<ListItemText
+						primary={<Typography style={{fontWeight: "bold"}}>{QuestionTitle}</Typography>}
+						secondary={
+							<React.Fragment>
+								<Typography
+									component="span"
+									variant="body2"
+									className={classes.inline}
+									color="textPrimary"
+								>
+									{QuestionDetail}
+								</Typography>
+								<br />
+								<Typography
+									variant="caption"
+									style={{ fontWeight: "bold", float: "left" }}
+								>
+									โดย:
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ color: "#007FFF", textTransform: "capitalize" }}
+								>
+									{username_example}
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ fontWeight: "bold", display: "inline" }}
+								>
+									เมื่อ:
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ color: "#007FFF", textTransform: "capitalize" }}
+								>
+									{time_example}
+								</Typography>
+							</React.Fragment>
+						}
+					/>
+				</ListItem>
+				<Divider />
+			</span>
+		);
+	};
+
 	return (
 		<div className="App">
-			<div>
+			<div className={classes.mainDiv}>
 				<Toolbar component="nav">
 					<Container maxWidth="md" className={classes.titleBarFlex}>
 						<List
@@ -113,80 +204,54 @@ const QandA = () => {
 									</Button>
 								</ListItem>
 							</div>
+							{loggedIn ? (
+								<div>
+									<ListItem>
+										<Button>
+											<Typography className={classes.titleText}>
+												ตั้งกระทู้ถาม
+											</Typography>
+										</Button>
+									</ListItem>
+								</div>
+							) : (
+								<div>
+									<ListItem>
+										<Link href="/signin">
+											<Button>
+												<Typography className={classes.titleText}>
+													ตั้งกระทู้ถาม
+												</Typography>
+											</Button>
+										</Link>
+									</ListItem>
+								</div>
+							)}
 						</List>
 						<div className={classes.search}>
-							<TextField/>
+							<TextField
+								fullWidth
+								variant="outlined"
+								value={""}
+								onChange={(e) => setSearchName(e.target.value)}
+								placeholder="ค้นหา"
+							/>
 						</div>
 					</Container>
 				</Toolbar>
 			</div>
-			<Container maxWidth="md" className={classes.titleBarFlex}>
+			<Container
+				component="main"
+				maxWidth="md"
+				className={classes.titleBarFlex}
+			>
 				<List className={classes.root}>
-					<ListItem alignItems="flex-start">
-						<ListItemAvatar>
-							<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-						</ListItemAvatar>
-						<ListItemText
-							primary="Brunch this weekend?"
-							secondary={
-								<React.Fragment>
-									<Typography
-										component="span"
-										variant="body2"
-										className={classes.inline}
-										color="textPrimary"
-									>
-										Ali Connors
-									</Typography>
-									{" — I'll be in your neighborhood doing errands this…"}
-								</React.Fragment>
-							}
-						/>
-					</ListItem>
-					<Divider variant="inset" component="li" />
-					<ListItem alignItems="flex-start">
-						<ListItemAvatar>
-							<Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-						</ListItemAvatar>
-						<ListItemText
-							primary="Summer BBQ"
-							secondary={
-								<React.Fragment>
-									<Typography
-										component="span"
-										variant="body2"
-										className={classes.inline}
-										color="textPrimary"
-									>
-										to Scott, Alex, Jennifer
-									</Typography>
-									{" — Wish I could come, but I'm out of town this…"}
-								</React.Fragment>
-							}
-						/>
-					</ListItem>
-					<Divider variant="inset" component="li" />
-					<ListItem alignItems="flex-start">
-						<ListItemAvatar>
-							<Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-						</ListItemAvatar>
-						<ListItemText
-							primary="Oui Oui"
-							secondary={
-								<React.Fragment>
-									<Typography
-										component="span"
-										variant="body2"
-										className={classes.inline}
-										color="textPrimary"
-									>
-										Sandra Adams
-									</Typography>
-									{" — Do you have Paris recommendations? Have you ever…"}
-								</React.Fragment>
-							}
-						/>
-					</ListItem>
+					<Divider/>
+					<QuestionComponent />
+					<QuestionComponent />
+					<QuestionComponent />
+					<QuestionComponent />
+					<QuestionComponent />
 				</List>
 			</Container>
 		</div>

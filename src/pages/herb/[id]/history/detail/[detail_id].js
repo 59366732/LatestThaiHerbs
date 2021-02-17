@@ -7,6 +7,11 @@ import { UserContext } from "../../../../../providers/UserProvider";
 import firebase from "firebase";
 import ReactLoading from "react-loading";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import EditIcon from "@material-ui/icons/Edit";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import SaveIcon from "@material-ui/icons/Save";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -474,7 +479,7 @@ const detail = (props) => {
 															paddingBottom: "10px",
 														}}
 													>
-														ชื่อผู้แก้ไข:
+														ผู้แก้ไข:
 														<Typography
 															style={{
 																fontWeight: "normal",
@@ -634,9 +639,10 @@ const detail = (props) => {
 									>
 										{loggedIn && (
 											<Button
+												startIcon={<EditIcon />}
 												className={classes.editButton}
 												onClick={toggleEdit}
-												variant="contained"
+												// variant="contained"
 												color="primary"
 											>
 												<Typography>แก้ไข</Typography>
@@ -644,6 +650,7 @@ const detail = (props) => {
 										)}
 
 										<Button
+											startIcon={<ArrowBackIcon />}
 											className={classes.backButton}
 											onClick={() => router.back()}
 											color="default"
@@ -726,7 +733,9 @@ const detail = (props) => {
 										/>
 									</div>
 									<div style={{ padding: "10px 0 10px 0" }}>
-										<Typography className={classes.titleEdit}>ชื่อวงศ์:</Typography>
+										<Typography className={classes.titleEdit}>
+											ชื่อวงศ์:
+										</Typography>
 										<TextField
 											fullWidth="true"
 											id="filled-multiline-static"
@@ -835,7 +844,9 @@ const detail = (props) => {
 											</div>
 										</div>
 										<br />
-										<Typography className={classes.titleEdit}>ตาราง NMR</Typography>
+										<Typography className={classes.titleEdit}>
+											ตาราง NMR
+										</Typography>
 										<div>
 											<input
 												type="file"
@@ -884,16 +895,18 @@ const detail = (props) => {
 										}}
 									>
 										<Button
+											startIcon={<SaveIcon />}
 											className={classes.savechangeButton}
 											onClick={handleUpdate}
 											type="submit"
 											color="primary"
-											variant="contained"
+											// variant="contained"
 										>
 											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
 										</Button>
 
 										<Button
+											startIcon={<CancelIcon />}
 											className={classes.cancelButton}
 											onClick={handleCancel}
 											type="submit"

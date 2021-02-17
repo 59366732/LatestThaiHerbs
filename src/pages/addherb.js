@@ -27,6 +27,8 @@ import {
 } from "@material-ui/core/";
 
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import SaveIcon from "@material-ui/icons/Save";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const frameStyles = {
 	fontFamily: "sans-serif",
@@ -240,8 +242,11 @@ function Addherb() {
 				<CssBaseline />
 				<Box style={frameStyles}>
 					<div>
-						<Typography variant="h3" style={{ marginLeft: "30px", position: "relative" }}>
-							เพื่มข้อมูลสมุนไพรไทย
+						<Typography
+							variant="h3"
+							style={{ marginLeft: "30px", position: "relative" }}
+						>
+							เพิ่มข้อมูลสมุนไพรไทย
 						</Typography>
 						{error !== null && <div>{error}</div>}
 						<form>
@@ -431,8 +436,9 @@ function Addherb() {
 										color="primary"
 										onClick={handleSubmit}
 										type="submit"
+										startIcon={<SaveIcon />}
 									>
-										<Typography>Submit</Typography>
+										<Typography>บันทึก</Typography>
 									</Button>
 								</Grid>
 								<Grid
@@ -444,11 +450,13 @@ function Addherb() {
 								>
 									<Button
 										position="relative"
-										type="secondary"
+										color="default"
 										variant="outlined"
+										startIcon={<ArrowBackIcon />}
+										type="secondary"
 										onClick={() => router.back()}
 									>
-										<Typography>Back</Typography>
+										<Typography>กลับ</Typography>
 									</Button>
 								</Grid>
 							</Grid>

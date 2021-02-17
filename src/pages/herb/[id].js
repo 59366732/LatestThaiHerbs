@@ -7,8 +7,17 @@ import { useRouter } from "next/router";
 import { auth, storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import firebase from "firebase";
-
-import { NewReleasesOutlined, FaceIcon, SaveIcon, DeleteForeverIcon, CancelIcon, } from "@material-ui/icons/";
+import EditIcon from '@material-ui/icons/Edit';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import HistoryIcon from '@material-ui/icons/History';
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CancelIcon from '@material-ui/icons/Cancel';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import SaveIcon from '@material-ui/icons/Save';
+import {
+	NewReleasesOutlined,
+	FaceIcon,
+} from "@material-ui/icons/";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { MuiAlert, Alert } from "@material-ui/lab/";
 import {
@@ -33,8 +42,6 @@ import {
 	CssBaseline,
 	ThemeProvider,
 } from "@material-ui/core/";
-
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const frameStyles = {
 	fontFamily: "sans-serif",
@@ -632,7 +639,7 @@ const Blog = (props) => {
 													<Typography className={classes.dateTitle}>
 														เมื่อ:&nbsp;
 													</Typography>
-													<Typography>{date}</Typography>
+													<Typography className={classes.date}>{date}</Typography>
 												</Grid>
 											</Grid>
 										</div>
@@ -656,6 +663,7 @@ const Blog = (props) => {
 												onClick={toggleEdit}
 												variant="contained"
 												color="primary"
+												startIcon={<EditIcon/>}
 											>
 												<Typography>แก้ไข</Typography>
 											</Button>
@@ -665,6 +673,7 @@ const Blog = (props) => {
 											onClick={() => router.back()}
 											color="default"
 											variant="outlined"
+											startIcon={<ArrowBackIcon/>}
 										>
 											<Typography style={{ color: "black" }}>กลับ</Typography>
 										</Button>
@@ -673,6 +682,7 @@ const Blog = (props) => {
 											className={classes.historyButton}
 											variant="contained"
 											color="primary"
+											startIcon={<HistoryIcon/>}
 										>
 											<Link
 												href="../herb/[id]/history/history_list"
@@ -904,8 +914,9 @@ const Blog = (props) => {
 											className={classes.savechangeButton}
 											onClick={handleUpdate}
 											type="submit"
-											variant="contained"
+											// variant="contained"
 											color="primary"
+											startIcon={<SaveIcon/>}
 										>
 											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
 										</Button>
@@ -914,8 +925,9 @@ const Blog = (props) => {
 											className={classes.deleteButton}
 											onClick={handleDelete}
 											type="submit"
-											variant="contained"
+											// variant="contained"
 											color="secondary"
+											startIcon={<DeleteForeverIcon/>}
 										>
 											<Typography>ลบ</Typography>
 										</Button>
@@ -927,6 +939,7 @@ const Blog = (props) => {
 											position="relative"
 											color="default"
 											variant="outlined"
+											startIcon={<CancelIcon/>}
 										>
 											<Typography>ยกเลิก</Typography>
 										</Button>
