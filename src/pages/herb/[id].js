@@ -1,23 +1,28 @@
 import React, { useState, useEffect, useContext } from "react";
-import db from "../../database/firebase";
+import db, { auth, storage } from "../../database/firebase";
 import Link from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/router";
-import { auth, storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import firebase from "firebase";
-import EditIcon from '@material-ui/icons/Edit';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import HistoryIcon from '@material-ui/icons/History';
+import EditIcon from "@material-ui/icons/Edit";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import HistoryIcon from "@material-ui/icons/History";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import CancelIcon from '@material-ui/icons/Cancel';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import SaveIcon from '@material-ui/icons/Save';
-import {
-	NewReleasesOutlined,
-	FaceIcon,
-} from "@material-ui/icons/";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import SaveIcon from "@material-ui/icons/Save";
+import { NewReleasesOutlined, FaceIcon } from "@material-ui/icons/";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Draggable from "react-draggable";
+import Slide from "@material-ui/core/Slide";
+
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { MuiAlert, Alert } from "@material-ui/lab/";
 import {
@@ -58,6 +63,20 @@ const frameStyles = {
 	marginRight: "20px",
 	marginLeft: "20px",
 };
+
+function PaperComponent(props) {
+	return (
+		<Draggable
+			handle="#draggable-dialog-title"
+			cancel={'[class*="MuiDialogContent-root"]'}
+		>
+			<Paper {...props} />
+		</Draggable>
+	);
+}
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -159,9 +178,29 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: "auto",
 		maxWidth: "auto",
 	},
+	statusCard: {
+		float: "Right",
+		paddingLeft: "10px",
+		paddingRight: "10px",
+		width: "fit-content",
+		minWidth: "auto",
+		maxWidth: "auto",
+	},
 	userName: {
 		display: "inline",
 		color: "#007FFF",
+	},
+	status: {
+		display: "inline",
+		color: "#007FFF",
+	},
+	approvedStatus: {
+		display: "inline",
+		color: theme.palette.text.primary.main,
+	},
+	unapprovedStatus: {
+		display: "inline",
+		color: theme.palette.text.secondary.main,
 	},
 	dateTitle: {
 		display: "inline",
@@ -212,6 +251,7 @@ export const getServerSideProps = async ({ query }) => {
 				content["imgUrl"] = result.data().imgUrl;
 				content["chemBondUrl"] = result.data().chemBondUrl;
 				content["NMRUrl"] = result.data().NMRUrl;
+				content["status"] = result.data().status;
 			});
 		})
 		.catch(function (error) {
@@ -233,11 +273,22 @@ export const getServerSideProps = async ({ query }) => {
 			imgUrl: content.imgUrl,
 			chemBondUrl: content.chemBondUrl,
 			NMRUrl: content.NMRUrl,
+			status: content.status,
 		},
 	};
 };
 // console.log(userDisplayName)
 const Blog = (props) => {
+	const classes = useStyles();
+	const [open, setOpen] = React.useState(false);
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
 	dayjs.extend(relativeTime);
 	const date = props.timestamp;
 	const router = useRouter();
@@ -319,6 +370,8 @@ const Blog = (props) => {
 				imgUrl: newImgUrl,
 				NMRUrl: newNMRUrl,
 				chemBondUrl: newChemBondUrl,
+				status: "ยังไม่ได้ยืนยัน",
+				voteCount: 0,
 			})
 			// @ts-ignore
 			.then(setActiveEdit(false));
@@ -455,7 +508,78 @@ const Blog = (props) => {
 		}
 	};
 
-	const classes = useStyles();
+	const ConfirmDelete = () => {
+		return (
+			<span>
+				<Dialog
+					open={open}
+					TransitionComponent={Transition}
+					keepMounted
+					onClose={handleClose}
+					PaperComponent={PaperComponent}
+					aria-labelledby="draggable-dialog-title"
+				>
+					<DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+						<Typography>ยืนยันการลบข้อมูล</Typography>
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText>
+							<Typography>
+								คุณต้องการลบข้อมูลสมุนไพรนี้ใช่หรือไม่?
+								คลิก(ใช่)เพื่อลบข้อมูลสมุนไพรออกจากฐานข้อมูล
+								หรือคลิก(ไม่ใช่)เพื่อยกเลิกการลบ.
+							</Typography>
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button autoFocus onClick={handleClose} color="default">
+							<Typography>ไม่ใช่</Typography>
+						</Button>
+						<Button onClick={handleDelete} color="primary">
+							<Typography>ใช่</Typography>
+						</Button>
+					</DialogActions>
+				</Dialog>
+			</span>
+		);
+	};
+
+	const ConfirmCancel = () => {
+		return (
+			<span>
+				<Dialog
+					open={open}
+					TransitionComponent={Transition}
+					keepMounted
+					onClose={handleClose}
+					PaperComponent={PaperComponent}
+					aria-labelledby="draggable-dialog-title"
+				>
+					<DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+						<Typography>ยืนยันการยกเลิกการแก้ไข</Typography>
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText>
+							<Typography>
+								คุณต้องการยกเลิกการแก้ไขข้อมูลสมุนไพรนี้ใช่หรือไม่?
+								คลิก(ใช่)เพื่อกลับสู่หน้าข้อมูลสมุนไพร
+								หรือคลิก(ไม่ใช่)เพื่อดำเนินการแก้ไขต่อ.
+							</Typography>
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button autoFocus onClick={handleClose} color="default">
+							<Typography>ไม่ใช่</Typography>
+						</Button>
+						<Button onClick={handleCancel} color="primary">
+							<Typography>ใช่</Typography>
+						</Button>
+					</DialogActions>
+				</Dialog>
+			</span>
+		);
+	};
+
 	return (
 		<div>
 			<Container component="main">
@@ -481,6 +605,19 @@ const Blog = (props) => {
 																{props.userDisplayName}
 															</Typography>
 															{/* <Chip variant="outlined" color="primary" icon={<FaceIcon />} /> */}
+														</CardActionArea>
+													</Card>
+												</Grid>
+												<Grid item xs={6}>
+													<Card className={classes.statusCard}>
+														<CardActionArea>
+															<Typography className={classes.title}>
+																สถานะข้อมูล
+															</Typography>
+															<Typography className={classes.space}>
+																:&nbsp;
+															</Typography>
+															<Typography className={classes.status}>{props.status}</Typography>
 														</CardActionArea>
 													</Card>
 												</Grid>
@@ -639,7 +776,9 @@ const Blog = (props) => {
 													<Typography className={classes.dateTitle}>
 														เมื่อ:&nbsp;
 													</Typography>
-													<Typography className={classes.date}>{date}</Typography>
+													<Typography className={classes.date}>
+														{date}
+													</Typography>
 												</Grid>
 											</Grid>
 										</div>
@@ -663,7 +802,7 @@ const Blog = (props) => {
 												onClick={toggleEdit}
 												variant="contained"
 												color="primary"
-												startIcon={<EditIcon/>}
+												startIcon={<EditIcon />}
 											>
 												<Typography>แก้ไข</Typography>
 											</Button>
@@ -673,7 +812,7 @@ const Blog = (props) => {
 											onClick={() => router.back()}
 											color="default"
 											variant="outlined"
-											startIcon={<ArrowBackIcon/>}
+											startIcon={<ArrowBackIcon />}
 										>
 											<Typography style={{ color: "black" }}>กลับ</Typography>
 										</Button>
@@ -682,7 +821,7 @@ const Blog = (props) => {
 											className={classes.historyButton}
 											variant="contained"
 											color="primary"
-											startIcon={<HistoryIcon/>}
+											startIcon={<HistoryIcon />}
 										>
 											<Link
 												href="../herb/[id]/history/history_list"
@@ -692,6 +831,22 @@ const Blog = (props) => {
 											>
 												<Typography itemProp="hello">
 													ประวัติการแก้ไข
+												</Typography>
+											</Link>
+										</Button>
+										<Button
+											key={props.main_id}
+											className={classes.historyButton}
+											variant="contained"
+											color="primary"
+											startIcon={<HistoryIcon />}
+										>
+											<Link
+												href="../herb/[id]/history/sample_list"
+												as={"../herb/" + props.main_id + "/history/sample_list"}
+											>
+												<Typography itemProp="hello">
+													ประวัติการแก้ไข(ทดสอบ)
 												</Typography>
 											</Link>
 										</Button>
@@ -916,33 +1071,34 @@ const Blog = (props) => {
 											type="submit"
 											// variant="contained"
 											color="primary"
-											startIcon={<SaveIcon/>}
+											startIcon={<SaveIcon />}
 										>
 											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
 										</Button>
 
 										<Button
 											className={classes.deleteButton}
-											onClick={handleDelete}
+											onClick={handleClickOpen}
 											type="submit"
 											// variant="contained"
 											color="secondary"
-											startIcon={<DeleteForeverIcon/>}
+											startIcon={<DeleteForeverIcon />}
 										>
 											<Typography>ลบ</Typography>
 										</Button>
-
+										<ConfirmDelete />
 										<Button
 											className={classes.cancelButton}
-											onClick={handleCancel}
+											onClick={handleClickOpen}
 											type="submit"
 											position="relative"
 											color="default"
 											variant="outlined"
-											startIcon={<CancelIcon/>}
+											startIcon={<CancelIcon />}
 										>
 											<Typography>ยกเลิก</Typography>
 										</Button>
+										<ConfirmCancel />
 									</Grid>
 								</div>
 							</div>

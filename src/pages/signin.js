@@ -18,7 +18,7 @@ import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert } from "@material-ui/lab/";
+import { Alert, AlertTitle } from "@material-ui/lab/";
 
 // Firebase.
 import firebase from "firebase/app";
@@ -27,7 +27,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
-		marginTop: theme.spacing(8),
+		marginTop: theme.spacing(4),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
@@ -98,7 +98,7 @@ const SignIn = () => {
 							<LockOpenIcon />
 						</Avatar>
 						<Typography component="h1" variant="h5" align="center">
-							Sign in
+							ลงชื่อใช้งาน
 						</Typography>
 						{error !== null && <div>{error}</div>}
 						<form className={classes.form} noValidate>
@@ -107,7 +107,7 @@ const SignIn = () => {
 									<TextField
 										variant="outlined"
 										alignitems="center"
-										label="Username or Email"
+										label="อีเมล"
 										fullWidth
 										autoFocus
 										type="text"
@@ -122,7 +122,7 @@ const SignIn = () => {
 									<TextField
 										variant="outlined"
 										alignitems="center"
-										label="Password"
+										label="รหัสผ่าน"
 										fullWidth
 										autoFocus
 										type="password"
@@ -144,21 +144,35 @@ const SignIn = () => {
 											signInWithEmailAndPasswordHandler(event, email, password);
 										}}
 									>
-										Sign In
+										<Typography>ลงชื่อ</Typography>
 									</Button>
 								</Grid>
 								<Grid item xs={6}>
-									<p>
-										Do not have an account? Sign up{" "}
+									<Typography variant="caption">
+										ยังไม่มีบัญชีใช่ไหม? สามารถลงทะเบียนได้&ensp;
 										<Link href="/signup">
-											<a>Here !</a>
+											<a>
+												<Typography
+													variant="caption"
+													style={{
+														color: "#007FFF",
+														textDecoration: "underline",
+													}}
+												>
+													ที่นี่!
+												</Typography>
+											</a>
 										</Link>
-									</p>
+									</Typography>
 								</Grid>
 							</Grid>
 						</form>
 					</div>
-					<Typography style={{ textAlign: "center" }}>Or</Typography>
+					<br />
+					<br />
+					<Typography style={{ textAlign: "center", fontWeight: "bold" }}>
+						หรือ
+					</Typography>
 				</Container>
 				<StyledFirebaseAuth
 					uiConfig={uiConfig}

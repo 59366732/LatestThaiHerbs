@@ -24,6 +24,7 @@
     "notistack": "^1.0.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-draggable": "^4.4.3",
     "react-fade-in": "^2.0.0",
     "react-firebaseui": "^4.1.0",
     "react-loading": "^2.0.3",

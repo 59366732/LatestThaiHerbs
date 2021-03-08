@@ -5,6 +5,7 @@ import db, {
 	firestore,
 	generateUserDocument,
 } from "../../database/firebase";
+import { storage } from "../../database/firebase";
 import { UserContext } from "../../providers/UserProvider";
 import { useContext, useState, useEffect } from "react";
 import {
@@ -30,6 +31,29 @@ import HideOnScroll from "./hideonscroll";
 import SideDrawer from "./sidedrawer";
 import BackToTop from "./backtotop";
 
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Paper from "@material-ui/core/Paper";
+import Draggable from "react-draggable";
+import Slide from "@material-ui/core/Slide";
+
+function PaperComponent(props) {
+	return (
+		<Draggable
+			handle="#draggable-dialog-title"
+			cancel={'[class*="MuiDialogContent-root"]'}
+		>
+			<Paper {...props} />
+		</Draggable>
+	);
+}
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -104,8 +128,16 @@ const StyledBadge = withStyles((theme) => ({
 
 const Appbar = () => {
 	const classes = useStyles();
-	const { user, setUser } = useContext(UserContext);
+	const [open, setOpen] = React.useState(false);
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
 
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const { user, setUser } = useContext(UserContext);
 	const [loggedIn, setLoggedIn] = useState(false);
 
 	auth.onAuthStateChanged((user) => {
@@ -197,38 +229,29 @@ const Appbar = () => {
 										>
 											<ListItem>
 												<Link href="/profilepage">
-													<Button>
-														<StyledBadge
-															overlap="circle"
-															anchorOrigin={{
-																vertical: "bottom",
-																horizontal: "right",
-															}}
-															variant="dot"
-														>
-															<Avatar
-																className={classes.avatar}
-																alt="I"
-																style={{
-																	background: `url(${
-																		user.photoURL ||
-																		"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-																	}) center center cover no-repeat fixed `,
-																	backgroundSize: "contain",
-																	backgroundPosition: "center",
+													<React.Fragment>
+														<Button>
+															<StyledBadge
+																overlap="circle"
+																anchorOrigin={{
+																	vertical: "bottom",
+																	horizontal: "right",
 																}}
-															/>
-														</StyledBadge>
-														<Typography
-															style={{
-																color: "white",
-																textTransform: "capitalize",
-																paddingLeft: "5px",
-															}}
-														>
-															{user.displayName}
-														</Typography>
-													</Button>
+																variant="dot"
+															>
+																<Avatar className={classes.avatar} alt="I" />
+															</StyledBadge>
+															<Typography
+																style={{
+																	color: "white",
+																	textTransform: "capitalize",
+																	paddingLeft: "5px",
+																}}
+															>
+																{user.displayName}
+															</Typography>
+														</Button>
+													</React.Fragment>
 												</Link>
 											</ListItem>
 										</div>
@@ -237,16 +260,52 @@ const Appbar = () => {
 											style={{ margin: "0 1px 0 1px" }}
 										>
 											<ListItem>
-												<Button
-													onClick={() => {
-														auth.signOut();
-													}}
-												>
+												<Button onClick={handleClickOpen}>
 													<Typography style={{ color: "red" }}>
 														ออกจากระบบ
 													</Typography>
 												</Button>
 											</ListItem>
+											<Dialog
+												open={open}
+												TransitionComponent={Transition}
+												keepMounted
+												onClose={handleClose}
+												PaperComponent={PaperComponent}
+												aria-labelledby="draggable-dialog-title"
+											>
+												<DialogTitle
+													style={{ cursor: "move" }}
+													id="draggable-dialog-title"
+												>
+													<Typography>ยืนยันออกจากระบบ</Typography>
+												</DialogTitle>
+												<DialogContent>
+													<DialogContentText>
+														<Typography>
+															คุณต้องการออกจากระบบหรือไม่?
+															คลิก(ใช่)เพื่อออกจากระบบหรือคลิก(ไม่ใช่)เพื่อคงอยู่ในระบบ.
+														</Typography>
+													</DialogContentText>
+												</DialogContent>
+												<DialogActions>
+													<Button
+														autoFocus
+														onClick={handleClose}
+														color="default"
+													>
+														<Typography>ไม่ใช่</Typography>
+													</Button>
+													<Button
+														onClick={() => {
+															auth.signOut();
+														}}
+														color="primary"
+													>
+														<Typography>ใช่</Typography>
+													</Button>
+												</DialogActions>
+											</Dialog>
 										</div>
 									</List>
 								) : (

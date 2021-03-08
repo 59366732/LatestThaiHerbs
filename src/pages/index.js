@@ -83,6 +83,14 @@ const theme = createMuiTheme({
 	},
 });
 
+function limitContent(string, limit) {
+	var dots = "...";
+	if (string.length > limit) {
+		string = string.substring(0, limit) + dots;
+	}
+
+	return string;
+}
 function Home() {
 	const [herbs, setHerbs] = useState([]);
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -106,6 +114,8 @@ function Home() {
 				setHerbs(herbs);
 			});
 	}, []);
+
+
 	const classes = useStyles();
 	return (
 		<div className={classes.root} style={{ position: "relative" }}>
@@ -160,7 +170,7 @@ function Home() {
 											variant="caption"
 											style={{ color: "#007FFF", textTransform: "capitalize" }}
 										>
-											{herb.userDisplayName}
+											{limitContent(herb.userDisplayName, 11)}
 										</Typography>
 										<Typography
 											variant="caption"

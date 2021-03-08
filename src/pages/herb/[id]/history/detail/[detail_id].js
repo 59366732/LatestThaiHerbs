@@ -17,6 +17,14 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Draggable from "react-draggable";
+import Slide from "@material-ui/core/Slide";
+
 import {
 	Icon,
 	Box,
@@ -36,6 +44,20 @@ import {
 	ThemeProvider,
 	makeStyles,
 } from "@material-ui/core/";
+
+function PaperComponent(props) {
+	return (
+		<Draggable
+			handle="#draggable-dialog-title"
+			cancel={'[class*="MuiDialogContent-root"]'}
+		>
+			<Paper {...props} />
+		</Draggable>
+	);
+}
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const frameStyles = {
 	fontFamily: "sans-serif",
@@ -214,6 +236,16 @@ export const getServerSideProps = async ({ query }) => {
 };
 
 const detail = (props) => {
+	const classes = useStyles();
+	const [open, setOpen] = React.useState(false);
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
 	dayjs.extend(relativeTime);
 	const date = props.timestamp;
 	const router = useRouter();
@@ -262,12 +294,6 @@ const detail = (props) => {
 			</Alert>
 		</span>
 	);
-
-	// const { enqueueSnackbar } = useSnackbar();
-	// const handleClickVariant = (variant) => () => {
-	// 	// variant could be success, error, warning, info, or default
-	// 	enqueueSnackbar("This is a success message!", { variant });
-	// };
 
 	auth.onAuthStateChanged((user) => {
 		if (user) {
@@ -433,7 +459,42 @@ const detail = (props) => {
 			return null;
 		}
 	};
-	const classes = useStyles();
+
+	const ConfirmCancel = () => {
+		return (
+			<span>
+				<Dialog
+					open={open}
+					TransitionComponent={Transition}
+					keepMounted
+					onClose={handleClose}
+					PaperComponent={PaperComponent}
+					aria-labelledby="draggable-dialog-title"
+				>
+					<DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+						<Typography>ยืนยันการยกเลิกการแก้ไข</Typography>
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText>
+							<Typography>
+								คุณต้องการยกเลิกการแก้ไขข้อมูลสมุนไพรนี้ใช่หรือไม่?
+								คลิก(ใช่)เพื่อกลับสู่หน้าข้อมูลสมุนไพร หรือคลิก(ไม่ใช่)เพื่อดำเนินการแก้ไขต่อ.
+							</Typography>
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button autoFocus onClick={handleClose} color="default">
+							<Typography>ไม่ใช่</Typography>
+						</Button>
+						<Button onClick={handleCancel} color="primary">
+							<Typography>ใช่</Typography>
+						</Button>
+					</DialogActions>
+				</Dialog>
+			</span>
+		);
+	};
+
 	return (
 		<SnackbarProvider maxSnack={3}>
 			<Container component="main">
@@ -444,31 +505,33 @@ const detail = (props) => {
 							<div>
 								{loading && <ReactLoading type={"bars"} color={"black"} />}
 								<form>
+									<div>
+										<Typography
+											variant="h4"
+											style={{
+												fontWeight: "bold",
+												paddingLeft: "10px",
+												paddingRight: "10px",
+												paddingTop: "10px",
+											}}
+										>
+											ประวัติการแก้ไขเมื่อ:
+											<Typography
+												variant="h5"
+												style={{
+													fontWeight: "normal",
+													color: "#007FFF",
+													display: "inline",
+												}}
+											>
+												{date}
+											</Typography>
+										</Typography>
+									</div>
 									<div className={classes.cardRoot}>
 										<Grid container spacing={2}>
 											<Grid item xs={12}>
 												<Card className={classes.userCard}>
-													<Typography
-														variant="h4"
-														style={{
-															fontWeight: "bold",
-															paddingLeft: "10px",
-															paddingRight: "10px",
-															paddingTop: "10px",
-														}}
-													>
-														ประวัติการแก้ไขเมื่อ:
-														<Typography
-															variant="h5"
-															style={{
-																fontWeight: "normal",
-																color: "#007FFF",
-																display: "inline",
-															}}
-														>
-															{date}
-														</Typography>
-													</Typography>
 													<Typography
 														style={{
 															display: "inline",
@@ -692,7 +755,7 @@ const detail = (props) => {
 											ชื่อภาษาไทย:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullwidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -707,7 +770,7 @@ const detail = (props) => {
 											ชื่อภาษาอังกฤษ:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullwidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -722,7 +785,7 @@ const detail = (props) => {
 											ชื่อทางวิทยาศาสตร์:
 										</Typography>
 										<TextField
-											fullwidth="true"
+											fullwidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -737,7 +800,7 @@ const detail = (props) => {
 											ชื่อวงศ์:
 										</Typography>
 										<TextField
-											fullWidth="true"
+											fullWidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -752,7 +815,7 @@ const detail = (props) => {
 											ข้อมูลสมุนไพร:
 										</Typography>
 										<TextField
-											fullWidth="true"
+											fullWidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -769,7 +832,7 @@ const detail = (props) => {
 											สรรพคุณของสมุนไพร:
 										</Typography>
 										<TextField
-											fullWidth="true"
+											fullWidth={true}
 											id="filled-multiline-static"
 											variant="outlined"
 											color="primary"
@@ -900,7 +963,6 @@ const detail = (props) => {
 											onClick={handleUpdate}
 											type="submit"
 											color="primary"
-											// variant="contained"
 										>
 											<Typography>บันทึกการเปลี่ยนแปลง</Typography>
 										</Button>
@@ -908,7 +970,7 @@ const detail = (props) => {
 										<Button
 											startIcon={<CancelIcon />}
 											className={classes.cancelButton}
-											onClick={handleCancel}
+											onClick={handleClickOpen}
 											type="submit"
 											position="relative"
 											color="default"
@@ -916,6 +978,7 @@ const detail = (props) => {
 										>
 											<Typography style={{ color: "black" }}>ยกเลิก</Typography>
 										</Button>
+										<ConfirmCancel />
 									</Grid>
 								</div>
 							</div>

@@ -4,12 +4,11 @@ import db, {
 	auth,
 	firestore,
 	generateUserDocument,
-} from "../database/firebase";
-import { UserContext } from "../providers/UserProvider";
+} from "../src/database/firebase";
+import { UserContext } from "../src/providers/UserProvider";
 import { useContext, useState, useEffect } from "react";
 
-import AddQuestion from "./addquestion";
-import SampleQuestionDetail from "./question/sample_question_detail";
+import AddQuestion from "../src/pages/addquestion"
 
 import { fade, makeStyles } from "@material-ui/core/styles";
 import ThumbsUpDownIcon from "@material-ui/icons/ThumbsUpDown";
@@ -18,6 +17,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import { withStyles } from "@material-ui/core/styles";
+import Draggable, { DraggableCore } from "react-draggable";
 import CloseIcon from "@material-ui/icons/Close";
 import {
 	Slide,
@@ -43,7 +43,6 @@ import {
 	Avatar,
 	Typography,
 	Box,
-	Grid,
 } from "@material-ui/core/";
 
 const frameStyles = {
@@ -127,11 +126,12 @@ function limitContent(string, limit) {
 	if (string.length > limit) {
 		string = string.substring(0, limit) + dots;
 	}
+
 	return string;
 }
 
 const QuestionTitle = "หัวข้อคำถาม";
-const QuestionContent = limitContent(
+const QuestionDetail = limitContent(
 	repeatStringNumTimes("รายละเอียดคำถาม", 20),
 	250
 );
@@ -177,123 +177,200 @@ const QandA = () => {
 							<Typography style={{ textAlign: "center" }}>1</Typography>
 						</div>
 					</ListItemIcon>
-					<Link href="./question/sample_question_detail">
-						<a>
-							<ListItemText
-								primary={
-									<Typography style={{ fontWeight: "bold" }}>
-										{QuestionTitle}
-									</Typography>
-								}
-								secondary={
-									<React.Fragment>
-										<Typography
-											component="span"
-											// variant="body2"
-											className={classes.inline}
-											color="textPrimary"
-										>
-											{QuestionContent}
-										</Typography>
-										<br />
-										<Typography
-											variant="caption"
-											style={{ fontWeight: "bold", float: "left" }}
-										>
-											โดย:
-										</Typography>
-										&ensp;
-										<Typography
-											variant="caption"
-											style={{ color: "#007FFF", textTransform: "capitalize" }}
-										>
-											{username_example}
-										</Typography>
-										&ensp;
-										<Typography
-											variant="caption"
-											style={{ fontWeight: "bold", display: "inline" }}
-										>
-											เมื่อ:
-										</Typography>
-										&ensp;
-										<Typography
-											variant="caption"
-											style={{ color: "#007FFF", textTransform: "capitalize" }}
-										>
-											{time_example}
-										</Typography>
-									</React.Fragment>
-								}
-							/>
-						</a>
-					</Link>
+					<ListItemText
+						primary={
+							<Typography style={{ fontWeight: "bold" }}>
+								{QuestionTitle}
+							</Typography>
+						}
+						secondary={
+							<React.Fragment>
+								<Typography
+									component="span"
+									// variant="body2"
+									className={classes.inline}
+									color="textPrimary"
+								>
+									{QuestionDetail}
+								</Typography>
+								<br />
+								<Typography
+									variant="caption"
+									style={{ fontWeight: "bold", float: "left" }}
+								>
+									โดย:
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ color: "#007FFF", textTransform: "capitalize" }}
+								>
+									{username_example}
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ fontWeight: "bold", display: "inline" }}
+								>
+									เมื่อ:
+								</Typography>
+								&ensp;
+								<Typography
+									variant="caption"
+									style={{ color: "#007FFF", textTransform: "capitalize" }}
+								>
+									{time_example}
+								</Typography>
+							</React.Fragment>
+						}
+					/>
 				</ListItem>
 				<Divider />
 			</span>
 		);
 	};
 
+	const CreateQuestion = () => {
+		const [error, setError] = useState(null);
+		return (
+			<span>
+				<Dialog
+					fullScreen
+					open={open}
+					onClose={handleClose}
+					TransitionComponent={Transition}
+				>
+					<div>
+						<Container className="main">
+							<CssBaseline />
+							<AppBar className={classes.appBar}>
+								<Toolbar>
+									<IconButton
+										edge="start"
+										color="primary"
+										onClick={handleClose}
+										aria-label="close"
+									>
+										<CloseIcon />
+									</IconButton>
+									<Typography variant="h6" className={classes.title}>
+										ตั้งกระทู้ถาม
+									</Typography>
+									<Button autoFocus color="primary" onClick={handleClose}>
+										<CloseIcon />
+									</Button>
+								</Toolbar>
+							</AppBar>
+							<Box style={frameStyles}>
+							{error !== null && <div>{error}</div>}
+						<form>
+							<div>
+								<Typography className={classes.title}>หัวข้อคำถาม:</Typography>
+								<TextField
+									fullWidth
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									value={""}
+									onChange={(e) => setThaiName(e.target.value)}
+									placeholder="ตั้งชื่อหัวข้อคำถาม ?"
+								/>
+							</div>
+							<br/>
+							<br/>
+							<div>
+								<Typography className={classes.title}>รายละเอียดคำถาม:</Typography>
+								<TextField
+									fullWidth
+									multiline
+									id="filled-multiline-static"
+									variant="filled"
+									fontFamily="sans-serif"
+									rows={7}
+									value={""}
+									onChange={(e) => setThaiName(e.target.value)}
+									placeholder="เขียนรายละเอียดคำถาม ?"
+								/>
+							</div>
+							</form>
+							</Box>
+						</Container>
+					</div>
+				</Dialog>
+			</span>
+		);
+	};
+
+	const QuestionDetail = () => {
+		return (
+			<span>
+
+			</span>
+		)
+	}
+
 	return (
 		<div className="App">
 			<div className={classes.mainDiv}>
 				<Toolbar component="nav">
 					<Container maxWidth="md" className={classes.titleBarFlex}>
-						<div
-							style={{
-								display: "flex",
-								flexWrap: "wrap",
-							}}
+						<List
+							component="nav"
+							aria-labelledby="main navigation"
+							className={classes.titleDisplayFlex}
 						>
-							<Grid
-								container
-								spacing={1}
-								style={{ display: "flex", justifyContent: "space-between" }}
-							>
+							<div>
+								<ListItem>
+									<Button>
+										<Typography className={classes.titleText}>
+											คำถามยอดนิยม
+										</Typography>
+									</Button>
+								</ListItem>
+							</div>
+							<div>
+								<ListItem>
+									<Button>
+										<Typography className={classes.titleText}>
+											คำถามล่าสุด
+										</Typography>
+									</Button>
+								</ListItem>
+							</div>
+							{loggedIn ? (
 								<div>
 									<ListItem>
-										<Button>
+										<Button onClick={handleClickOpen}>
 											<Typography className={classes.titleText}>
-												คำถามยอดนิยม
+												ตั้งกระทู้ถาม
 											</Typography>
 										</Button>
 									</ListItem>
-								</div>
-								<div>
-									<ListItem>
-										<Button>
-											<Typography className={classes.titleText}>
-												คำถามล่าสุด
-											</Typography>
-										</Button>
-									</ListItem>
-								</div>
-								{loggedIn ? (
+									<CreateQuestion/>
 									<AddQuestion />
-								) : (
-									<div>
-										<ListItem>
-											<Link href="/signin">
-												<Button>
-													<Typography className={classes.titleText}>
-														ตั้งกระทู้ถาม
-													</Typography>
-												</Button>
-											</Link>
-										</ListItem>
-									</div>
-								)}
-								<div className={classes.search}>
-									<TextField
-										style={{display: "flex-end"}}
-										fullWidth
-										variant="outlined"
-										value={""}
-										onChange={(e) => setSearchName(e.target.value)}
-										placeholder="ค้นหา"
-									/>
 								</div>
-							</Grid>
+							) : (
+								<div>
+									<ListItem>
+										<Link href="/signin">
+											<Button>
+												<Typography className={classes.titleText}>
+													ตั้งกระทู้ถาม
+												</Typography>
+											</Button>
+										</Link>
+									</ListItem>
+								</div>
+							)}
+						</List>
+						<div className={classes.search}>
+							<TextField
+								fullWidth
+								variant="outlined"
+								value={""}
+								onChange={(e) => setSearchName(e.target.value)}
+								placeholder="ค้นหา"
+							/>
 						</div>
 					</Container>
 				</Toolbar>

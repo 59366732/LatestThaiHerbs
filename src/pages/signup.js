@@ -24,24 +24,11 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Alert } from "@material-ui/lab/";
-
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" alignitems="center">
-			{"Copyright © "}
-			<Links color="inherit" href="">
-				Community Website for Thai herbs
-			</Links>{" "}
-			{new Date().getFullYear()}
-			{"."}
-		</Typography>
-	);
-}
+import { Alert, AlertTitle } from "@material-ui/lab/";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
-		marginTop: theme.spacing(8),
+		marginTop: theme.spacing(4),
 		display: "flex",
 		flexDirection: "column",
 		alignitems: "center",
@@ -73,10 +60,10 @@ const SignUp = () => {
 
 	const select_img_alert = (
 		// <span>
-			<Alert severity="error">
-				<AlertTitle>Error</AlertTitle>
-				This is an error alert — <strong>check it out!</strong>
-			</Alert>
+		<Alert severity="error">
+			<AlertTitle>Error</AlertTitle>
+			This is an error alert — <strong>check it out!</strong>
+		</Alert>
 		// </span>
 	);
 
@@ -126,7 +113,7 @@ const SignUp = () => {
 								<PersonAddIcon />
 							</Avatar>
 							<Typography component="h1" variant="h5">
-								Sign up
+								ลงทะเบียน
 							</Typography>
 						</Box>
 						{error !== null && <div>{error}</div>}
@@ -137,7 +124,7 @@ const SignUp = () => {
 										variant="outlined"
 										required
 										fullWidth
-										label="Display Name"
+										label="ชื่อโปรไฟล์"
 										autoFocus
 										type="text"
 										name="displayName"
@@ -152,7 +139,7 @@ const SignUp = () => {
 										variant="outlined"
 										required
 										fullWidth
-										label="Email"
+										label="อีเมล"
 										autoFocus
 										type="text"
 										name="userEmail"
@@ -167,7 +154,7 @@ const SignUp = () => {
 										variant="outlined"
 										required
 										fullWidth
-										label="Password"
+										label="รหัสผ่าน"
 										autoFocus
 										type="password"
 										name="userPassword"
@@ -182,7 +169,7 @@ const SignUp = () => {
 										variant="outlined"
 										required
 										fullWidth
-										label="Confirm Password"
+										label="ยืนยันรหัสผ่านอีกครั้ง"
 										autoFocus
 										type="password"
 										name="confirmPassword"
@@ -201,6 +188,7 @@ const SignUp = () => {
 									/>
 								</Grid>
 							</Grid>
+							<br/>
 							<Button
 								type="submit"
 								fullWidth
@@ -216,23 +204,30 @@ const SignUp = () => {
 									);
 								}}
 							>
-								Sign Up
+								<Typography>ยืนยันการลงทะเบียน</Typography>
 							</Button>
 							<Grid container justify="flex-end">
 								<Grid item>
-									<p>
-										Already have an account?{" "}
-										<Link href="/signin">
-											<a>Sign in</a>
-										</Link>
-									</p>
+									<Typography variant="caption" style={{ display: "inline" }}>
+										มีบัญชีแล้วใช่ไหม?&ensp;
+									</Typography>
+									<Link href="/signin">
+										<a>
+											<Typography
+												variant="caption"
+												style={{
+													color: "#007FFF",
+													textDecoration: "underline",
+												}}
+											>
+												ลงชื่อเข้าใช้งาน
+											</Typography>
+										</a>
+									</Link>
 								</Grid>
 							</Grid>
 						</form>
 					</div>
-					<Box mt={5}>
-						<Copyright />
-					</Box>
 				</Container>
 			</div>
 		</div>

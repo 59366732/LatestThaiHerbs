@@ -2,6 +2,20 @@ import React, { useState, useEffect } from "react";
 import db from "../../../../database/firebase";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineContent from "@material-ui/lab/TimelineContent";
+import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import FastfoodIcon from "@material-ui/icons/Fastfood";
+import LaptopMacIcon from "@material-ui/icons/LaptopMac";
+import HotelIcon from "@material-ui/icons/Hotel";
+import RepeatIcon from "@material-ui/icons/Repeat";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {
 	List,
 	ListItem,
@@ -24,9 +38,8 @@ import {
 	Container,
 	CssBaseline,
 	ThemeProvider,
-	makeStyles,
 } from "@material-ui/core/";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 const frameStyles = {
 	position: "relative",
 	fontFamily: "sans-serif",
@@ -48,6 +61,12 @@ const frameStyles = {
 };
 
 const useStyles = makeStyles((theme) => ({
+	paper: {
+		padding: "6px 16px",
+	},
+	secondaryTail: {
+		backgroundColor: theme.palette.secondary.main,
+	},
 	root: {
 		flexGrow: 1,
 	},
@@ -73,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "normal",
 		paddingLeft: "5px",
 	},
-	paper: {
+	listPaper: {
 		marginTop: "20px",
 		marginBottom: "20px",
 		width: "100%",
@@ -97,6 +116,7 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: "auto",
 	},
 }));
+
 export const getServerSideProps = async ({ query }) => {
 	const content = {};
 	content["main_id"] = query.id;
@@ -109,6 +129,8 @@ export const getServerSideProps = async ({ query }) => {
 };
 
 const history = (props) => {
+	const classes = useStyles();
+
 	const [historys, setHistorys] = useState([]);
 	const router = useRouter();
 
@@ -125,7 +147,7 @@ const history = (props) => {
 				setHistorys(history);
 			});
 	}, []);
-	const classes = useStyles();
+
 	const space = (
 		<span>
 			<Typography>
@@ -156,7 +178,7 @@ const history = (props) => {
 						</Grid>
 						<div
 							component="nav"
-							className={classes.paper}
+							className={classes.listPaper}
 							aria-label="mailbox folders"
 						>
 							{historys.map((history) => (
@@ -210,6 +232,88 @@ const history = (props) => {
 								<Typography style={{ color: "black" }}>กลับ</Typography>
 							</Button>
 						</Grid>
+						<div>
+							<Timeline align="alternate"></Timeline>
+						</div>
+						<div>
+							<Timeline align="alternate">
+								<TimelineItem>
+									<TimelineOppositeContent>
+										<Typography variant="body2" color="textSecondary">
+											9:30 am
+										</Typography>
+									</TimelineOppositeContent>
+									<TimelineSeparator>
+										<TimelineDot>
+											<FastfoodIcon />
+										</TimelineDot>
+										<TimelineConnector />
+									</TimelineSeparator>
+									<TimelineContent>
+										<Paper elevation={3} className={classes.paper}>
+											<Typography variant="h6" component="h1">
+												Eat
+											</Typography>
+											<Typography>Because you need strength</Typography>
+										</Paper>
+									</TimelineContent>
+								</TimelineItem>
+								<TimelineItem>
+									<TimelineOppositeContent>
+										<Typography variant="body2" color="textSecondary">
+											10:00 am
+										</Typography>
+									</TimelineOppositeContent>
+									<TimelineSeparator>
+										<TimelineDot color="primary">
+											<LaptopMacIcon />
+										</TimelineDot>
+										<TimelineConnector />
+									</TimelineSeparator>
+									<TimelineContent>
+										<Paper elevation={3} className={classes.paper}>
+											<Typography variant="h6" component="h1">
+												Code
+											</Typography>
+											<Typography>Because it&apos;s awesome!</Typography>
+										</Paper>
+									</TimelineContent>
+								</TimelineItem>
+								<TimelineItem>
+									<TimelineSeparator>
+										<TimelineDot color="primary" variant="outlined">
+											<HotelIcon />
+										</TimelineDot>
+										<TimelineConnector className={classes.secondaryTail} />
+									</TimelineSeparator>
+									<TimelineContent>
+										<Paper elevation={3} className={classes.paper}>
+											<Typography variant="h6" component="h1">
+												Sleep
+											</Typography>
+											<Typography>Because you need rest</Typography>
+										</Paper>
+									</TimelineContent>
+								</TimelineItem>
+								<TimelineItem>
+									<TimelineSeparator>
+										<TimelineDot color="secondary">
+											<RepeatIcon />
+										</TimelineDot>
+									</TimelineSeparator>
+									<TimelineContent>
+										<Paper elevation={3} className={classes.paper}>
+											<Typography variant="h6" component="h1">
+												Repeat
+											</Typography>
+											<Typography>
+												Because this is the life you love!
+											</Typography>
+										</Paper>
+									</TimelineContent>
+								</TimelineItem>
+							</Timeline>
+						</div>
 					</div>
 				</Box>
 			</Container>
@@ -218,9 +322,3 @@ const history = (props) => {
 };
 
 export default history;
-
-
-///เพิ่มแจ้งเตือนหน้าแรก
-///เพิ่มจำนวนโหวตหน้า history
-///เพิ่มชื่อผู้แก้ไข history
-///เพิ่มวันที่และเวลา history
