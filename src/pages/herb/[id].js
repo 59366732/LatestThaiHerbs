@@ -192,7 +192,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	status: {
 		display: "inline",
-		color: "#007FFF",
+		color: "red",
 	},
 	approvedStatus: {
 		display: "inline",

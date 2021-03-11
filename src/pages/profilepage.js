@@ -354,12 +354,12 @@ const ProfilePage = () => {
 															style={{
 																display: "flex",
 																justifyContent: "center",
-																background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-														)`,
-																// background: `url(${
-																// 	user.photoURL ||
-																// 	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
-																// })  `,
+																// background: `url("https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+														// )`,
+																background: `url(${
+																	user.photoURL ||
+																	"https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png"
+																})  `,
 																backgroundSize: "cover",
 																height: "200px",
 																width: "200px",

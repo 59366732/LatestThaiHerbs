@@ -125,3 +125,6 @@
     flex-direction: column;
   }
 }
+.txt:hover {
+  text-decoration: underline;
+}

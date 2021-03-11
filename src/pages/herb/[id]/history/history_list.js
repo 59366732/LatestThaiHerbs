@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import db from "../../../../database/firebase";
+import React, { useContext, useState, useEffect } from "react";
+import db, { auth, generateActivity } from "../../../../database/firebase";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import firebase from "firebase";
+import { UserContext } from "../../../../providers/UserProvider";
 import {
 	List,
 	ListItem,
@@ -34,9 +36,9 @@ const frameStyles = {
 	display: "flex",
 	border: "solid 1px #b9e937",
 	padding: "5px",
-	width: "750px",
-	maxWidth: "750px",
-	minWidth: "750px",
+	width: "fit-content",
+	maxWidth: "auto",
+	minWidth: "800px",
 	paddingTop: "20px",
 	paddingRight: "20px",
 	paddingBottom: "20px",
@@ -74,10 +76,11 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: "5px",
 	},
 	paper: {
+		padding: "0 0 0 0",
 		marginTop: "20px",
 		marginBottom: "20px",
 		width: "100%",
-		maxWidth: 720,
+		maxWidth: "auto",
 		backgroundColor: theme.palette.background.paper,
 	},
 	backButton: {
@@ -108,9 +111,33 @@ export const getServerSideProps = async ({ query }) => {
 	};
 };
 
+function limitContent(string, limit) {
+	var dots = "...";
+	if (string.length > limit) {
+		string = string.substring(0, limit) + dots;
+	}
+
+	return string;
+}
+
 const history = (props) => {
+	const [fullWidth, setFullWidth] = React.useState(true);
+	const classes = useStyles();
+	const { user, setUser } = useContext(UserContext);
 	const [historys, setHistorys] = useState([]);
+	const [init, setInit] = useState(true);
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [notification, setNotification] = useState("");
+
 	const router = useRouter();
+
+	auth.onAuthStateChanged((user) => {
+		if (user) {
+			setLoggedIn(true);
+		} else {
+			setLoggedIn(false);
+		}
+	});
 
 	useEffect(() => {
 		db.collection("herbs")
@@ -123,9 +150,77 @@ const history = (props) => {
 					...doc.data(),
 				}));
 				setHistorys(history);
+				setInit(init);
 			});
 	}, []);
-	const classes = useStyles();
+
+	//test
+	const getdata = async (hisid) => {
+		let data = await db
+			.collection("vote")
+			.where("herbid", "==", hisid)
+			.where("uid", "==", user.uid)
+			.limit(1)
+			.get();
+
+		const mapData = data.docs.map((doc) => ({
+			id: doc.id,
+			...doc.data(),
+		}));
+
+		console.log(mapData);
+
+		if (mapData.length != 0) {
+			//there is mapData
+			return voteORnot(mapData, hisid);
+		} else {
+			//there isn't mapData
+			const mapData = null;
+			return voteORnot(mapData, hisid);
+		}
+	};
+
+	const voteORnot = (test, hisid) => {
+		const increment = firebase.firestore.FieldValue.increment(+1);
+		const decrement = firebase.firestore.FieldValue.increment(-1);
+
+		console.log(test);
+		if (test == null) {
+			db.collection("herbs")
+				.doc(props.main_id)
+				.collection("historys")
+				.doc(hisid)
+				.update({ voteCount: increment });
+
+			db.collection("vote").add({
+				uid: user.uid,
+				herbid: hisid,
+				voted: true,
+			});
+
+			return;
+		}
+		test.map((dt) => {
+			if (dt.voted == true) {
+				db.collection("herbs")
+					.doc(props.main_id)
+					.collection("historys")
+					.doc(hisid)
+					.update({ voteCount: decrement });
+
+				db.collection("vote").doc(dt.id).update({ voted: false });
+			} else if (dt.voted == false) {
+				db.collection("herbs")
+					.doc(props.main_id)
+					.collection("historys")
+					.doc(hisid)
+					.update({ voteCount: increment });
+
+				db.collection("vote").doc(dt.id).update({ voted: true });
+			}
+		});
+	};
+
 	const space = (
 		<span>
 			<Typography>
@@ -143,7 +238,7 @@ const history = (props) => {
 				<Box style={frameStyles}>
 					<div>
 						<Grid
-							fullwidth={true}
+							fullWidth={fullWidth}
 							spacing={3}
 							container
 							direction="column"
@@ -172,13 +267,16 @@ const history = (props) => {
 													history.id
 												}
 											>
-												<Typography className={classes.content}>
+												<a className={classes.content}>
 													<Typography
+														className="txt"
 														style={{ color: "#007FFF", display: "inline" }}
 													>
-														{history.thaiName}
+														{limitContent(history.thaiName, 20)}
 													</Typography>
-													&nbsp;ถูกแก้ไขเมื่อ&nbsp;
+													<Typography style={{ display: "inline" }}>
+														&nbsp;ถูกแก้ไขเมื่อ&nbsp;
+													</Typography>
 													<Typography
 														style={{ color: "#007FFF", display: "inline" }}
 													>
@@ -186,7 +284,34 @@ const history = (props) => {
 															history.timestamp.seconds * 1000
 														).toDateString()}
 													</Typography>
-												</Typography>
+													<Typography style={{ display: "inline" }}>
+														&nbsp;เวลา:&nbsp;
+													</Typography>
+													<Typography style={{ display: "inline" }}>
+														&nbsp;โดย:&nbsp;
+													</Typography>
+													<Typography
+														style={{ color: "#007FFF", display: "inline" }}
+													>
+														{limitContent(history.userDisplayName, 15)}
+													</Typography>
+													<Typography style={{ display: "inline" }}>
+														&nbsp;สถานะ:&nbsp;
+													</Typography>
+													<Typography
+														style={{ color: "red", display: "inline" }}
+													>
+														{history.status}
+													</Typography>
+													<Typography style={{ display: "inline" }}>
+														&nbsp;จำนวนโหวต:&nbsp;
+													</Typography>
+													<Typography
+														style={{ color: "#007FFF", display: "inline" }}
+													>
+														{history.voteCount}
+													</Typography>
+												</a>
 											</Link>
 										</li>
 									</ListItem>
@@ -195,7 +320,7 @@ const history = (props) => {
 							))}
 						</div>
 						<Grid
-							fullwidth
+							fullWidth={fullWidth}
 							spacing={3}
 							container
 							className={classes.buttonGrid}
@@ -218,7 +343,6 @@ const history = (props) => {
 };
 
 export default history;
-
 
 ///เพิ่มแจ้งเตือนหน้าแรก
 ///เพิ่มจำนวนโหวตหน้า history

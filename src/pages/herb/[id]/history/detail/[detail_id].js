@@ -166,6 +166,18 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: "auto",
 		maxWidth: "auto",
 	},
+	statusCard: {
+		float: "Right",
+		paddingLeft: "10px",
+		paddingRight: "10px",
+		width: "fit-content",
+		minWidth: "auto",
+		maxWidth: "auto",
+	},
+	status: {
+		display: "inline",
+		color: "red",
+	},
 	userName: {
 		display: "inline",
 		color: "#007FFF",
@@ -212,6 +224,7 @@ export const getServerSideProps = async ({ query }) => {
 			content["imgUrl"] = result.data().imgUrl;
 			content["chemBondUrl"] = result.data().chemBondUrl;
 			content["NMRUrl"] = result.data().NMRUrl;
+			content["status"] = result.data().status;
 		})
 		.catch(function (error) {
 			console.log("Error getting documents: ", error);
@@ -231,6 +244,7 @@ export const getServerSideProps = async ({ query }) => {
 			imgUrl: content.imgUrl,
 			chemBondUrl: content.chemBondUrl,
 			NMRUrl: content.NMRUrl,
+			status: content.status,
 		},
 	};
 };
@@ -328,6 +342,8 @@ const detail = (props) => {
 				imgUrl: newImgUrl,
 				NMRUrl: newNMRUrl,
 				chemBondUrl: newChemBondUrl,
+				status: "ยังไม่ได้ยืนยัน",
+				voteCount: 0,
 			})
 			.then(
 				setActiveEdit(false),
@@ -478,7 +494,8 @@ const detail = (props) => {
 						<DialogContentText>
 							<Typography>
 								คุณต้องการยกเลิกการแก้ไขข้อมูลสมุนไพรนี้ใช่หรือไม่?
-								คลิก(ใช่)เพื่อกลับสู่หน้าข้อมูลสมุนไพร หรือคลิก(ไม่ใช่)เพื่อดำเนินการแก้ไขต่อ.
+								คลิก(ใช่)เพื่อกลับสู่หน้าข้อมูลสมุนไพร
+								หรือคลิก(ไม่ใช่)เพื่อดำเนินการแก้ไขต่อ.
 							</Typography>
 						</DialogContentText>
 					</DialogContent>
@@ -513,24 +530,26 @@ const detail = (props) => {
 												paddingLeft: "10px",
 												paddingRight: "10px",
 												paddingTop: "10px",
+												display: "inline",
 											}}
 										>
-											ประวัติการแก้ไขเมื่อ:
-											<Typography
-												variant="h5"
-												style={{
-													fontWeight: "normal",
-													color: "#007FFF",
-													display: "inline",
-												}}
-											>
-												{date}
-											</Typography>
+											ประวัติการแก้ไขเมื่อ
+										</Typography>
+										<Typography className={classes.space}>:&nbsp;</Typography>
+										<Typography
+											variant="h5"
+											style={{
+												fontWeight: "normal",
+												color: "#007FFF",
+												display: "inline",
+											}}
+										>
+											{date}
 										</Typography>
 									</div>
 									<div className={classes.cardRoot}>
 										<Grid container spacing={2}>
-											<Grid item xs={12}>
+											<Grid item xs={6}>
 												<Card className={classes.userCard}>
 													<Typography
 														style={{
@@ -542,17 +561,35 @@ const detail = (props) => {
 															paddingBottom: "10px",
 														}}
 													>
-														ผู้แก้ไข:
-														<Typography
-															style={{
-																fontWeight: "normal",
-																color: "#007FFF",
-																display: "inline",
-															}}
-														>
-															{props.userDisplayName}
-														</Typography>
+														ผู้แก้ไข
 													</Typography>
+													<Typography className={classes.space}>
+														:&nbsp;
+													</Typography>
+													<Typography
+														style={{
+															fontWeight: "normal",
+															color: "#007FFF",
+															display: "inline",
+														}}
+													>
+														{props.userDisplayName}
+													</Typography>
+												</Card>
+											</Grid>
+											<Grid item xs={6}>
+												<Card className={classes.statusCard}>
+													<CardActionArea>
+														<Typography className={classes.title}>
+															สถานะข้อมูล
+														</Typography>
+														<Typography className={classes.space}>
+															:&nbsp;
+														</Typography>
+														<Typography className={classes.status}>
+															{props.status}
+														</Typography>
+													</CardActionArea>
 												</Card>
 											</Grid>
 										</Grid>

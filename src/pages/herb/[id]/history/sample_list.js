@@ -165,7 +165,7 @@ const history = (props) => {
 				<Box style={frameStyles}>
 					<div>
 						<Grid
-							fullwidth={true}
+							fullwidth
 							spacing={3}
 							container
 							direction="column"
@@ -195,12 +195,12 @@ const history = (props) => {
 												}
 											>
 												<Typography className={classes.content}>
-													<Typography
+													<Typography className="txt"
 														style={{ color: "#007FFF", display: "inline" }}
 													>
 														{history.thaiName}
 													</Typography>
-													&nbsp;ถูกแก้ไขเมื่อ&nbsp;
+													&nbsp;ถูกแก้ไขเมื่อ:&nbsp;
 													<Typography
 														style={{ color: "#007FFF", display: "inline" }}
 													>

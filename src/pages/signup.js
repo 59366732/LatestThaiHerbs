@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = () => {
 	// const [firstname, setFirstname] = useState("");
 	// const [lastname, setLastname] = useState("");
+	const [fullWidth, setFullWidth] = React.useState(true);
 	const [displayName, setDisplayName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");

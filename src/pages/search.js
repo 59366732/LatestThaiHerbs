@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Search() {
+	const [fullWidth, setFullWidth] = React.useState(true);
 	const [herbs, setHerbs] = useState([]);
 	const [searchName, setSearchName] = useState([]);
 	const [error, setError] = useState(null);

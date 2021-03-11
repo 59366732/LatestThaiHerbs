@@ -21,7 +21,9 @@ import {
 	makeStyles,
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
-
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import Fab from "@material-ui/core/Fab";
+import Popover from "@material-ui/core/Popover";
 const useStyles = makeStyles((theme) => ({
 	list: {
 		width: 175,
@@ -37,9 +39,12 @@ const useStyles = makeStyles((theme) => ({
 		width: theme.spacing(3),
 		height: theme.spacing(3),
 	},
+	typography: {
+		padding: theme.spacing(2),
+	},
 }));
 
-const StyledBadge = withStyles((theme) => ({
+const ProfileStyledBadge = withStyles((theme) => ({
 	badge: {
 		backgroundColor: "#44b700",
 		color: "#44b700",
@@ -68,6 +73,16 @@ const StyledBadge = withStyles((theme) => ({
 	},
 }))(Badge);
 
+const NotiStyledBadge = withStyles((theme) => ({
+	badge: {
+		right: -3,
+		top: 7,
+		border: `2px solid ${theme.palette.background.paper}`,
+		padding: "0 4px",
+	},
+}))(Badge);
+
+
 const SideDrawer = ({ navLinks }) => {
 	const classes = useStyles();
 	const [state, setState] = useState({ right: false });
@@ -76,6 +91,7 @@ const SideDrawer = ({ navLinks }) => {
 
 	const [loggedIn, setLoggedIn] = useState(false);
 
+	const [anchorEl, setAnchorEl] = React.useState(null);
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			setLoggedIn(true);
@@ -83,6 +99,17 @@ const SideDrawer = ({ navLinks }) => {
 			setLoggedIn(false);
 		}
 	});
+
+	const handleClickPopover = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClosePopover = () => {
+		setAnchorEl(null);
+	};
+
+	const openNoti = Boolean(anchorEl);
+	const id = open ? "simple-popover" : undefined;
 
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (
@@ -140,7 +167,7 @@ const SideDrawer = ({ navLinks }) => {
 							<ListItem>
 								<Link href="/profilepage">
 									<Button>
-										<StyledBadge
+										<ProfileStyledBadge
 											overlap="circle"
 											anchorOrigin={{
 												vertical: "bottom",
@@ -160,7 +187,7 @@ const SideDrawer = ({ navLinks }) => {
 													backgroundPosition: "center",
 												}}
 											/>
-										</StyledBadge>
+										</ProfileStyledBadge>
 										<Typography
 											style={{
 												color: "white",
@@ -172,6 +199,62 @@ const SideDrawer = ({ navLinks }) => {
 										</Typography>
 									</Button>
 								</Link>
+							</ListItem>
+						</div>
+						<div className={classes.linkText} style={{ margin: "0 1px 0 1px" }}>
+							<ListItem>
+								<React.Fragment>
+									<Fab
+										size="small"
+										color="primary"
+										aria-label="add"
+										aria-describedby={id}
+										onClick={handleClickPopover}
+									>
+										<IconButton aria-label="cart">
+											<NotiStyledBadge
+												badgeContent={
+													<Typography
+														variant="caption"
+														style={{ color: "white" }}
+													>
+														0
+													</Typography>
+												}
+												color="secondary"
+											>
+												<NotificationsNoneIcon style={{ color: `white` }} />
+											</NotiStyledBadge>
+										</IconButton>
+									</Fab>
+									<Popover
+										id={id}
+										open={openNoti}
+										anchorEl={anchorEl}
+										onClose={handleClosePopover}
+										anchorOrigin={{
+											vertical: "bottom",
+											horizontal: "left",
+										}}
+										transformOrigin={{
+											vertical: "top",
+											horizontal: "right",
+										}}
+									>
+										<Typography className={classes.typography}>
+											The content of the Popover.
+										</Typography>
+										<Typography className={classes.typography}>
+											The content of the Popover.
+										</Typography>
+										<Typography className={classes.typography}>
+											The content of the Popover.
+										</Typography>
+										<Typography className={classes.typography}>
+											The content of the Popover.
+										</Typography>
+									</Popover>
+								</React.Fragment>
 							</ListItem>
 						</div>
 						<div className={classes.linkText} style={{ margin: "0 1px 0 1px" }}>

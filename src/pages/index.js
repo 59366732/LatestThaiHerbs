@@ -115,7 +115,6 @@ function Home() {
 			});
 	}, []);
 
-
 	const classes = useStyles();
 	return (
 		<div className={classes.root} style={{ position: "relative" }}>
@@ -127,7 +126,6 @@ function Home() {
 							color="primary"
 							className={classes.addHerbButton}
 						>
-							{" "}
 							<AddCircleOutlineIcon />
 							<Link href="/addherb">
 								<Typography>เพิ่มข้อมูลสมุนไพร</Typography>
@@ -139,7 +137,7 @@ function Home() {
 					<Grid container spacing={2} direction="row">
 						{herbs.map((herb) => (
 							<Grid item xs={12} sm={6} md={3} key={herbs.indexOf(herb)}>
-								<Card>
+								<Card key={herb.id}>
 									<CardActionArea>
 										<CardMedia
 											className={classes.media}

@@ -20,6 +20,18 @@ export default {
 		// 	fontFamily: "Times New Roman",
 		// 	fontSize: "1.1rem",
 		// },
+		fontFamily: [
+			"-apple-system",
+			"BlinkMacSystemFont",
+			'"Segoe UI"',
+			"Roboto",
+			'"Helvetica Neue"',
+			"Arial",
+			"sans-serif",
+			'"Apple Color Emoji"',
+			'"Segoe UI Emoji"',
+			'"Segoe UI Symbol"',
+		].join(","),
 	},
 	spreadIt: {
 		form: {
@@ -79,7 +91,7 @@ export default {
 		},
 		MuiSelect: {
 			root: {
-				backgroundColor: "none"
+				backgroundColor: "none",
 			},
 		},
 	},
@@ -122,7 +134,6 @@ export default {
 		},
 	},
 };
-
 
 //ปรับขนาดตัวหนังสือ
 //ปรับช่่องห่างระหว่างบรรทัด

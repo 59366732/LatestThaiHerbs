@@ -139,6 +139,7 @@ const username_example = "ชื่อผู้ใช้";
 const time_example = "Day Month Year";
 
 const QandA = () => {
+	const [fullWidth, setFullWidth] = React.useState(true);
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 

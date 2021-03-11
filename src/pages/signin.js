@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = () => {
+	const [fullWidth, setFullWidth] = React.useState(true);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);

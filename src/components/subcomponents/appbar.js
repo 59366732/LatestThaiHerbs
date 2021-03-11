@@ -10,6 +10,7 @@ import { UserContext } from "../../providers/UserProvider";
 import { useContext, useState, useEffect } from "react";
 import {
 	Avatar,
+	Divider,
 	Button,
 	Grid,
 	Badge,
@@ -20,11 +21,11 @@ import {
 	List,
 	ListItem,
 	ListItemText,
+	ListItemAvatar,
 	makeStyles,
 	withStyles,
 	Toolbar,
 	Typography,
-	Fab,
 } from "@material-ui/core";
 import { Home, KeyboardArrowUp } from "@material-ui/icons";
 import HideOnScroll from "./hideonscroll";
@@ -32,6 +33,8 @@ import SideDrawer from "./sidedrawer";
 import BackToTop from "./backtotop";
 
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
+import Fab from "@material-ui/core/Fab";
+import Popover from "@material-ui/core/Popover";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -95,9 +98,20 @@ const useStyles = makeStyles((theme) => ({
 		color: `white`,
 		textOverflow: "ellipsis",
 	},
+	typography: {
+		padding: theme.spacing(2),
+	},
+	rootNoti: {
+		width: "100%",
+		maxWidth: "36ch",
+		backgroundColor: theme.palette.background.paper,
+	},
+	inline: {
+		display: "inline",
+	},
 }));
 
-const StyledBadge = withStyles((theme) => ({
+const ProfileStyledBadge = withStyles((theme) => ({
 	badge: {
 		backgroundColor: "#44b700",
 		color: "#44b700",
@@ -126,9 +140,21 @@ const StyledBadge = withStyles((theme) => ({
 	},
 }))(Badge);
 
+const NotiStyledBadge = withStyles((theme) => ({
+	badge: {
+		right: -3,
+		top: 7,
+		border: `2px solid ${theme.palette.background.paper}`,
+		padding: "0 4px",
+	},
+}))(Badge);
+
 const Appbar = () => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
+	const { user, setUser } = useContext(UserContext);
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState(null);
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -137,9 +163,6 @@ const Appbar = () => {
 		setOpen(false);
 	};
 
-	const { user, setUser } = useContext(UserContext);
-	const [loggedIn, setLoggedIn] = useState(false);
-
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			setLoggedIn(true);
@@ -147,6 +170,18 @@ const Appbar = () => {
 			setLoggedIn(false);
 		}
 	});
+
+	const handleClickPopover = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClosePopover = () => {
+		setAnchorEl(null);
+	};
+
+	const openNoti = Boolean(anchorEl);
+	const id = open ? "simple-popover" : undefined;
+
 	const navLinks = [
 		{ title: `หน้าแรก`, path: `/` },
 		{ title: `ค้นหา`, path: `/search` },
@@ -174,7 +209,7 @@ const Appbar = () => {
 								เว็บชุมชนสมุนไพรไทย
 							</IconButton>
 
-							<Hidden smDown>
+							<Hidden mdDown>
 								{loggedIn ? (
 									<List
 										component="nav"
@@ -229,30 +264,159 @@ const Appbar = () => {
 										>
 											<ListItem>
 												<Link href="/profilepage">
-													<React.Fragment>
-														<Button>
-															<StyledBadge
-																overlap="circle"
-																anchorOrigin={{
-																	vertical: "bottom",
-																	horizontal: "right",
-																}}
-																variant="dot"
-															>
-																<Avatar className={classes.avatar} alt="I" />
-															</StyledBadge>
-															<Typography
-																style={{
-																	color: "white",
-																	textTransform: "capitalize",
-																	paddingLeft: "5px",
-																}}
-															>
-																{user.displayName}
-															</Typography>
-														</Button>
-													</React.Fragment>
+													<Button>
+														<ProfileStyledBadge
+															overlap="circle"
+															anchorOrigin={{
+																vertical: "bottom",
+																horizontal: "right",
+															}}
+															variant="dot"
+														>
+															<Avatar className={classes.avatar} alt="I" />
+														</ProfileStyledBadge>
+														<Typography
+															style={{
+																color: "white",
+																textTransform: "capitalize",
+																paddingLeft: "5px",
+															}}
+														>
+															{user.displayName}
+														</Typography>
+													</Button>
 												</Link>
+											</ListItem>
+										</div>
+										<div
+											className={classes.linkText}
+											style={{ margin: "0 1px 0 1px" }}
+										>
+											<ListItem>
+												<React.Fragment>
+													<Fab
+														size="small"
+														color="primary"
+														aria-label="add"
+														aria-describedby={id}
+														onClick={handleClickPopover}
+													>
+														<IconButton aria-label="cart">
+															<NotiStyledBadge
+																badgeContent={
+																	<Typography
+																		variant="caption"
+																		style={{ color: "white" }}
+																	>
+																		0
+																	</Typography>
+																}
+																color="secondary"
+															>
+																<NotificationsNoneIcon
+																	style={{ color: `white` }}
+																/>
+															</NotiStyledBadge>
+														</IconButton>
+													</Fab>
+													<Popover
+														id={id}
+														open={openNoti}
+														anchorEl={anchorEl}
+														onClose={handleClosePopover}
+														anchorOrigin={{
+															vertical: "bottom",
+															horizontal: "left",
+														}}
+														transformOrigin={{
+															vertical: "top",
+															horizontal: "right",
+														}}
+													>
+														<List className={classes.root}>
+															<ListItem alignItems="flex-start">
+																<ListItemAvatar>
+																	<Avatar
+																		alt="Remy Sharp"
+																		src="/static/images/avatar/1.jpg"
+																	/>
+																</ListItemAvatar>
+																<ListItemText
+																	primary="Brunch this weekend?"
+																	secondary={
+																		<React.Fragment>
+																			<Typography
+																				component="span"
+																				variant="body2"
+																				className={classes.inline}
+																				color="textPrimary"
+																			>
+																				Ali Connors
+																			</Typography>
+																			{
+																				" — I'll be in your neighborhood doing errands this…"
+																			}
+																		</React.Fragment>
+																	}
+																/>
+															</ListItem>
+															<Divider variant="inset" component="li" />
+															<ListItem alignItems="flex-start">
+																<ListItemAvatar>
+																	<Avatar
+																		alt="Travis Howard"
+																		src="/static/images/avatar/2.jpg"
+																	/>
+																</ListItemAvatar>
+																<ListItemText
+																	primary="Summer BBQ"
+																	secondary={
+																		<React.Fragment>
+																			<Typography
+																				component="span"
+																				variant="body2"
+																				className={classes.inline}
+																				color="textPrimary"
+																			>
+																				to Scott, Alex, Jennifer
+																			</Typography>
+																			{
+																				" — Wish I could come, but I'm out of town this…"
+																			}
+																		</React.Fragment>
+																	}
+																/>
+															</ListItem>
+															<Divider variant="inset" component="li" />
+															<ListItem alignItems="flex-start">
+																<ListItemAvatar>
+																	<Avatar
+																		alt="Cindy Baker"
+																		src="/static/images/avatar/3.jpg"
+																	/>
+																</ListItemAvatar>
+																<ListItemText
+																	primary="Oui Oui"
+																	secondary={
+																		<React.Fragment>
+																			<Typography
+																				component="span"
+																				variant="body2"
+																				className={classes.inline}
+																				color="textPrimary"
+																			>
+																				Sandra Adams
+																			</Typography>
+																			{
+																				" — Do you have Paris recommendations? Have you ever…"
+																			}
+																		</React.Fragment>
+																	}
+																/>
+															</ListItem>
+														</List>
+													</Popover>
+												</React.Fragment>
 											</ListItem>
 										</div>
 										<div
@@ -328,7 +492,7 @@ const Appbar = () => {
 									</List>
 								)}
 							</Hidden>
-							<Hidden mdUp>
+							<Hidden lgUp>
 								<SideDrawer navLinks={navLinks} />
 							</Hidden>
 						</Container>
